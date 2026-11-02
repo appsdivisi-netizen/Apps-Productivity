@@ -1,0 +1,9 @@
+{
+  "name": "monitoring-productivity-apps",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

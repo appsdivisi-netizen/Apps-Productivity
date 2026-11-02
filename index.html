@@ -180,6 +180,7 @@ header.top .btns{display:flex;gap:8px}
 .msg.err{background:var(--crit-bg);border-color:var(--crit);color:var(--crit)}
 .empty{padding:28px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}.empty h2{margin:0}.empty p{margin:0;max-width:560px;color:var(--ink-2)}
 body.nodata .dep{display:none!important}
+body:not(.isadmin) .adm{display:none!important}
 .fb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:var(--ink-2)}
 .fb .tag{display:inline-flex;gap:8px;align-items:center;padding:3px 6px 3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
 .fb .tag button{border:0;background:transparent;color:inherit;cursor:pointer;font-size:15px;line-height:1}
@@ -361,13 +362,13 @@ textarea.srch{font-family:var(--f-num);font-size:12px;resize:vertical}
       <details class="st" id="ydBox"><summary id="ydSum">Year Done</summary>
         <div class="pop"><div class="acts"><button class="mini" id="ydAll">Semua</button><button class="mini" id="ydNone">Kosongkan</button></div><div id="ydYears"></div>
           <div class="lbl" style="margin:10px 0 6px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)">Kuartal</div><div class="chips" id="ydQs"></div><div class="meta" id="ydHint" style="margin-top:8px"></div></div></details></div>
-    <div class="fg"><span class="lbl">Data</span><div class="btns"><button class="btn" id="btnUp" type="button">Upload data</button><button class="btn" id="btnMp" type="button">Master PIC</button><button class="btn" id="btnEx" type="button">Pengecualian</button><button class="btn" id="btnClr" type="button" title="Hapus data Excel yang tersimpan di browser ini">Hapus data tersimpan</button><input type="file" id="fileIn" accept=".xlsx,.xlsm,.xls" hidden></div></div>
+    <div class="fg"><span class="lbl">Data</span><div class="btns"><button class="btn adm" id="btnUp" type="button">Upload data</button><button class="btn adm" id="btnMp" type="button">Master PIC</button><button class="btn adm" id="btnEx" type="button">Pengecualian</button><button class="btn adm" id="btnClr" type="button" title="Hapus data di server (semua pengguna)">Hapus data</button><input type="file" id="fileIn" accept=".xlsx,.xlsm,.xls" hidden><button class="btn" id="btnLogin" type="button">Login admin</button><button class="btn" id="btnLogout" type="button" hidden>Logout admin</button></div></div>
     <div class="fg dep"><span class="lbl">Laporan</span><div class="btns"><button class="btn pri" id="btnRp" type="button">Laporan PIC</button><button class="btn" id="btnNb" type="button">Dokumen tanpa bobot</button></div></div>
   </div>
   </header>
   <div id="msg" class="msg" hidden role="status"></div>
   <div class="meta dep" id="exNote" hidden></div>
-  <section class="panel empty" id="empty" hidden><h2>Belum ada data</h2><p>Upload file Excel (.xlsx) sumber data untuk mulai. File harus punya kolom seperti Year Request, Year Done, Status Dev, Task PIC_2, Testing PIC 1/2/3, dan kolom Bobot.</p><button class="btn pri" id="btnUp2" type="button">Upload data (.xlsx)</button></section>
+  <section class="panel empty" id="empty" hidden><h2>Belum ada data</h2><p>Belum ada data yang dipublikasikan. Hubungi admin, atau login admin untuk upload. <span class="adm">Upload file Excel (.xlsx) sumber data. File harus punya kolom seperti Year Request, Year Done, Status Dev, Task PIC_2, Testing PIC 1/2/3, dan kolom Bobot.</span></p><button class="btn pri adm" id="btnUp2" type="button">Upload data (.xlsx)</button></section>
 
   <section class="kpis dep" id="kpis"></section>
   <div class="fb dep" id="fb" hidden></div>
@@ -481,6 +482,32 @@ const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 
+/* ---------- penyimpanan server (Netlify Functions + Blobs) ---------- */
+const API='/api';
+let PIN='';try{PIN=sessionStorage.getItem('prodPin')||''}catch(e){}
+const isAdmin=()=>!!PIN;
+function setAdminUI(){document.body.classList.toggle('isadmin',isAdmin());$('btnLogin').hidden=isAdmin();$('btnLogout').hidden=!isAdmin()}
+function dropPin(){PIN='';try{sessionStorage.removeItem('prodPin')}catch(e){}setAdminUI()}
+async function gzBuf(obj){return new Response(new Blob([JSON.stringify(obj)]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer()}
+async function apiGet(path,gz){
+  const r=await fetch(API+path,{cache:'no-store'});
+  if(r.status===404)return null;
+  if(!r.ok)throw new Error('Server '+r.status);
+  return gz?JSON.parse(await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).text()):r.json();
+}
+async function apiSend(method,path,body,ctype){
+  const r=await fetch(API+path,{method,headers:{'x-admin-pin':PIN,...(ctype?{'content-type':ctype}:{})},body});
+  if(r.status===401){dropPin();throw new Error('PIN salah atau sesi habis. Login admin lagi.')}
+  if(!r.ok){let m='';try{m=(await r.json()).error}catch(e){}throw new Error(m||('Server '+r.status))}
+  return r.json();
+}
+function pushSettings(){
+  if(!isAdmin())return;
+  apiSend('PUT','/settings',JSON.stringify({master:MASTER,exc:EXC}),'application/json')
+    .then(()=>flash('Master PIC & pengecualian tersimpan di server.'))
+    .catch(e=>flash('Gagal simpan pengaturan ke server: '+e.message,true));
+}
+
 /* ---------- state ---------- */
 let D=null,MASTER=[],AREAS=[],YRs=[],YLs=[],byGrp={},ydCount={},yrCount={};
 let S={yr:new Set(),yd:new Set(),ydY:new Set(),ydQ:new Set(),div:null,pic:null};
@@ -497,7 +524,7 @@ function loadMaster(){
   const m=lsGet('prodMaster',null);
   MASTER=(m&&m.length?m:DEFAULT_MASTER.map(([k,n,a])=>({k,n,a}))).map(x=>Array.isArray(x)?{k:x[0],n:x[1],a:x[2]}:x);
 }
-function saveMaster(){lsSet('prodMaster',MASTER)}
+function saveMaster(){lsSet('prodMaster',MASTER);pushSettings()}
 function applyMaster(){
   const map=new Map();
   D.pics=MASTER.map((m,i)=>{map.set(m.k,i);return {n:m.n||m.k,a:m.a||'Tanpa divisi',k:m.k}});
@@ -831,7 +858,7 @@ function renderAll(){
   const P=focus?compute(vis):P0,r=focus?agg(P):r0,V=P.filter(p=>p.vis&&(r.AA[p.a]));
   renderKpis(P0,r0);renderFocus();renderTable(P,r);renderStatus(P,r);renderC1(V);renderC2(V);renderC3(V);renderC4(r);renderC5(P);renderC6(V);renderC7(V,r,P);renderAge(P);renderFilters();saveFilters();exNoteRender();$('btnMp').textContent=D.unmapped.length?`Master PIC (${nf.format(D.unmapped.length)} belum terdaftar)`:'Master PIC';
   $('tblNote').textContent=`Year Request: ${[...S.yr].join(', ')||'-'} · Year Done: ${ydText()}`;
-  $('meta').textContent=`${D.cut?'Cut-off '+D.cut+' · ':''}${nf.format(D.total)} baris · ${D.src}${D.fromCache?' · dari penyimpanan browser'+(typeof D.fromCache==='number'?' (disimpan '+new Date(D.fromCache).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})+')':''):''}`;
+  $('meta').textContent=`${D.cut?'Cut-off '+D.cut+' · ':''}${nf.format(D.total)} baris · ${D.src}${D.serverAt?' · diperbarui '+new Date(D.serverAt).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'}):''}${D.fromCache?' · OFFLINE, dari cache browser'+(typeof D.fromCache==='number'?' (disimpan '+new Date(D.fromCache).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})+')':''):''}`;
   $('ageSel').value=String(AGE);
 }
 const keepOpen=()=>{const a=$('ydBox').open,c=$('yrBox').open;renderAll();$('ydBox').open=a;$('yrBox').open=c};
@@ -873,14 +900,14 @@ function exRender(){
 function exNoteRender(){
   const L=EXC.filter(l=>ydCount[l]);
   $('exNote').hidden=!(D&&L.length);
-  if(D&&L.length)$('exNote').textContent='Dikecualikan dari bobot testing: '+L.map(l=>`${l} (${nf.format(ydCount[l])} dokumen)`).join(', ')+' · atur di tombol Pengecualian';
+  if(D&&L.length)$('exNote').textContent='Dikecualikan dari bobot testing: '+L.map(l=>`${l} (${nf.format(ydCount[l])} dokumen)`).join(', ')+(isAdmin()?' · atur di tombol Pengecualian':'');
 }
 $('btnEx').onclick=()=>{EW=[...EXC];exRender();$('ex').hidden=false};
 $('exCancel').onclick=()=>{$('ex').hidden=true};
 $('exList').addEventListener('click',e=>{const b=e.target.closest('[data-xd]');if(b){EW.splice(+b.dataset.xd,1);exRender()}});
 const exAddFn=()=>{const v=$('exIn').value.trim();if(v&&!EW.includes(v))EW.push(v);$('exIn').value='';exRender()};
 $("exAdd").onclick=exAddFn;$('exIn').addEventListener('keydown',e=>{if(e.key==="Enter"){e.preventDefault();exAddFn()}});
-$('exSave').onclick=()=>{const v=$('exIn').value.trim();if(v&&!EW.includes(v))EW.push(v);EXC=[...EW];lsSet('prodExc',EXC);$('ex').hidden=true;if(D)renderAll();flash('Pengecualian disimpan.')};
+$('exSave').onclick=()=>{const v=$('exIn').value.trim();if(v&&!EW.includes(v))EW.push(v);EXC=[...EW];lsSet('prodExc',EXC);pushSettings();$('ex').hidden=true;if(D)renderAll();flash('Pengecualian disimpan.')};
 
 /* ---------- upload ---------- */
 let msgT=null;
@@ -900,7 +927,9 @@ function useData(cols,aoa,src,cut,persist){
   }
 }
 async function handleFile(f){
-  if(!f)return;flash('Membaca '+f.name+'…');
+  if(!f)return;
+  if(!isAdmin()){flash('Hanya admin yang bisa upload data. Klik Login admin dulu.',true);return}
+  flash('Membaca '+f.name+'…');
   await new Promise(r=>setTimeout(r,30));
   try{
     if(typeof XLSX==='undefined')throw new Error('Library pembaca Excel belum termuat. Periksa koneksi internet lalu coba lagi.');
@@ -916,13 +945,24 @@ async function handleFile(f){
         const mm=m.slice(1).filter(r=>String(r[ki]||'').trim()).map(r=>({k:String(r[ki]).trim().toLowerCase(),n:(ni>=0&&String(r[ni]||'').trim())||title(String(r[ki]).trim()),a:(di>=0&&String(r[di]||'').trim())||'Tanpa divisi'}));
         if(mm.length){MASTER=mm;saveMaster();note=' Master PIC diambil dari sheet "'+mname+'".'}}}
     const cut=detectCut(cols.map(c=>String(c)),body,f.name);
-    useData(cols,body,f.name,cut,true);renderAll();if(D.warn.length)flash(D.warn.join(' '),true);else flash(`Data dimuat: ${nf.format(D.total)} baris dari ${f.name}.${note} Data disimpan di browser ini.`)
+    useData(cols,body,f.name,cut,false);renderAll();
+    const at=Date.now();flash('Menyimpan ke server…');
+    try{
+      const buf=await gzBuf({cols,aoa:body,src:f.name,cut,at});
+      if(buf.byteLength>5.5*1024*1024)throw new Error('Ukuran data terkompres '+(buf.byteLength/1048576).toFixed(1)+' MB, melebihi batas 5,5 MB. Kurangi kolom/baris yang tidak dipakai.');
+      await apiSend('PUT','/data',buf,'application/octet-stream');
+      D.serverAt=at;idbSet('data',{cols,aoa:body,src:f.name,cut,at});renderAll();
+      if(D.warn.length)flash(D.warn.join(' ')+' (Data sudah tersimpan di server.)',true);
+      else flash(`Data dimuat: ${nf.format(D.total)} baris dari ${f.name}.${note} Tersimpan di server, semua pengguna akan melihat data ini.`);
+    }catch(e){flash('Data terbaca, tetapi GAGAL disimpan ke server: '+(e.message||e)+' Pengguna lain belum melihat data ini.',true)}
   }catch(err){flash(err.message||String(err),true)}
 }
 $('btnUp').onclick=()=>$('fileIn').click();$('btnUp2').onclick=()=>$('fileIn').click();
 $('fileIn').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';handleFile(f)});
 $('btnMp').onclick=()=>openMaster(false);
-$('btnClr').onclick=async()=>{if(!confirm('Hapus data Excel yang tersimpan di browser ini? Setelah itu Anda perlu upload ulang file Excel.'))return;await idbDel('data');D=null;$('meta').textContent='';$('exNote').hidden=true;renderAll();flash('Data tersimpan sudah dihapus.')};
+$('btnClr').onclick=async()=>{if(!confirm('Hapus data di server? Semua pengguna akan melihat dashboard kosong sampai admin upload lagi.'))return;try{await apiSend('DELETE','/data');await idbDel('data');D=null;$('meta').textContent='';$('exNote').hidden=true;renderAll();flash('Data di server sudah dihapus.')}catch(e){flash(e.message||String(e),true)}};
+$('btnLogin').onclick=async()=>{const p=prompt('PIN admin:');if(!p)return;try{const r=await fetch(API+'/auth',{headers:{'x-admin-pin':p},cache:'no-store'});if(r.status===401)throw new Error('PIN salah.');if(!r.ok){let m='';try{m=(await r.json()).error}catch(e){}throw new Error(m||('Server '+r.status))}PIN=p;try{sessionStorage.setItem('prodPin',p)}catch(e){}setAdminUI();if(D)renderAll();flash('Login admin berhasil.')}catch(e){flash(e.message||String(e),true)}};
+$('btnLogout').onclick=()=>{dropPin();if(D)renderAll();flash('Logout admin.')};
 
 /* ---------- events ---------- */
 $('drTbl').addEventListener('click',e=>{const r=e.target.closest('tr[data-ri]');if(r)openProject(+r.dataset.ri)});
@@ -1297,11 +1337,19 @@ async function inflate(b64){
   return JSON.parse(await new Response(st).text());
 }
 (async function boot(){
-  loadMaster();document.body.classList.add('nodata');
+  loadMaster();setAdminUI();document.body.classList.add('nodata');
+  flash('Memuat data dari server…');
   try{
-    const saved=await idbGet('data');
-    if(saved&&saved.cols){useData(saved.cols,saved.aoa,saved.src,saved.cut,false);D.fromCache=saved.at||true}
-    else if(SNAP){flash('Memuat data…');const j=await inflate(SNAP);useData(j.cols,j.rows,j.src,j.cut,false);$('msg').hidden=true}
+    let st=null,dt=null,offline=false;
+    try{[st,dt]=await Promise.all([apiGet('/settings').catch(()=>null),apiGet('/data',true)])}catch(e){offline=true}
+    if(st&&Array.isArray(st.master)&&st.master.length)MASTER=st.master.map(x=>Array.isArray(x)?{k:x[0],n:x[1],a:x[2]}:x);
+    if(st&&Array.isArray(st.exc))EXC=st.exc;
+    if(dt&&dt.cols){useData(dt.cols,dt.aoa,dt.src,dt.cut,false);D.serverAt=dt.at;idbSet('data',dt);$('msg').hidden=true}
+    else if(offline){
+      const saved=await idbGet('data');
+      if(saved&&saved.cols){useData(saved.cols,saved.aoa,saved.src,saved.cut,false);D.fromCache=saved.at||true;flash('Tidak bisa terhubung ke server. Menampilkan data terakhir yang tersimpan di browser ini.',true)}
+      else flash('Tidak bisa terhubung ke server dan belum ada cache di browser ini.',true)
+    }else $('msg').hidden=true;
   }catch(err){flash('Gagal memuat data: '+(err.message||err),true)}
   renderAll();
   if(D&&D.warn&&D.warn.length)flash(D.warn.join(' '),true);
