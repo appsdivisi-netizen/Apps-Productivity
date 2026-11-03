@@ -481,7 +481,7 @@ body.vdata #kpis,body.vdata #fb,body.vdata .main,body.vdata #exNote{display:none
 .cdg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px 14px;margin:12px 0}
 .cdg label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink-2)}.cdg .srch,.cdg .sel{width:100%;margin:0}
 #cdSt.cd-err{color:var(--crit)}
-/* Dokumen nyangkut: toolbar, chip, header sticky, popup filter */
+/* Aging Document: toolbar, chip, header sticky, popup filter */
 .agbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:6px 20px 10px}
 .agbar .srch{flex:0 1 320px;width:auto;margin:0}.agchips{display:flex;flex-wrap:wrap;gap:6px}
 .agc{font:inherit;font-size:12.5px;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:border-color .12s,background .12s,color .12s}
@@ -498,6 +498,9 @@ body.vdata #kpis,body.vdata #fb,body.vdata .main,body.vdata #exNote{display:none
 #afp .lst{max-height:230px;overflow:auto;border-top:1px solid var(--line);padding-top:4px;margin-top:6px}
 #afp .lst label{display:flex;gap:8px;align-items:center;padding:3px 2px;cursor:pointer;font-size:13px}#afp .lst label:hover{background:var(--surface-2);border-radius:6px}
 #afp .lst label span:nth-child(2){flex:1;min-width:0;overflow-wrap:anywhere}#afp .lst .cnt{margin-left:auto;color:var(--ink-3);font-family:var(--f-num);font-size:11.5px}
+#exNote{white-space:pre-line}
+.tw.agscroll{padding-top:0}
+.dfi{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-2)}
 </style>
 
 <div class="wrap">
@@ -559,9 +562,9 @@ body.vdata #kpis,body.vdata #fb,body.vdata .main,body.vdata #exNote{display:none
       <section class="panel"><div class="ph"><h2>Perlu perhatian</h2><span class="n">Productivity &lt; 60% atau tanpa bobot</span></div><div class="cb" id="c6"></div></section>
     </div>
     </div>
-    <section class="panel"><div class="ph"><h2>Dokumen nyangkut</h2><span class="n" id="ageNote"></span>
+    <section class="panel"><div class="ph"><h2 title="Dokumen berstatus DEV / APPS / BR TASK yang umurnya melewati batas hari sejak Doc. Date">Aging Document</h2><span class="n" id="ageNote"></span>
       <label class="agel">Batas umur <select class="sel" id="ageSel"><option>30</option><option>60</option><option>90</option><option>180</option><option>365</option></select> hari</label></div>
-      <div class="agbar"><input id="ageQ" class="srch" placeholder="Cari no. dokumen, nama, atau PIC…" aria-label="Cari dokumen nyangkut" autocomplete="off"><div class="agchips" id="ageChips" role="group" aria-label="Filter cepat umur"></div><button class="mini" id="ageReset" type="button" hidden>Reset filter</button></div>
+      <div class="agbar"><input id="ageQ" class="srch" placeholder="Cari no. dokumen, nama, atau PIC…" aria-label="Cari aging document" autocomplete="off"><div class="agchips" id="ageChips" role="group" aria-label="Filter cepat umur"></div><button class="mini" id="ageReset" type="button" hidden>Reset filter</button></div>
       <div class="tw agscroll"><table id="ageTbl"></table></div></section>
   </div>
 
@@ -635,8 +638,8 @@ body.vdata #kpis,body.vdata #fb,body.vdata .main,body.vdata #exNote{display:none
 </div>
 <div id="prt" aria-hidden="true"></div>
 <div id="hfp" hidden role="dialog" aria-label="Filter kolom"><div class="hfs"><button class="mini" type="button" data-hs="asc">Urutkan A→Z</button><button class="mini" type="button" data-hs="desc">Z→A</button></div><input class="srch" id="hfq" placeholder="Cari nilai…" aria-label="Cari nilai filter" autocomplete="off"><div class="acts"><button class="mini" type="button" id="hfAll">Pilih semua</button><button class="mini" type="button" id="hfNone">Kosongkan</button></div><div id="hfl"></div></div>
-<div id="afp" hidden role="dialog" aria-label="Filter kolom dokumen nyangkut"><div class="hfs"><button class="mini" type="button" data-s="asc">Urutkan A→Z</button><button class="mini" type="button" data-s="desc">Z→A</button></div><div id="afb"></div><div class="acts" style="margin-top:8px"><button class="mini" type="button" id="afClr">Hapus filter kolom ini</button></div></div>
-<div id="dfp" hidden role="dialog" aria-label="Filter kolom data"><div class="hfs"><button class="mini" type="button" data-s="asc">Urutkan A→Z</button><button class="mini" type="button" data-s="desc">Z→A</button></div><input class="srch" id="dfq" placeholder="Cari nilai…" aria-label="Cari nilai" autocomplete="off"><div class="acts"><button class="mini" type="button" id="dfAll">Pilih semua</button><button class="mini" type="button" id="dfNone">Kosongkan</button></div><div id="dfl"></div></div>
+<div id="afp" hidden role="dialog" aria-label="Filter kolom aging document"><div class="hfs"><button class="mini" type="button" data-s="asc">Urutkan A→Z</button><button class="mini" type="button" data-s="desc">Z→A</button></div><div id="afb"></div><div class="dfi"><span id="afInfo"></span><span><button class="mini" type="button" id="afClr">Hapus filter</button> <button class="mini" type="button" id="afDone">Selesai</button></span></div></div>
+<div id="dfp" hidden role="dialog" aria-label="Filter kolom data"><div class="hfs"><button class="mini" type="button" data-s="asc">Urutkan A→Z</button><button class="mini" type="button" data-s="desc">Z→A</button></div><input class="srch" id="dfq" placeholder="Cari nilai…" aria-label="Cari nilai" autocomplete="off"><div class="acts"><button class="mini" type="button" id="dfAll">Pilih semua</button><button class="mini" type="button" id="dfNone">Kosongkan</button></div><div id="dfl"></div><div class="dfi"><span id="dfInfo"></span><button class="mini" type="button" id="dfDone">Selesai</button></div></div>
 <div id="tip" role="tooltip"></div>
 
 
@@ -648,7 +651,8 @@ const DEFAULT_MASTER=[['anas anas','Anas Anas','M1'],['chornelius yoshi','Chorne
 ['akang asep','Akang Asep','M3'],['alif muhammad','Alif Muhammad','M3'],['revinda saktyawati','Revinda Saktyawati','M3'],['muhammad maftuh ihsan','Muhammad Maftuh Ihsan','M3']];
 const REQ=['Year Request','Year Done','Status Dev','Task PIC_2','Testing PIC 1','Testing PIC 2','Testing PIC 3','Bobot Dokumen','Bobot Testing PIC 1','Bobot Testing PIC 2','Bobot Testing PIC 3','Doc. No.','Doc. Name'];
 const DATECOLS=['Doc. Date','Finish Date','Start Date','Test Cycle Date','Doc Cycle Date','Deliver Testing','Deliver Release'];
-const GOOD=['READY TO PILOT','PILOT','RELEASE'], SKIP=['CANCEL','HOLD','(BLANK)'];
+const GOOD=['READY TO PILOT','PILOT','RELEASE'], SKIP=['CANCEL','HOLD','ROLLBACK','(BLANK)'];
+const PH=r=>/-XXX|-DDD/i.test(String(r[12]||'')); // Doc. No. placeholder: tidak ikut perhitungan apa pun
 const nf=new Intl.NumberFormat('id-ID');
 const fmt=v=>v?nf.format(v):'-';
 const pf=v=>(v*100).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
@@ -766,10 +770,11 @@ function detectCut(H,aoa,fname){
 }
 
 /* ---------- filter setup ---------- */
+let PHN=0;
 function setupFilters(){
   const rows=D.rows;YRs=[...new Set(rows.map(r=>r[0]))];YRs=YRs.filter(x=>/^\d{4}$/.test(x)).sort().concat(YRs.filter(x=>!/^\d{4}$/.test(x)).sort());
-  yrCount={};rows.forEach(r=>yrCount[r[0]]=(yrCount[r[0]]||0)+1);
-  ydCount={};rows.forEach(r=>{const k=ydKey(r[2]);ydCount[k]=(ydCount[k]||0)+1});YLs=Object.keys(ydCount).sort();
+  yrCount={};YRs.forEach(y=>yrCount[y]=0);PHN=0;rows.forEach(r=>{if(PH(r)){PHN++;return}yrCount[r[0]]=(yrCount[r[0]]||0)+1});
+  ydCount={};rows.forEach(r=>{if(PH(r))return;const k=ydKey(r[2]);ydCount[k]=(ydCount[k]||0)+1});YLs=Object.keys(ydCount).sort();
   byGrp={};YLs.forEach(l=>(byGrp[grp(l)]=byGrp[grp(l)]||[]).push(l));
   grpCount={};Object.keys(byGrp).forEach(g=>grpCount[g]=byGrp[g].reduce((a,l)=>a+ydCount[l],0));
   const LATEST=YRs.filter(x=>/^\d{4}$/.test(x)).pop();
@@ -795,7 +800,7 @@ function compute(vis){
   P.Q=[0,1,2,3].map(()=>({d:0,t:0}));P.AR={};AREAS.forEach(a=>P.AR[a]=new Set());P.ALL=new Set();P.OLD=new Map();
   const gSel=new Set([...S.yd].map(grp));const now=Date.now();let ri=-1;
   const V=(l)=>l.filter(i=>P[i].vis);
-  for(const r of D.rows){ri++;
+  for(const r of D.rows){ri++;if(PH(r))continue;
     const [yr,,ydl,st,tp0,bd,p10,b1,p20,b2,p30,b3]=r;
     const tp=V(tp0);const p1=V(p10),p2=V(p20),p3=V(p30);
     if(!tp.length&&!p1.length&&!p2.length&&!p3.length)continue;
@@ -908,7 +913,7 @@ function renderC3(P){
     <text x="${x(p.total)+(near?0:10)}" y="${y(p.prod)+(near?20:4)}" ${near?'text-anchor="middle"':''}>${esc(lbl(p))}</text>`});
   $('c3').innerHTML=s+'</svg>';
 }
-const STAT=[['num','Selesai','--good'],['proc','Dalam proses','--warn'],['hold','Hold / Cancel','--ink-3']];
+const STAT=[['num','Selesai','--good'],['proc','Dalam proses','--warn'],['hold','Cancel / Hold / Rollback','--ink-3']];
 function renderC4(r){
   const n=r.areas.length,W=640,ml=64,mr=10,rh=40,H=rh*n+6;let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Status dokumen per area">`;
   r.areas.forEach((a,i)=>{const x=r.AA[a],t=x.num+x.proc+x.hold||1,y=i*rh+4;let cx=ml;
@@ -934,15 +939,15 @@ function renderC7(V,r,P){
   const hi=by(A,p=>p.prod,1),lo=by(A,p=>p.prod,-1),bw=by(V,p=>p.total,1),ts=by(V,p=>p.b1+p.b2+p.b3,1),pr=by(V,p=>p.proc,1);
   const hold=r.areas.reduce((a,x)=>a+r.AA[x].hold,0),all=P.ALL.size;
   $('c7').innerHTML=t('Productivity tertinggi',hi.n,pf(hi.prod))+t('Productivity terendah',lo.n,pf(lo.prod))+t('Bobot terbesar',bw.n,nf.format(bw.total))+
-   t('Penguji terbanyak',ts.n,'Testing '+nf.format(ts.b1+ts.b2+ts.b3))+t('Belum selesai terbanyak',pr.n,nf.format(pr.proc)+' dokumen')+t('Cancel / Hold',nf.format(hold)+' dokumen',all?(hold/all*100).toFixed(1).replace('.',',')+'% dari '+nf.format(all):'-');
+   t('Penguji terbanyak',ts.n,'Testing '+nf.format(ts.b1+ts.b2+ts.b3))+t('Belum selesai terbanyak',pr.n,nf.format(pr.proc)+' dokumen')+t('Cancel / Hold / Rollback',nf.format(hold)+' dokumen',all?(hold/all*100).toFixed(1).replace('.',',')+'% dari '+nf.format(all):'-');
 }
 let ATTALL=false;
 function renderC6(V){
   const L=V.filter(p=>p.prod<.6||p.total===0||p.old>0).sort((a,b)=>a.prod-b.prod);
   const n=L.length,show=ATTALL?L:L.slice(0,5);
-  const row=p=>`<div class="r"><div><div class="nm">${esc(p.n)}</div><div class="sm">${esc(p.a)} · ${p.total?nf.format(p.proc)+' dokumen belum selesai · bobot '+nf.format(p.total):'tidak ada bobot di filter ini'}${p.old?` · <b>${p.old}</b> nyangkut &gt; ${AGE} hari`:''}</div></div><span class="pill ${cls(p.prod)}">${icon(p.prod)} ${pf(p.prod)}</span></div>`;
-  $('c6').innerHTML=n?`<div class="att${ATTALL?' scr':''}">${show.map(row).join('')}</div>`+(n>5?`<div class="attm"><button class="mini" id="attT" type="button">${ATTALL?'Ringkas (5 teratas)':'Lihat semua ('+n+' PIC)'}</button></div>`:''):'<div class="att"><div class="ok">Semua PIC di atas 60% dan tidak ada dokumen nyangkut.</div></div>';
-  document.querySelector('#c6').previousElementSibling.querySelector('.n').textContent=n>5&&!ATTALL?`5 teratas dari ${n} · Productivity < 60%, tanpa bobot, atau ada dokumen nyangkut`:'Productivity < 60%, tanpa bobot, atau ada dokumen nyangkut';
+  const row=p=>`<div class="r"><div><div class="nm">${esc(p.n)}</div><div class="sm">${esc(p.a)} · ${p.total?nf.format(p.proc)+' dokumen belum selesai · bobot '+nf.format(p.total):'tidak ada bobot di filter ini'}${p.old?` · <b>${p.old}</b> aging document &gt; ${AGE} hari`:''}</div></div><span class="pill ${cls(p.prod)}">${icon(p.prod)} ${pf(p.prod)}</span></div>`;
+  $('c6').innerHTML=n?`<div class="att${ATTALL?' scr':''}">${show.map(row).join('')}</div>`+(n>5?`<div class="attm"><button class="mini" id="attT" type="button">${ATTALL?'Ringkas (5 teratas)':'Lihat semua ('+n+' PIC)'}</button></div>`:''):'<div class="att"><div class="ok">Semua PIC di atas 60% dan tidak ada aging document.</div></div>';
+  document.querySelector('#c6').previousElementSibling.querySelector('.n').textContent=n>5&&!ATTALL?`5 teratas dari ${n} · Productivity < 60%, tanpa bobot, atau ada aging document`:'Productivity < 60%, tanpa bobot, atau ada aging document';
 }
 
 /* ---------- group status table + drawer ---------- */
@@ -1073,9 +1078,11 @@ function exRender(){
   $('exDl').innerHTML=YLs.filter(l=>!EW.includes(l)).map(l=>`<option value="${esc(l)}">`).join('');
 }
 function exNoteRender(){
-  const L=EXC.filter(l=>ydCount[l]);
-  $('exNote').hidden=!(D&&L.length);
-  if(D&&L.length)$('exNote').textContent='Dikecualikan dari bobot testing: '+L.map(l=>`${l} (${nf.format(ydCount[l])} dokumen)`).join(', ')+(isAdmin()?' · atur di tombol Pengecualian':'');
+  const L=D?EXC.filter(l=>ydCount[l]):[],parts=[];
+  if(D&&PHN)parts.push(`Dikecualikan dari semua perhitungan: ${nf.format(PHN)} dokumen bernomor -XXX / -DDD`);
+  if(L.length)parts.push('Dikecualikan dari bobot testing: '+L.map(l=>`${l} (${nf.format(ydCount[l])} dokumen)`).join(', ')+(isAdmin()?' · atur di tombol Pengecualian':''));
+  $('exNote').hidden=!(D&&parts.length);
+  if(parts.length)$('exNote').textContent=parts.join('\n');
 }
 $('btnEx').onclick=()=>{EW=[...EXC];exRender();$('ex').hidden=false};
 $('exCancel').onclick=()=>{$('ex').hidden=true};
@@ -1375,7 +1382,7 @@ function rpNote(x){
   else{const lv=p.prod>=.8?'sudah di atas 80%':p.prod>=.6?'ada di rentang 60–79%':'di bawah 60%';a=`Productivity ${pf(p.prod)}, ${lv}`}
   if(av.total>0){const d=(p.total-av.total)/av.total*100;a+=`; total bobot ${Math.abs(d)<1?'setara dengan':Math.abs(d).toFixed(0)+'% '+(d>0?'di atas':'di bawah')} rata-rata divisi`}
   const s=[a+'.'];
-  s.push(x.stuck.length?`${nf.format(x.stuck.length)} dokumen nyangkut lebih dari ${AGE} hari, tertua ${nf.format(x.stuck[0][1])} hari (${D.rows[x.stuck[0][0]][12]}).`:`Tidak ada dokumen nyangkut lebih dari ${AGE} hari.`);
+  s.push(x.stuck.length?`${nf.format(x.stuck.length)} aging document (umur lebih dari ${AGE} hari), tertua ${nf.format(x.stuck[0][1])} hari (${D.rows[x.stuck[0][0]][12]}).`:`Tidak ada aging document (umur lebih dari ${AGE} hari).`);
   return s.join(' ');
 }
 function rpTrend(Q){
@@ -1397,7 +1404,7 @@ function rpPage(ctx,pi){
   const rb=`<div class="rp-br hd"><span></span><span></span><span class="r">PIC</span><span class="r">Rata² div.</span></div>`+RP_SER.map(([k,l,c])=>`<div class="rp-br"><span>${l}</span><span class="b"><i style="width:${p[k]/mx*100}%;background:${c}"></i></span><b class="mono r">${fmt(p[k])}</b><span class="a mono">${rpNum(av[k])}</span></div>`).join('');
   const stRows=RP_SG.map(([k,l,c])=>{const n=x.st[k];return `<tr><td><i class="dt" style="background:${c}"></i>${l}</td><td class="mono r">${nf.format(n)}</td><td class="mono r">${rpPct(n,x.tot)}</td><td style="width:70px"><span class="rp-bar"><i style="width:${x.tot?n/x.tot*100:0}%;background:${c}"></i></span></td></tr>`}).join('')+`<tr class="tt"><td>Total dokumen</td><td class="mono r">${nf.format(x.tot)}</td><td class="mono r">${x.tot?'100,0%':'-'}</td><td></td></tr>`;
   const agec=a=>a>365?'#c0322b':a>180?'#a86a00':'#4a5565';
-  const stuckRows=x.oldest.length?x.oldest.map(o=>`<tr><td class="mono" style="color:#1d5fd1;font-weight:600">${esc(o.r[12])}</td><td class="tx">${esc(trunc(o.r[13],58))}</td><td>${esc(o.r[3])}</td><td class="mono r" style="color:${agec(o.a)};font-weight:600">${nf.format(o.a)}</td></tr>`).join(''):`<tr><td colspan="4" style="color:#17803f;padding:10px 6px">Tidak ada dokumen nyangkut lebih dari ${AGE} hari.</td></tr>`;
+  const stuckRows=x.oldest.length?x.oldest.map(o=>`<tr><td class="mono" style="color:#1d5fd1;font-weight:600">${esc(o.r[12])}</td><td class="tx">${esc(trunc(o.r[13],58))}</td><td>${esc(o.r[3])}</td><td class="mono r" style="color:${agec(o.a)};font-weight:600">${nf.format(o.a)}</td></tr>`).join(''):`<tr><td colspan="4" style="color:#17803f;padding:10px 6px">Tidak ada aging document (umur lebih dari ${AGE} hari).</td></tr>`;
   const exc=EXC.length?EXC.map(esc).join(', ')+' tidak dihitung ke bobot testing (bobot dokumen tetap dihitung)':'tidak ada';
   return `<div class="rpage">
   <div class="rp-hd"><div><div class="t">Laporan Productivity PIC</div><div class="nm">${esc(pe.n)}</div><span class="rp-div">Divisi ${esc(pe.a)}</span></div>
@@ -1411,14 +1418,14 @@ function rpPage(ctx,pi){
     <div class="rp-sec"><div class="h">Status dokumen <em>Year Request terpilih</em></div><table><thead><tr><th>Status</th><th class="r">Jumlah</th><th class="r">%</th><th></th></tr></thead><tbody>${stRows}</tbody></table></div>
     <div class="rp-sec"><div class="h">Tren bobot per kuartal <em>Year Done terpilih</em></div>${rpTrend(x.Q)}</div>
   </div>
-  <div class="rp-sec"><div class="h">Dokumen nyangkut <em><b style="color:${x.stuck.length?'#c0322b':'#17803f'}">${nf.format(x.stuck.length)} dokumen</b> berumur &gt; ${AGE} hari · 5 terlama</em></div>
+  <div class="rp-sec"><div class="h">Aging Document <em><b style="color:${x.stuck.length?'#c0322b':'#17803f'}">${nf.format(x.stuck.length)} dokumen</b> berumur &gt; ${AGE} hari · 5 terlama</em></div>
     <table><thead><tr><th>No. Dokumen</th><th>Nama</th><th>Status</th><th class="r">Umur (hari)</th></tr></thead><tbody>${stuckRows}</tbody></table></div>
   <div class="rp-sec rp-note"><div class="h">Catatan otomatis</div>${esc(rpNote(x))}</div>
   <div class="rp-foot"><ul>
-    <li><b>Productivity</b> = dokumen berstatus READY TO PILOT, PILOT, atau RELEASE ÷ semua dokumen PIC pada Year Request terpilih, di luar Cancel / Hold / Blank. Hijau ≥ 80%, kuning 60–79%, merah &lt; 60%.</li>
+    <li><b>Productivity</b> = dokumen berstatus READY TO PILOT, PILOT, atau RELEASE ÷ semua dokumen PIC pada Year Request terpilih, di luar Cancel / Hold / Rollback / Blank. Dokumen bernomor -XXX / -DDD tidak ikut dihitung. Hijau ≥ 80%, kuning 60–79%, merah &lt; 60%.</li>
     <li><b>Total bobot</b> = Bobot Dokumen (Year Request atau Year Done terpilih) + Bobot Testing 1/2/3 (Year Done terpilih). Dokumen dengan beberapa Task PIC dihitung penuh untuk tiap PIC. Rata-rata divisi = rata-rata semua PIC di divisi yang sama.</li>
     <li><b>Pengecualian aktif:</b> Year Done ${exc}.</li>
-    <li><b>Dokumen nyangkut</b> = status Dev / Apps / BR Task dengan umur &gt; ${AGE} hari sejak Doc. Date, dihitung sampai tanggal cetak.</li>
+    <li><b>Aging Document</b> = status Dev / Apps / BR Task dengan umur &gt; ${AGE} hari sejak Doc. Date, dihitung sampai tanggal cetak.</li>
   </ul><div class="pr">Monitoring Productivity Apps · dicetak ${esc(printed)}</div></div>
   </div>`;
 }
@@ -1431,7 +1438,7 @@ function rpText(ctx,pi){
     `Dokumen ${fmt(p.bd)} | Testing 1 ${fmt(p.b1)} | Testing 2 ${fmt(p.b2)} | Testing 3 ${fmt(p.b3)}`,
     `*Productivity:* ${p.den?pf(p.prod):'-'} ${em}`+(p.den?` (${p.num} dari ${p.den} dokumen)`:''),
     `*Status dokumen (${x.tot}):* `+RP_SG.map(([k,l])=>`${l.split(' ')[0]} ${x.st[k]} (${rpPct(x.st[k],x.tot)})`).join(' · '),
-    `*Nyangkut >${AGE} hari:* ${x.stuck.length} dokumen`,
+    `*Aging Document >${AGE} hari:* ${x.stuck.length} dokumen`,
     ...x.oldest.map((o,i)=>`${i+1}. ${o.r[12]} ${trunc(o.r[13],40)} – ${o.r[3]}, ${o.a} hari`),'',`_${rpNote(x)}_`];
   return L.filter(v=>v!==null).join('\n');
 }
@@ -1508,7 +1515,7 @@ document.addEventListener('keydown',e=>{
 
 
 /* ---------- Tab Data: tabel sumber (filter, cari, kolom) ---------- */
-const DV={d:null,meta:[],byI:{},cells:[],low:[],vis:new Set(),sel:{},uni:{},sort:null,q:'',tok:[],follow:false,idx:[]};
+const DV={d:null,meta:[],byI:{},cells:[],low:[],vis:new Set(),sel:{},txt:{},uni:{},sort:null,q:'',tok:[],follow:false,idx:[]};
 const DV_RH=34,DV_DEF=['Doc. No.','Doc. Name','Doc. Type','Status Dev','Year Request','Year Done','Task PIC_2','Testing PIC 1','Testing PIC 2','Testing PIC 3','Bobot Dokumen','Bobot Testing PIC 1','Bobot Testing PIC 2','Bobot Testing PIC 3','Doc. Date','Application'];
 const DV_MOB=['Doc. No.','Doc. Name','Status Dev','Task PIC_2','Year Done','Bobot Dokumen'];
 const dvW=n=>n==='Doc. Name'?320:n==='Description'?340:n==='Status Dev'?150:/^Bobot/.test(n)?120:n==='Doc. No.'?130:140;
@@ -1517,7 +1524,7 @@ function dvInit(){
   if(DV.d===D)return;DV.d=D;const cols=D.cols;
   DV.meta=[];DV.byI={};cols.forEach((c,i)=>{if(c){const m={i,name:c,num:/^Bobot/.test(c),w:dvW(c)};DV.meta.push(m);DV.byI[i]=m}});
   DV.cells=D.raw.map(r=>cols.map((c,i)=>cellStr(c,r[i])));DV.low=DV.cells.map(a=>a.join('\u0001').toLowerCase());
-  DV.sel={};DV.uni={};DV.sort=null;DV.q='';$('dvQ').value='';
+  DV.sel={};DV.txt={};DV.uni={};DV.sort=null;DV.q='';$('dvQ').value='';
   const sv=lsGet('prodDvCols',null);const ok=Array.isArray(sv)?sv.filter(n=>DV.meta.some(m=>m.name===n)):[];
   DV.vis=ok.length?new Set(ok):dvDefault();dvColRender();
 }
@@ -1526,6 +1533,7 @@ function dvPass(ri,skip){
   if(DV.follow){const r=D.rows[ri];if(!(S.yr.has(r[0])||S.yd.has(ydKey(r[2]))))return false}
   if(DV.tok.length){const l=DV.low[ri];for(const t of DV.tok)if(!l.includes(t))return false}
   for(const k in DV.sel){if(+k===skip)continue;const v=DV.cells[ri][k];if(!DV.sel[k].has(v===''?'(kosong)':v))return false}
+  for(const k in DV.txt){if(+k===skip)continue;if(!DV.cells[ri][k].toLowerCase().includes(DV.txt[k]))return false}
   return true;
 }
 function dvRun(reset){
@@ -1535,12 +1543,13 @@ function dvRun(reset){
     out.sort((a,b)=>{const x=c[a][ci],y=c[b][ci];if(x===''&&y==='')return 0;if(x==='')return 1;if(y==='')return -1;
       return dir*(num?((+x||0)-(+y||0)):x.localeCompare(y,undefined,{numeric:true}))})}
   DV.idx=out;$('dvInfo').textContent=`${nf.format(out.length)} dari ${nf.format(n)} baris`;
+  if(DFO)$('dfInfo').textContent=`Menampilkan ${nf.format(out.length)} dari ${nf.format(n)} baris`;
   dvHead();if(reset){const w=$('dvWrap');if(w.scrollTop>0){DV.prog=1;w.scrollTop=0}}dvBody();
 }
 function dvHead(){
   const cs=dvCols();$('dvTbl').style.width=cs.reduce((a,c)=>a+c.w,0)+'px';
   $('dvCg').innerHTML=cs.map(c=>`<col style="width:${c.w}px">`).join('');
-  $('dvTh').innerHTML='<tr>'+cs.map(c=>{const so=DV.sort&&DV.sort.ci===c.i,on=!!DV.sel[c.i]||so;
+  $('dvTh').innerHTML='<tr>'+cs.map(c=>{const so=DV.sort&&DV.sort.ci===c.i,on=!!DV.sel[c.i]||!!DV.txt[c.i]||so;
     return `<th class="${c.num?'r':''}"><div class="dvth"><span class="dvh" data-ci="${c.i}" title="Klik untuk mengurutkan">${esc(c.name)}${so?(DV.sort.dir>0?' ▲':' ▼'):''}</span><button class="dfb${on?' on':''}" type="button" data-dv="${c.i}" aria-label="Filter ${esc(c.name)}">▾</button></div></th>`}).join('')+'</tr>';
 }
 function dvBody(){
@@ -1572,8 +1581,8 @@ function dfOpen(btn){const ci=+btn.dataset.dv;
   if(DFO&&DFO.ci===ci){dfClose();return}
   const cnt=new Map();for(let i=0;i<D.raw.length;i++)if(dvPass(i,ci)){const v=DV.cells[i][ci]||'(kosong)';cnt.set(v,(cnt.get(v)||0)+1)}
   const num=DV.byI[ci].num,vals=[...cnt.entries()].sort((a,b)=>a[0]==='(kosong)'?1:b[0]==='(kosong)'?-1:num?((+a[0]||0)-(+b[0]||0)):a[0].localeCompare(b[0],undefined,{numeric:true}));
-  DFO={ci,vals,sel:new Set(DV.sel[ci]||dvUni(ci)),q:''};
-  const p=$('dfp');p.hidden=false;$('dfq').value='';dfList();dfSort();
+  DFO={ci,vals,sel:new Set(DV.sel[ci]||dvUni(ci)),q:DV.txt[ci]||''};
+  const p=$('dfp');p.hidden=false;$('dfq').value=DFO.q;dfList();dfSort();$('dfInfo').textContent=`Menampilkan ${nf.format(DV.idx.length)} dari ${nf.format(D.raw.length)} baris`;
   const r=btn.getBoundingClientRect();p.style.top=Math.min(r.bottom+6,innerHeight-p.offsetHeight-8)+'px';p.style.left=Math.max(8,Math.min(r.left,innerWidth-p.offsetWidth-8))+'px';
 }
 function dfList(){if(!DFO)return;const q=DFO.q.toLowerCase(),L=DFO.vals.filter(([v])=>!q||v.toLowerCase().includes(q)),sh=L.slice(0,300);DFO.shown=L;
@@ -1583,7 +1592,7 @@ function dfApply(){const ci=DFO.ci,u=dvUni(ci);if(DFO.sel.size>=u.size&&[...u].e
 $('tabD').onclick=()=>setTab('dash');$('tabV').onclick=()=>setTab('data');
 let dvT=0;$('dvQ').addEventListener('input',e=>{clearTimeout(dvT);dvT=setTimeout(()=>{DV.q=e.target.value;dvRun(true)},160)});
 $('dvFollow').addEventListener('change',e=>{DV.follow=e.target.checked;dvRun(true)});
-$('dvReset').onclick=()=>{DV.sel={};DV.sort=null;DV.q='';$('dvQ').value='';dfClose();dvRun(true)};
+$('dvReset').onclick=()=>{DV.sel={};DV.txt={};DV.sort=null;DV.q='';$('dvQ').value='';dfClose();dvRun(true)};
 $('dvXls').onclick=()=>{
   if(typeof XLSX==='undefined'){flash('Library Excel belum termuat. Periksa koneksi internet lalu coba lagi.',true);return}
   const cs=dvCols(),aoa=[cs.map(c=>c.name)];
@@ -1601,7 +1610,8 @@ $('dvTb').addEventListener('click',e=>{const r=e.target.closest('tr[data-ri]');i
 $('dvTb').addEventListener('keydown',e=>{if(e.key==='Enter'){const r=e.target.closest('tr[data-ri]');if(r)openProject(+r.dataset.ri)}});
 let dvRaf=0;$('dvWrap').addEventListener('scroll',()=>{if(DFO&&!DV.prog)dfClose();DV.prog=0;if(!dvRaf)dvRaf=requestAnimationFrame(()=>{dvRaf=0;dvBody()})});
 $('dfp').addEventListener('click',e=>{const s=e.target.closest('[data-s]');if(s&&DFO){DV.sort={ci:DFO.ci,dir:s.dataset.s==='asc'?1:-1};dfClose();dvRun(true)}});
-$('dfq').addEventListener('input',e=>{if(DFO){DFO.q=e.target.value;dfList()}});
+$('dfq').addEventListener('input',e=>{if(!DFO)return;DFO.q=e.target.value;const t=DFO.q.trim().toLowerCase();if(t)DV.txt[DFO.ci]=t;else delete DV.txt[DFO.ci];dfList();dvRun(true)});
+$('dfDone').onclick=dfClose;
 $('dfl').addEventListener('change',e=>{const v=e.target.dataset.v;if(v==null||!DFO)return;e.target.checked?DFO.sel.add(v):DFO.sel.delete(v);dfApply()});
 $('dfAll').onclick=()=>{if(!DFO)return;(DFO.shown||[]).forEach(([v])=>DFO.sel.add(v));dfList();dfApply()};
 $('dfNone').onclick=()=>{if(!DFO)return;(DFO.shown||[]).forEach(([v])=>DFO.sel.delete(v));dfList();dfApply()};
@@ -1657,30 +1667,31 @@ setInterval(liveCheck,5*60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)liveCheck()});
 
 
-/* ---------- Dokumen nyangkut: filter per kolom, cari, chip umur ---------- */
-const AF={q:'',txt:{},lst:{},rng:{},sort:{k:'age',dir:-1}};
+/* ---------- Aging Document: filter per kolom, cari, chip umur ---------- */
+const AF={q:'',txt:{},ltx:{},lst:{},rng:{},sort:{k:'age',dir:-1}};
 const AGE_COLS=[{k:'no',t:'Doc. No.',m:'text'},{k:'nm',t:'Dokumen',m:'text'},{k:'st',t:'Status Dev',m:'list'},{k:'pic',t:'Task PIC 2',m:'list'},{k:'dt',t:'Doc. Date',m:'range',ty:'date'},{k:'age',t:'Umur (hari)',m:'range',ty:'number'}];
 let AGE_ALL=[],AGE_TOT=0,AFO=null;
 const agePn=v=>{const k=String(v||'').trim().toLowerCase();if(!k)return '-';const m=MASTER.find(x=>x.k===k);return m?m.n:title(k)};
 function agePass(it,skip){
   if(AF.q&&!(it.no+' '+it.nm+' '+it.pic).toLowerCase().includes(AF.q))return false;
   for(const k of ['no','nm'])if(k!==skip&&AF.txt[k]&&!it[k].toLowerCase().includes(AF.txt[k]))return false;
+  for(const k in AF.ltx)if(k!==skip&&!String(it[k]||'').toLowerCase().includes(AF.ltx[k]))return false;
   for(const k in AF.lst)if(k!==skip&&!AF.lst[k].has(it[k]||'(kosong)'))return false;
   for(const k in AF.rng){if(k===skip)continue;const [lo,hi]=AF.rng[k];
     if(k==='dt'){if((lo||hi)&&!it.dt)return false;if(lo&&it.dt<lo)return false;if(hi&&it.dt>hi)return false}
     else{if(lo!==''&&it.age<lo)return false;if(hi!==''&&it.age>hi)return false}}
   return true;
 }
-const ageActive=k=>!!(AF.txt[k]||AF.lst[k]||AF.rng[k]);
+const ageActive=k=>!!(AF.txt[k]||AF.ltx[k]||AF.lst[k]||AF.rng[k]);
 const ageAny=()=>!!(AF.q||AGE_COLS.some(c=>ageActive(c.k))||AF.sort.k!=='age'||AF.sort.dir!==-1);
 function ageSorted(L){const {k,dir}=AF.sort;
   return L.slice().sort((a,b)=>{const r=k==='age'?a.age-b.age:a[k].localeCompare(b[k],undefined,{numeric:true});return dir*r||b.age-a.age})}
 const AGE_CH=[['gt','> 365 hari','var(--crit)',366,''],['mid','181–365','var(--warn)',181,365],['low','≤ 180 hari','var(--good)','',180]];
-function ageDraw(){ageRender();if(AFO)afPlace()}
+function ageDraw(){ageRender();if(AFO){afPlace();afInfo()}}
 function ageRender(){
   const all=AGE_ALL,list=ageSorted(all.filter(it=>agePass(it,'')));
-  $('ageNote').textContent=`${nf.format(list.length)} dari ${nf.format(all.length)} dokumen nyangkut · ${nf.format(AGE_TOT)} dalam proses (DEV/APPS/BR TASK)`;
-  $('ageNote').title=`Dokumen nyangkut = status DEV/APPS/BR TASK yang umurnya lebih dari ${AGE} hari. Umur dihitung sejak Doc. Date sampai hari ini.`;
+  $('ageNote').textContent=`${nf.format(list.length)} dari ${nf.format(all.length)} aging document · ${nf.format(AGE_TOT)} dalam proses (DEV/APPS/BR TASK)`;
+  $('ageNote').title=`Aging document = status DEV/APPS/BR TASK yang umurnya lebih dari ${AGE} hari. Umur dihitung sejak Doc. Date sampai hari ini.`;
   const cur=AF.rng.age||['',''];
   $('ageChips').innerHTML=AGE_CH.map(([id,t,col,lo,hi])=>{const n=all.filter(x=>(lo===''||x.age>=lo)&&(hi===''||x.age<=hi)).length,on=cur[0]===lo&&cur[1]===hi;
     return `<button class="agc" type="button" data-c="${id}" aria-pressed="${on}"><i style="background:${col}"></i>${t} <small>${nf.format(n)}</small></button>`}).join('');
@@ -1702,12 +1713,13 @@ function afOpen(btn){
     h=`<div class="rg"><label>Dari<input id="afMin" type="${col.ty}" value="${lo}"${col.ty==='number'?' min="0" inputmode="numeric"':''}></label><label>Sampai<input id="afMax" type="${col.ty}" value="${hi}"${col.ty==='number'?' min="0" inputmode="numeric"':''}></label></div>`}
   else{
     const uni=new Set(),cnt=new Map();for(const it of AGE_ALL){const v=it[k]||'(kosong)';uni.add(v);if(agePass(it,k))cnt.set(v,(cnt.get(v)||0)+1)}
-    AFO.uni=uni;AFO.vals=[...cnt.entries()].sort((a,b)=>a[0].localeCompare(b[0]));AFO.sel=new Set(AF.lst[k]||uni);AFO.q='';
+    AFO.uni=uni;AFO.vals=[...cnt.entries()].sort((a,b)=>a[0].localeCompare(b[0]));AFO.sel=new Set(AF.lst[k]||uni);AFO.q=AF.ltx[k]||'';
     h='<input class="srch" id="afQ" placeholder="Cari nilai…" aria-label="Cari nilai" autocomplete="off"><div class="acts"><button class="mini" type="button" id="afAll">Pilih semua</button><button class="mini" type="button" id="afNone">Kosongkan</button></div><div class="lst" id="afL"></div>';
   }
-  $('afb').innerHTML=h;const p=$('afp');p.hidden=false;afList();afSort();
+  $('afb').innerHTML=h;const p=$('afp');p.hidden=false;if(col.m==='list')$('afQ').value=AFO.q;afList();afSort();afInfo();
   afPlace();const f=p.querySelector('input');if(f)f.focus();
 }
+const afInfo=()=>{if(AFO)$('afInfo').textContent=`Menampilkan ${nf.format(AGE_ALL.filter(it=>agePass(it,'')).length)} dari ${nf.format(AGE_ALL.length)} dokumen`};
 function afPlace(){
   if(!AFO)return;const b=document.querySelector('#ageTbl .dfb[data-af="'+AFO.k+'"]');if(!b){afClose();return}
   const r=b.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight){afClose();return}
@@ -1728,7 +1740,7 @@ $('ageTbl').addEventListener('click',e=>{
   const h=e.target.closest('.dvh');if(h){const k=h.dataset.k,s=AF.sort;AF.sort=s.k===k?{k,dir:-s.dir}:{k,dir:1};afClose();ageDraw()}});
 $('afb').addEventListener('input',e=>{if(!AFO)return;const t=e.target.id;
   if(t==='afT'){AF.txt[AFO.k]=e.target.value.trim().toLowerCase();if(!AF.txt[AFO.k])delete AF.txt[AFO.k];ageDraw()}
-  else if(t==='afQ'){AFO.q=e.target.value;afList()}
+  else if(t==='afQ'){AFO.q=e.target.value;const v=AFO.q.trim().toLowerCase();if(v)AF.ltx[AFO.k]=v;else delete AF.ltx[AFO.k];afList();ageDraw()}
   else if(t==='afMin'||t==='afMax')afRange()});
 $('afb').addEventListener('change',e=>{if(!AFO)return;const v=e.target.dataset.v;if(v==null)return;e.target.checked?AFO.sel.add(v):AFO.sel.delete(v);afApplyList()});
 $('afb').addEventListener('click',e=>{if(!AFO||AFO.m!=='list')return;
@@ -1736,11 +1748,12 @@ $('afb').addEventListener('click',e=>{if(!AFO||AFO.m!=='list')return;
   if(e.target.id==='afNone'){(AFO.shown||[]).forEach(([v])=>AFO.sel.delete(v));afList();afApplyList()}});
 $('afp').addEventListener('click',e=>{if(!AFO)return;const s=e.target.closest('[data-s]');
   if(s){AF.sort={k:AFO.k,dir:s.dataset.s==='asc'?1:-1};afClose();ageDraw()}
-  if(e.target.id==='afClr'){const k=AFO.k;delete AF.txt[k];delete AF.lst[k];delete AF.rng[k];afClose();ageDraw()}});
+  if(e.target.id==='afClr'){const k=AFO.k;delete AF.txt[k];delete AF.ltx[k];delete AF.lst[k];delete AF.rng[k];afClose();ageDraw()}
+  if(e.target.id==='afDone')afClose()});
 $('ageQ').addEventListener('input',e=>{AF.q=e.target.value.trim().toLowerCase();ageDraw()});
 $('ageChips').addEventListener('click',e=>{const b=e.target.closest('.agc');if(!b)return;const c=AGE_CH.find(x=>x[0]===b.dataset.c),cur=AF.rng.age;
   if(cur&&cur[0]===c[3]&&cur[1]===c[4])delete AF.rng.age;else AF.rng.age=[c[3],c[4]];ageDraw()});
-$('ageReset').onclick=()=>{AF.q='';AF.txt={};AF.lst={};AF.rng={};AF.sort={k:'age',dir:-1};$('ageQ').value='';afClose();ageDraw()};
+$('ageReset').onclick=()=>{AF.q='';AF.txt={};AF.ltx={};AF.lst={};AF.rng={};AF.sort={k:'age',dir:-1};$('ageQ').value='';afClose();ageDraw()};
 document.addEventListener('click',e=>{if(!e.target.closest('#afp')&&!e.target.closest('#ageTbl .dfb'))afClose()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&AFO)afClose()});
 document.addEventListener('scroll',e=>{if(AFO&&!(e.target instanceof Element&&e.target.closest('#afp')))requestAnimationFrame(afPlace)},true);
