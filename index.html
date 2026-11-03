@@ -349,6 +349,155 @@ textarea.srch{font-family:var(--f-num);font-size:12px;resize:vertical}
 #hfl label span:nth-child(2){flex:1;min-width:0;overflow-wrap:anywhere}
 #hfl .cnt{margin-left:auto;color:var(--ink-3);font-family:var(--f-num);font-size:11.5px}
 #hfp .mini[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+
+/* ===== Touch-up tampilan (CSS only) ===== */
+:root{--ink-3:#667285;--r:14px;--sh:0 1px 2px rgba(20,40,80,.05),0 2px 8px rgba(20,40,80,.04)}
+*{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+body{-webkit-font-smoothing:antialiased}
+input[type=checkbox]{accent-color:var(--accent)}
+/* header */
+header.top{padding-bottom:14px;border-bottom:1px solid var(--line);align-items:flex-end;gap:14px 32px}
+h1{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.meta{font-size:12.5px}
+.flt{gap:12px 0;align-items:flex-end}
+.flt>.fg{padding:0 18px}.flt>.fg:first-child{padding-left:0}.flt>.fg:nth-child(n+3){border-left:1px solid var(--line)}
+.fg>label,.fg>.lbl{font-size:10.5px;letter-spacing:.09em}
+details.st summary,.btn,.sel{min-height:36px;border-radius:10px}
+details.st summary{padding:6px 14px;box-shadow:var(--sh);transition:border-color .12s,box-shadow .12s}
+details.st summary:hover,details.st[open] summary{border-color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;font-weight:500;box-shadow:var(--sh);transition:border-color .12s,background .12s,color .12s,filter .12s}
+.btn.pri{box-shadow:0 2px 8px color-mix(in srgb,var(--accent) 35%,transparent)}
+#btnLogin,#btnLogout{background:transparent;border-color:transparent;box-shadow:none;color:var(--ink-2)}
+#btnLogin:hover,#btnLogout:hover{background:var(--accent-soft);border-color:transparent}
+#exNote{align-self:flex-start;padding:5px 14px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-size:12.5px}
+.msg{border-radius:12px}
+/* panel */
+.panel{border-radius:var(--r);box-shadow:var(--sh)}
+.ph{padding:16px 20px 4px}.ph h2{font-size:15px;font-weight:650;letter-spacing:-.005em}.ph .n{font-size:12px}
+.tw{padding:8px 12px 14px}.cb{padding:8px 16px 16px}.legend{padding:6px 20px 0}
+.sec{display:flex;align-items:center;gap:12px;margin:14px 0 -4px}.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+.main,.wrap{gap:18px}
+.empty{padding:56px 28px}
+/* KPI */
+.kpis{border-radius:20px;background:color-mix(in srgb,var(--accent) 7%,var(--bg))}
+.kpi{padding:16px 20px 18px;transition:box-shadow .15s,transform .15s}
+.kpi[data-div]:hover{transform:translateY(-1px)}
+.kpi .mix{height:10px;margin:14px 0}
+/* tabel */
+th{padding:10px 12px;background:color-mix(in srgb,var(--ink) 3%,var(--surface))}
+td{padding:8px 12px}
+#tbl tbody tr:not(.sub):not(.grand) td[style*="color-mix"],#stTbl td.cl[style*="color-mix"]{background-image:linear-gradient(color-mix(in srgb,var(--surface) 38%,transparent),color-mix(in srgb,var(--surface) 38%,transparent))}
+#tbl tbody tr:not(.sub):not(.grand):hover td:not([style*="color-mix"]){background:var(--accent-soft)}
+tr.sub td{border-top:1px solid var(--line)}
+tr.grand td{border-top:2px solid var(--ink-2);padding-block:10px}
+.pill{min-width:72px;padding:2px 10px;font-weight:600}
+.bar{height:6px}
+/* chart */
+svg text{font-size:12px}
+svg line[stroke="var(--grid)"]{stroke-opacity:.65}
+svg [data-tip]{transition:opacity .12s}svg [data-tip]:hover{opacity:.8}
+.hi .t{border-radius:12px;background:color-mix(in srgb,var(--accent) 5%,var(--surface));border:1px solid var(--line)}
+.att .r{padding:10px 4px}
+#ageTbl td:nth-child(1),#ageTbl td:nth-child(5){white-space:nowrap}
+/* popover & input */
+.pop,#hfp{border-radius:12px;box-shadow:0 12px 32px rgba(10,20,40,.2)}
+.pop label:hover,#hfl label:hover{background:var(--surface-2);border-radius:6px}
+.srch,.sel,.nbf,#mpTbl input,.ex input,.ex select{border-radius:8px;transition:border-color .12s,box-shadow .12s}
+.srch:focus,.sel:focus,.nbf:focus,#mpTbl input:focus,.ex input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent);outline:0}
+.chip,.mini{transition:border-color .12s,background .12s,color .12s}
+.mini{border-radius:8px}
+.chip[aria-pressed="true"]{box-shadow:0 0 0 1px var(--accent) inset}
+#tip{border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.25);padding:7px 11px}
+/* menu detail: drawer, detail dokumen, Master PIC, Pengecualian, Laporan, Tanpa bobot */
+#ov{backdrop-filter:blur(3px)}
+#dr{gap:12px}
+#dr .dh,.pjh,.mph{padding:14px 18px;border-radius:14px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--sh);align-items:center}
+#dr .dh{background:color-mix(in srgb,var(--accent) 7%,var(--surface))}
+#dr h2,.mph h2{font-size:19px;letter-spacing:-.01em}
+.pjh{background:color-mix(in srgb,var(--accent) 7%,var(--surface))}.pjh h2{font-size:21px}
+#drX,#pjX,#rpX,#nbX,#mpCancel,#exCancel{min-height:36px;padding:6px 14px;border-radius:10px;background:var(--surface);box-shadow:var(--sh)}
+.dt{border-radius:12px;background:var(--surface);box-shadow:var(--sh)}
+#drTbl th,#nbTbl th{padding:10px 12px;box-shadow:0 1px 0 var(--line)}
+#drTbl tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--accent) 3%,var(--surface))}
+.drbar,.rpbar{padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh)}
+.rpbar{align-items:flex-end}
+.rpview{border-radius:14px;box-shadow:inset 0 1px 3px rgba(20,40,80,.08)}
+.pjb section{border-radius:14px;padding:14px 16px}
+.pjb h3,.mpc h3{font-size:11px;letter-spacing:.09em}
+.tile{border-radius:10px;padding:8px 12px}
+.tl{font-size:10.5px}
+.mpc{border-radius:14px;padding:16px 18px;box-shadow:var(--sh)}
+.mpb{gap:16px}
+.uchip{border-radius:999px;padding:4px 6px 4px 12px}
+.ex .tag{border-radius:8px}
+#nbTbl tr.nbg td{font-weight:600}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes si{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+#pj,#mp,#ex,#rp,#nb{animation:fi .16s ease-out}
+#dr{animation:si .2s ease-out}
+@media (prefers-reduced-motion:reduce){#pj,#mp,#ex,#rp,#nb,#dr{animation:none}.kpi{transition:none}}
+@media (max-width:760px){
+  h1{font-size:20px}
+  .flt>.fg{padding:0;border-left:0!important}
+  .ph{padding:12px 14px 4px}.cb{padding:6px 10px 12px}
+  #dr .dh,.pjh,.mph{padding:12px 14px}
+}
+/* ===== Tab Data (tabel sumber) ===== */
+.tabs{display:inline-flex;gap:4px;padding:4px;background:var(--surface-2);border-radius:12px;align-self:flex-start}
+.tab{font:inherit;font-size:13.5px;font-weight:600;padding:7px 20px;border:0;border-radius:9px;background:transparent;color:var(--ink-2);cursor:pointer;transition:background .12s,color .12s}
+.tab:hover{color:var(--ink)}.tab[aria-selected="true"]{background:var(--surface);color:var(--accent);box-shadow:var(--sh)}
+#dv{display:none;flex-direction:column;gap:12px}body.vdata #dv{display:flex}
+body.vdata #kpis,body.vdata #fb,body.vdata .main,body.vdata #exNote{display:none!important}
+.dvbar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh)}
+.dvbar .srch{flex:1 1 260px;width:auto;margin:0}#dvInfo{margin-left:auto;font-size:12.5px;color:var(--ink-2)}
+.dvwrap{height:calc(100dvh - 250px);min-height:360px;overflow:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh)}
+#dvTbl{table-layout:fixed;border-collapse:separate;border-spacing:0;min-width:0}
+#dvTbl th{position:sticky;top:0;z-index:2;background:color-mix(in srgb,var(--accent) 8%,var(--surface));text-align:left;padding:0 6px 0 12px;height:40px;white-space:nowrap;overflow:hidden;box-shadow:0 1px 0 var(--line);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2)}
+.dvth{display:flex;align-items:center;gap:4px}.dvh{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;cursor:pointer;user-select:none}
+#dvTbl th.r .dvth{flex-direction:row-reverse}
+.dfb{border:0;background:transparent;color:var(--ink-3);cursor:pointer;font-size:11px;line-height:1;padding:4px 5px;border-radius:4px}
+.dfb:hover{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent)}.dfb.on{background:var(--accent);color:#fff}
+#dvTbl td{height:34px;padding:0 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--f-body);font-size:13px;text-align:left;border-bottom:1px solid var(--line);background:var(--surface)}
+#dvTbl td.r{text-align:right;font-family:var(--f-num);font-size:12.5px}
+#dvTbl tr.z td{background:color-mix(in srgb,var(--accent) 3%,var(--surface))}
+#dvTbl tbody tr:not(.sp):hover td{background:var(--accent-soft);cursor:pointer}
+#dvTbl td:first-child,#dvTbl th:first-child{position:sticky;left:0}#dvTbl th:first-child{z-index:3}
+#dvTbl td:first-child{z-index:1;font-family:var(--f-num);font-size:12px;color:var(--accent);font-weight:600}
+#dvTbl tr.sp td{height:auto;padding:0;border:0;background:transparent}
+#dvTbl td.em{text-align:center;color:var(--ink-3);font-family:var(--f-body);font-weight:400;padding:40px}
+#dfp{position:fixed;z-index:90;width:270px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;box-shadow:0 12px 32px rgba(10,20,40,.22);font-size:13px}
+#dfp .hfs,#dfp .acts{display:flex;gap:6px;flex-wrap:wrap}#dfp .srch{margin:8px 0}#dfp .acts{margin-bottom:6px}
+#dfp .mini[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+#dfl{max-height:250px;overflow:auto;border-top:1px solid var(--line);padding-top:4px}
+#dfl label{display:flex;gap:8px;align-items:center;padding:3px 2px;cursor:pointer;font-size:13px}
+#dfl label:hover{background:var(--surface-2);border-radius:6px}
+#dfl label span:nth-child(2){flex:1;min-width:0;overflow-wrap:anywhere}#dfl .cnt{margin-left:auto;color:var(--ink-3);font-family:var(--f-num);font-size:11.5px}
+@media (max-width:760px){.dvwrap{height:calc(100dvh - 300px)}#dvInfo{margin-left:0;width:100%}.tabs{align-self:stretch}.tab{flex:1}}
+/* tab dipindah ke baris filter */
+.tab{padding:5px 18px}
+.flt>.tabs{align-self:flex-end;margin-left:18px}
+@media (max-width:760px){.flt>.tabs{align-self:stretch;margin-left:0;order:-1}header.top{align-items:stretch}.flt{width:100%}}
+/* Integrasi Coda di Master */
+.cdg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px 14px;margin:12px 0}
+.cdg label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink-2)}.cdg .srch,.cdg .sel{width:100%;margin:0}
+#cdSt.cd-err{color:var(--crit)}
+/* Dokumen nyangkut: toolbar, chip, header sticky, popup filter */
+.agbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:6px 20px 10px}
+.agbar .srch{flex:0 1 320px;width:auto;margin:0}.agchips{display:flex;flex-wrap:wrap;gap:6px}
+.agc{font:inherit;font-size:12.5px;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:border-color .12s,background .12s,color .12s}
+.agc:hover{border-color:var(--accent)}.agc[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+.agc i{width:8px;height:8px;border-radius:50%;display:inline-block}.agc small{font-family:var(--f-num);color:var(--ink-3);font-size:11.5px}
+.agscroll{max-height:520px;overflow:auto}
+#ageTbl th{position:sticky;top:0;z-index:2;background:color-mix(in srgb,var(--accent) 8%,var(--surface));text-align:left;padding:6px 6px 6px 12px;white-space:nowrap;box-shadow:0 1px 0 var(--line)}
+#ageTbl td.em{text-align:center;color:var(--ink-3);padding:32px}
+#afp{position:fixed;z-index:90;width:270px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;box-shadow:0 12px 32px rgba(10,20,40,.22);font-size:13px}
+#afp .hfs,#afp .acts{display:flex;gap:6px;flex-wrap:wrap}#afp .srch{margin:8px 0}
+#afp .mini[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+#afp .rg{display:flex;gap:8px;margin-top:8px}#afp .rg label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--ink-2);flex:1;min-width:0}
+#afp .rg input{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%}
+#afp .lst{max-height:230px;overflow:auto;border-top:1px solid var(--line);padding-top:4px;margin-top:6px}
+#afp .lst label{display:flex;gap:8px;align-items:center;padding:3px 2px;cursor:pointer;font-size:13px}#afp .lst label:hover{background:var(--surface-2);border-radius:6px}
+#afp .lst label span:nth-child(2){flex:1;min-width:0;overflow-wrap:anywhere}#afp .lst .cnt{margin-left:auto;color:var(--ink-3);font-family:var(--f-num);font-size:11.5px}
 </style>
 
 <div class="wrap">
@@ -364,8 +513,20 @@ textarea.srch{font-family:var(--f-num);font-size:12px;resize:vertical}
           <div class="lbl" style="margin:10px 0 6px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)">Kuartal</div><div class="chips" id="ydQs"></div><div class="meta" id="ydHint" style="margin-top:8px"></div></div></details></div>
     <div class="fg"><span class="lbl">Data</span><div class="btns"><button class="btn adm" id="btnUp" type="button">Upload data</button><button class="btn adm" id="btnMp" type="button">Master PIC</button><button class="btn adm" id="btnEx" type="button">Pengecualian</button><button class="btn adm" id="btnClr" type="button" title="Hapus data di server (semua pengguna)">Hapus data</button><input type="file" id="fileIn" accept=".xlsx,.xlsm,.xls" hidden><button class="btn" id="btnLogin" type="button">Login admin</button><button class="btn" id="btnLogout" type="button" hidden>Logout admin</button></div></div>
     <div class="fg dep"><span class="lbl">Laporan</span><div class="btns"><button class="btn pri" id="btnRp" type="button">Laporan PIC</button><button class="btn" id="btnNb" type="button">Dokumen tanpa bobot</button></div></div>
+    <nav class="tabs dep" role="tablist" aria-label="Tampilan"><button class="tab" role="tab" id="tabD" aria-selected="true" type="button">Dashboard</button><button class="tab" role="tab" id="tabV" aria-selected="false" type="button">Data</button></nav>
   </div>
   </header>
+  <section id="dv" class="dep">
+    <div class="dvbar">
+      <input id="dvQ" class="srch" placeholder="Cari di semua kolom… (beberapa kata = semuanya harus cocok)" aria-label="Cari data" autocomplete="off">
+      <details class="st" id="dvColBox"><summary>Kolom</summary><div class="pop wide"><div class="acts"><button class="mini" id="dvColDef" type="button">Default</button><button class="mini" id="dvColAll" type="button">Semua</button></div><input class="srch" id="dvColQ" placeholder="Cari kolom…" aria-label="Cari kolom"><div id="dvColList"></div></div></details>
+      <label class="agel"><input type="checkbox" id="dvFollow"> Ikuti filter Year Request / Year Done</label>
+      <span id="dvInfo" role="status"></span>
+      <button class="mini" id="dvReset" type="button">Reset filter</button>
+      <button class="btn" id="dvXls" type="button">Unduh Excel</button>
+    </div>
+    <div class="dvwrap" id="dvWrap"><table id="dvTbl"><colgroup id="dvCg"></colgroup><thead id="dvTh"></thead><tbody id="dvTb"></tbody></table></div>
+  </section>
   <div id="msg" class="msg" hidden role="status"></div>
   <div class="meta dep" id="exNote" hidden></div>
   <section class="panel empty" id="empty" hidden><h2>Belum ada data</h2><p>Belum ada data yang dipublikasikan. Hubungi admin, atau login admin untuk upload. <span class="adm">Upload file Excel (.xlsx) sumber data. File harus punya kolom seperti Year Request, Year Done, Status Dev, Task PIC_2, Testing PIC 1/2/3, dan kolom Bobot.</span></p><button class="btn pri adm" id="btnUp2" type="button">Upload data (.xlsx)</button></section>
@@ -400,7 +561,8 @@ textarea.srch{font-family:var(--f-num);font-size:12px;resize:vertical}
     </div>
     <section class="panel"><div class="ph"><h2>Dokumen nyangkut</h2><span class="n" id="ageNote"></span>
       <label class="agel">Batas umur <select class="sel" id="ageSel"><option>30</option><option>60</option><option>90</option><option>180</option><option>365</option></select> hari</label></div>
-      <div class="tw"><table id="ageTbl"></table></div></section>
+      <div class="agbar"><input id="ageQ" class="srch" placeholder="Cari no. dokumen, nama, atau PIC…" aria-label="Cari dokumen nyangkut" autocomplete="off"><div class="agchips" id="ageChips" role="group" aria-label="Filter cepat umur"></div><button class="mini" id="ageReset" type="button" hidden>Reset filter</button></div>
+      <div class="tw agscroll"><table id="ageTbl"></table></div></section>
   </div>
 
 </div>
@@ -408,6 +570,17 @@ textarea.srch{font-family:var(--f-num);font-size:12px;resize:vertical}
   <div class="mph"><div><h2 id="mpT0">Master PIC</h2><div class="meta">Daftar PIC yang dihitung dan divisinya. Nama di kolom pertama harus sama dengan isi kolom Task PIC_2 / Testing PIC di Excel (huruf besar kecil diabaikan).</div></div>
     <div class="pjr"><button class="btn pri" id="mpSave" type="button">Simpan</button><button class="btn" id="mpCancel" type="button">Batal</button></div></div>
   <div class="mpb">
+    <section class="mpc" id="cdSec"><h3>Integrasi Coda · update otomatis</h3>
+      <div class="meta">Dashboard menarik data langsung dari tabel Coda sesuai interval, menggantikan upload Excel. Token disimpan di server dan tidak pernah terlihat oleh pengguna lain. Nama kolom di Coda sebaiknya sama dengan kolom Excel.</div>
+      <div class="cdg">
+        <label>Link Coda (dokumen, API, atau ID)<input id="cdLink" class="srch" placeholder="https://coda.io/d/…  atau  https://coda.io/apis/v1/docs/ID/tables/NAMA" autocomplete="off" spellcheck="false"></label>
+        <label>Tabel (nama atau ID)<input id="cdTable" class="srch" placeholder="mis. Documents atau grid-AbC123" autocomplete="off" spellcheck="false"></label>
+        <label>Token API Coda<input id="cdToken" type="password" class="srch" placeholder="Tempel token API Coda" autocomplete="new-password"></label>
+        <label>Interval update<select id="cdInt" class="sel"><option value="15">Tiap 15 menit</option><option value="30">Tiap 30 menit</option><option value="60">Tiap 1 jam</option><option value="360">Tiap 6 jam</option><option value="1440">Tiap 24 jam</option></select></label>
+      </div>
+      <label class="agel"><input type="checkbox" id="cdOn"> Aktifkan update otomatis</label>
+      <div class="btns" style="margin-top:10px"><button class="btn pri" id="cdSave" type="button">Simpan</button><button class="btn" id="cdTest" type="button">Tes koneksi</button><button class="btn" id="cdSync" type="button">Sinkron sekarang</button></div>
+      <div class="meta" id="cdSt" role="status" style="margin-top:8px"></div></section>
     <section class="mpc"><h3>Daftar PIC</h3><div class="tw"><table id="mpTbl"></table></div><button class="btn" id="mpAdd" type="button">+ Tambah PIC</button><datalist id="divList"></datalist></section>
     <section class="mpc"><h3>Nama di data yang belum terdaftar</h3><div class="meta" style="margin-bottom:6px">Urut dari yang paling banyak muncul. Klik Tambah, lalu isi divisinya.</div><div id="mpU"></div></section>
     <section class="mpc"><h3>Salin / tempel dari Excel</h3><div class="meta" style="margin-bottom:6px">Kolom: Nama di data, Nama tampil, Divisi (dipisah tab). Tempel di sini lalu Terapkan. Upload workbook yang punya sheet bernama Master PIC juga otomatis memakai sheet itu.</div>
@@ -462,6 +635,8 @@ textarea.srch{font-family:var(--f-num);font-size:12px;resize:vertical}
 </div>
 <div id="prt" aria-hidden="true"></div>
 <div id="hfp" hidden role="dialog" aria-label="Filter kolom"><div class="hfs"><button class="mini" type="button" data-hs="asc">Urutkan A→Z</button><button class="mini" type="button" data-hs="desc">Z→A</button></div><input class="srch" id="hfq" placeholder="Cari nilai…" aria-label="Cari nilai filter" autocomplete="off"><div class="acts"><button class="mini" type="button" id="hfAll">Pilih semua</button><button class="mini" type="button" id="hfNone">Kosongkan</button></div><div id="hfl"></div></div>
+<div id="afp" hidden role="dialog" aria-label="Filter kolom dokumen nyangkut"><div class="hfs"><button class="mini" type="button" data-s="asc">Urutkan A→Z</button><button class="mini" type="button" data-s="desc">Z→A</button></div><div id="afb"></div><div class="acts" style="margin-top:8px"><button class="mini" type="button" id="afClr">Hapus filter kolom ini</button></div></div>
+<div id="dfp" hidden role="dialog" aria-label="Filter kolom data"><div class="hfs"><button class="mini" type="button" data-s="asc">Urutkan A→Z</button><button class="mini" type="button" data-s="desc">Z→A</button></div><input class="srch" id="dfq" placeholder="Cari nilai…" aria-label="Cari nilai" autocomplete="off"><div class="acts"><button class="mini" type="button" id="dfAll">Pilih semua</button><button class="mini" type="button" id="dfNone">Kosongkan</button></div><div id="dfl"></div></div>
 <div id="tip" role="tooltip"></div>
 
 
@@ -491,6 +666,7 @@ function dropPin(){PIN='';try{sessionStorage.removeItem('prodPin')}catch(e){}set
 async function gzBuf(obj){return new Response(new Blob([JSON.stringify(obj)]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer()}
 async function apiGet(path,gz){
   const r=await fetch(API+path,{cache:'no-store'});
+  if(path==='/data'&&r.ok)DATAVER=r.headers.get('x-data-version');
   if(r.status===404)return null;
   if(!r.ok)throw new Error('Server '+r.status);
   return gz?JSON.parse(await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).text()):r.json();
@@ -829,14 +1005,10 @@ function openProject(ri){
 
 /* ---------- aging ---------- */
 function renderAge(P){
-  const items=[...P.OLD.entries()].filter(([,a])=>a>AGE).sort((a,b)=>b[1]-a[1]);
-  const tot=P.OLD.size;
-  $('ageNote').textContent=`${nf.format(items.length)} dari ${nf.format(tot)} dokumen dalam proses (DEV/APPS/BR TASK) berumur lebih dari ${AGE} hari sejak Doc. Date · dihitung sampai hari ini`;
-  if(!items.length){$('ageTbl').innerHTML='<tbody><tr><td class="l">Tidak ada dokumen yang melewati batas umur.</td></tr></tbody>';return}
-  const max=items[0][1];
-  $('ageTbl').innerHTML='<thead><tr><th>Doc. No.</th><th>Dokumen</th><th>Status Dev</th><th>Task PIC 2</th><th>Doc. Date</th><th>Umur</th></tr></thead><tbody>'+
-   items.slice(0,15).map(([ri,a])=>{const r=D.rows[ri];const c=a>365?'crit':a>180?'warn':'good';
-     return `<tr class="pr" data-ri="${ri}" tabindex="0"><td class="l dn" style="font-family:var(--f-num)">${esc(r[12])}</td><td class="l">${esc(r[13])}</td><td class="l"><span class="gp sm" style="--g:var(--g-${sgOf(r[3]).toLowerCase()})">${esc(r[3])}</span></td><td class="l">${esc(r[17])}</td><td class="l" style="font-family:var(--f-num)">${esc(r[19])}</td><td class="ag"><div class="agb"><div class="bar"><i class="bg-${c==='good'?'warn':c}" style="width:${a/max*100}%"></i></div><b>${nf.format(a)} hari</b></div></td></tr>`}).join('')+'</tbody>';
+  AGE_TOT=P.OLD.size;
+  AGE_ALL=[...P.OLD.entries()].filter(([,a])=>a>AGE).map(([ri,a])=>{const r=D.rows[ri];
+    return {ri,age:a,no:String(r[12]||''),nm:String(r[13]||''),st:String(r[3]||''),pic:agePn(r[17]),dt:String(r[19]||'')}});
+  ageDraw();
 }
 
 /* ---------- filters ---------- */
@@ -858,8 +1030,11 @@ function renderAll(){
   const P=focus?compute(vis):P0,r=focus?agg(P):r0,V=P.filter(p=>p.vis&&(r.AA[p.a]));
   renderKpis(P0,r0);renderFocus();renderTable(P,r);renderStatus(P,r);renderC1(V);renderC2(V);renderC3(V);renderC4(r);renderC5(P);renderC6(V);renderC7(V,r,P);renderAge(P);renderFilters();saveFilters();exNoteRender();$('btnMp').textContent=D.unmapped.length?`Master PIC (${nf.format(D.unmapped.length)} belum terdaftar)`:'Master PIC';
   $('tblNote').textContent=`Year Request: ${[...S.yr].join(', ')||'-'} · Year Done: ${ydText()}`;
-  $('meta').textContent=`${D.cut?'Cut-off '+D.cut+' · ':''}${nf.format(D.total)} baris · ${D.src}${D.serverAt?' · diperbarui '+new Date(D.serverAt).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'}):''}${D.fromCache?' · OFFLINE, dari cache browser'+(typeof D.fromCache==='number'?' (disimpan '+new Date(D.fromCache).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})+')':''):''}`;
-  $('ageSel').value=String(AGE);
+  const dtf=t=>new Date(t).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'});
+  $('meta').textContent=D.via==='coda'
+    ?`Data otomatis dari ${D.src} · ${nf.format(D.total)} baris · terakhir sinkron ${dtf(D.serverAt)}${D.fromCache?' · OFFLINE (dari cache browser)':''}`
+    :`${D.cut?'Cut-off '+D.cut+' · ':''}${nf.format(D.total)} baris · ${D.src}${D.serverAt?' · diperbarui '+dtf(D.serverAt):''}${D.fromCache?' · OFFLINE, dari cache browser'+(typeof D.fromCache==='number'?' (disimpan '+dtf(D.fromCache)+')':''):''}`;
+  $('ageSel').value=String(AGE);dvSync();
 }
 const keepOpen=()=>{const a=$('ydBox').open,c=$('yrBox').open;renderAll();$('ydBox').open=a;$('yrBox').open=c};
 
@@ -876,7 +1051,7 @@ function mpRender(){
   $('mpU').innerHTML=un.length?un.map(([k,c])=>`<span class="uchip">${esc(k)} <em>${c}</em><button class="mini" data-add="${esc(k)}">Tambah</button></span>`).join(''):'<span class="meta">Semua nama di data sudah terdaftar.</span>';
   $('mpTsv').value=MW.map(m=>[m.k,m.n||'',m.a||''].join('\t')).join('\n');
 }
-function openMaster(focusUn){MW=MASTER.map(m=>({...m}));mpRender();$('mp').hidden=false;if(focusUn)$('mpU').scrollIntoView({block:'center'})}
+function openMaster(focusUn){MW=MASTER.map(m=>({...m}));mpRender();$('mp').hidden=false;if(isAdmin())cdLoad();if(focusUn)$('mpU').scrollIntoView({block:'center'})}
 function mpApplyData(){
   MASTER=MW.filter(m=>m.k&&m.k.trim()).map(m=>({k:m.k.trim().toLowerCase(),n:(m.n||'').trim()||title(m.k.trim()),a:(m.a||'').trim()||'Tanpa divisi'}));
   saveMaster();if(D){applyMaster();renderAll()}
@@ -916,6 +1091,7 @@ function idbOpen(){return new Promise((res,rej)=>{try{const r=indexedDB.open('pr
 async function idbSet(k,v){try{const db=await idbOpen();await new Promise((res,rej)=>{const t=db.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=res;t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error||new Error('abort'))});return true}catch(e){return false}}
 async function idbDel(k){try{const db=await idbOpen();await new Promise((res,rej)=>{const t=db.transaction('kv','readwrite');t.objectStore('kv').delete(k);t.oncomplete=res;t.onerror=()=>rej(t.error)});return true}catch(e){return false}}
 async function idbGet(k){try{const db=await idbOpen();return await new Promise((res,rej)=>{const t=db.transaction('kv').objectStore('kv').get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>rej(t.error)})}catch(e){return undefined}}
+function applyMeta(dt){D.serverAt=dt.at;D.via=dt.via||'';if(D.via==='coda'&&dt.at)D.cut=new Date(dt.at).toLocaleDateString('en-CA',{timeZone:'Asia/Jakarta'})}
 function useData(cols,aoa,src,cut,persist){
   D=ingest(cols,aoa,src,cut);applyMaster();setupFilters();
   if(persist){
@@ -1330,6 +1506,246 @@ document.addEventListener('keydown',e=>{
   else if(!$('nb').hidden){e.stopImmediatePropagation();$('nb').hidden=true}
 },true);
 
+
+/* ---------- Tab Data: tabel sumber (filter, cari, kolom) ---------- */
+const DV={d:null,meta:[],byI:{},cells:[],low:[],vis:new Set(),sel:{},uni:{},sort:null,q:'',tok:[],follow:false,idx:[]};
+const DV_RH=34,DV_DEF=['Doc. No.','Doc. Name','Doc. Type','Status Dev','Year Request','Year Done','Task PIC_2','Testing PIC 1','Testing PIC 2','Testing PIC 3','Bobot Dokumen','Bobot Testing PIC 1','Bobot Testing PIC 2','Bobot Testing PIC 3','Doc. Date','Application'];
+const DV_MOB=['Doc. No.','Doc. Name','Status Dev','Task PIC_2','Year Done','Bobot Dokumen'];
+const dvW=n=>n==='Doc. Name'?320:n==='Description'?340:n==='Status Dev'?150:/^Bobot/.test(n)?120:n==='Doc. No.'?130:140;
+function dvDefault(){const L=innerWidth<760?DV_MOB:DV_DEF;const a=L.filter(n=>DV.meta.some(m=>m.name===n));return new Set(a.length?a:DV.meta.slice(0,6).map(m=>m.name))}
+function dvInit(){
+  if(DV.d===D)return;DV.d=D;const cols=D.cols;
+  DV.meta=[];DV.byI={};cols.forEach((c,i)=>{if(c){const m={i,name:c,num:/^Bobot/.test(c),w:dvW(c)};DV.meta.push(m);DV.byI[i]=m}});
+  DV.cells=D.raw.map(r=>cols.map((c,i)=>cellStr(c,r[i])));DV.low=DV.cells.map(a=>a.join('\u0001').toLowerCase());
+  DV.sel={};DV.uni={};DV.sort=null;DV.q='';$('dvQ').value='';
+  const sv=lsGet('prodDvCols',null);const ok=Array.isArray(sv)?sv.filter(n=>DV.meta.some(m=>m.name===n)):[];
+  DV.vis=ok.length?new Set(ok):dvDefault();dvColRender();
+}
+const dvCols=()=>{let c=DV.meta.filter(m=>DV.vis.has(m.name));if(!c.length)c=DV.meta.slice(0,5);const pr=['Doc. No.','Doc. Name'];return [...pr.map(n=>c.find(m=>m.name===n)).filter(Boolean),...c.filter(m=>!pr.includes(m.name))]};
+function dvPass(ri,skip){
+  if(DV.follow){const r=D.rows[ri];if(!(S.yr.has(r[0])||S.yd.has(ydKey(r[2]))))return false}
+  if(DV.tok.length){const l=DV.low[ri];for(const t of DV.tok)if(!l.includes(t))return false}
+  for(const k in DV.sel){if(+k===skip)continue;const v=DV.cells[ri][k];if(!DV.sel[k].has(v===''?'(kosong)':v))return false}
+  return true;
+}
+function dvRun(reset){
+  DV.tok=DV.q.toLowerCase().split(/\s+/).filter(Boolean);
+  const n=D.raw.length,out=[];for(let i=0;i<n;i++)if(dvPass(i,-1))out.push(i);
+  if(DV.sort){const {ci,dir}=DV.sort,num=DV.byI[ci].num,c=DV.cells;
+    out.sort((a,b)=>{const x=c[a][ci],y=c[b][ci];if(x===''&&y==='')return 0;if(x==='')return 1;if(y==='')return -1;
+      return dir*(num?((+x||0)-(+y||0)):x.localeCompare(y,undefined,{numeric:true}))})}
+  DV.idx=out;$('dvInfo').textContent=`${nf.format(out.length)} dari ${nf.format(n)} baris`;
+  dvHead();if(reset){const w=$('dvWrap');if(w.scrollTop>0){DV.prog=1;w.scrollTop=0}}dvBody();
+}
+function dvHead(){
+  const cs=dvCols();$('dvTbl').style.width=cs.reduce((a,c)=>a+c.w,0)+'px';
+  $('dvCg').innerHTML=cs.map(c=>`<col style="width:${c.w}px">`).join('');
+  $('dvTh').innerHTML='<tr>'+cs.map(c=>{const so=DV.sort&&DV.sort.ci===c.i,on=!!DV.sel[c.i]||so;
+    return `<th class="${c.num?'r':''}"><div class="dvth"><span class="dvh" data-ci="${c.i}" title="Klik untuk mengurutkan">${esc(c.name)}${so?(DV.sort.dir>0?' ▲':' ▼'):''}</span><button class="dfb${on?' on':''}" type="button" data-dv="${c.i}" aria-label="Filter ${esc(c.name)}">▾</button></div></th>`}).join('')+'</tr>';
+}
+function dvBody(){
+  const cs=dvCols(),nc=cs.length,w=$('dvWrap'),n=DV.idx.length;
+  if(!n){$('dvTb').innerHTML=`<tr><td class="em" colspan="${nc}">Tidak ada baris yang cocok dengan pencarian / filter.</td></tr>`;return}
+  const st=Math.max(0,Math.floor(w.scrollTop/DV_RH)-12),en=Math.min(n,st+Math.ceil((w.clientHeight||600)/DV_RH)+24);
+  let h=st?`<tr class="sp" style="height:${st*DV_RH}px"><td colspan="${nc}"></td></tr>`:'';
+  for(let p=st;p<en;p++){const ri=DV.idx[p],row=DV.cells[ri];
+    h+=`<tr class="${p%2?'z':''}" data-ri="${ri}" tabindex="0">`+cs.map(c=>{const v=row[c.i];
+      if(v==='')return '<td></td>';
+      if(c.name==='Status Dev')return `<td><span class="gp sm" style="--g:var(--g-${sgOf(v.toUpperCase()).toLowerCase()})">${esc(v)}</span></td>`;
+      if(c.num)return `<td class="r">${isNaN(+v)?esc(v):nf.format(+v)}</td>`;
+      return `<td${v.length>24?` title="${esc(v.slice(0,300))}"`:''}>${esc(v)}</td>`}).join('')+'</tr>'}
+  if(en<n)h+=`<tr class="sp" style="height:${(n-en)*DV_RH}px"><td colspan="${nc}"></td></tr>`;
+  $('dvTb').innerHTML=h;
+}
+function dvSync(){if(document.body.classList.contains('vdata')){dvInit();dvRun(false)}}
+function setTab(v){const on=v==='data';if(on&&!D)return;
+  document.body.classList.toggle('vdata',on);$('tabD').setAttribute('aria-selected',String(!on));$('tabV').setAttribute('aria-selected',String(on));
+  dfClose();if(on){dvInit();dvRun(true)}}
+/* kolom */
+function dvColRender(){const q=$('dvColQ').value.trim().toLowerCase();
+  $('dvColList').innerHTML=DV.meta.filter(m=>!q||m.name.toLowerCase().includes(q)).map(m=>`<label><input type="checkbox" data-n="${esc(m.name)}" ${DV.vis.has(m.name)?'checked':''}>${esc(m.name)}</label>`).join('')}
+/* popup filter kolom */
+let DFO=null;
+function dfClose(){DFO=null;$('dfp').hidden=true}
+function dvUni(ci){if(!DV.uni[ci]){const s=new Set();for(const r of DV.cells)s.add(r[ci]===''?'(kosong)':r[ci]);DV.uni[ci]=s}return DV.uni[ci]}
+function dfOpen(btn){const ci=+btn.dataset.dv;
+  if(DFO&&DFO.ci===ci){dfClose();return}
+  const cnt=new Map();for(let i=0;i<D.raw.length;i++)if(dvPass(i,ci)){const v=DV.cells[i][ci]||'(kosong)';cnt.set(v,(cnt.get(v)||0)+1)}
+  const num=DV.byI[ci].num,vals=[...cnt.entries()].sort((a,b)=>a[0]==='(kosong)'?1:b[0]==='(kosong)'?-1:num?((+a[0]||0)-(+b[0]||0)):a[0].localeCompare(b[0],undefined,{numeric:true}));
+  DFO={ci,vals,sel:new Set(DV.sel[ci]||dvUni(ci)),q:''};
+  const p=$('dfp');p.hidden=false;$('dfq').value='';dfList();dfSort();
+  const r=btn.getBoundingClientRect();p.style.top=Math.min(r.bottom+6,innerHeight-p.offsetHeight-8)+'px';p.style.left=Math.max(8,Math.min(r.left,innerWidth-p.offsetWidth-8))+'px';
+}
+function dfList(){if(!DFO)return;const q=DFO.q.toLowerCase(),L=DFO.vals.filter(([v])=>!q||v.toLowerCase().includes(q)),sh=L.slice(0,300);DFO.shown=L;
+  $('dfl').innerHTML=sh.map(([v,c])=>`<label><input type="checkbox" data-v="${esc(v)}" ${DFO.sel.has(v)?'checked':''}><span>${esc(v)}</span><span class="cnt">${nf.format(c)}</span></label>`).join('')+(L.length>sh.length?`<div class="meta" style="padding:6px 2px">+ ${nf.format(L.length-sh.length)} nilai lain, gunakan kotak cari.</div>`:'')||'<div class="meta" style="padding:6px 2px">Tidak ada nilai.</div>'}
+function dfSort(){if(!DFO)return;const s=DV.sort;document.querySelectorAll('#dfp [data-s]').forEach(b=>b.setAttribute('aria-pressed',String(!!s&&s.ci===DFO.ci&&(s.dir>0?'asc':'desc')===b.dataset.s)))}
+function dfApply(){const ci=DFO.ci,u=dvUni(ci);if(DFO.sel.size>=u.size&&[...u].every(v=>DFO.sel.has(v)))delete DV.sel[ci];else DV.sel[ci]=new Set(DFO.sel);dvRun(true)}
+$('tabD').onclick=()=>setTab('dash');$('tabV').onclick=()=>setTab('data');
+let dvT=0;$('dvQ').addEventListener('input',e=>{clearTimeout(dvT);dvT=setTimeout(()=>{DV.q=e.target.value;dvRun(true)},160)});
+$('dvFollow').addEventListener('change',e=>{DV.follow=e.target.checked;dvRun(true)});
+$('dvReset').onclick=()=>{DV.sel={};DV.sort=null;DV.q='';$('dvQ').value='';dfClose();dvRun(true)};
+$('dvXls').onclick=()=>{
+  if(typeof XLSX==='undefined'){flash('Library Excel belum termuat. Periksa koneksi internet lalu coba lagi.',true);return}
+  const cs=dvCols(),aoa=[cs.map(c=>c.name)];
+  for(const ri of DV.idx)aoa.push(cs.map(c=>{const v=DV.cells[ri][c.i];return c.num&&v!==''&&!isNaN(+v)?+v:v}));
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(aoa),'Data');
+  XLSX.writeFile(wb,'Data_Source'+(D.cut?'_'+D.cut.replace(/[^\w.-]+/g,'_'):'')+'.xlsx');flash(`File Excel diunduh (${nf.format(DV.idx.length)} baris sesuai tampilan).`)};
+$('dvColQ').addEventListener('input',dvColRender);
+$('dvColList').addEventListener('change',e=>{const n=e.target.dataset.n;if(n==null)return;e.target.checked?DV.vis.add(n):DV.vis.delete(n);if(!DV.vis.size)DV.vis.add(n);lsSet('prodDvCols',[...DV.vis]);dvColRender();dvRun(false)});
+$('dvColDef').onclick=()=>{DV.vis=dvDefault();lsSet('prodDvCols',[...DV.vis]);dvColRender();dvRun(false)};
+$('dvColAll').onclick=()=>{DV.vis=new Set(DV.meta.map(m=>m.name));lsSet('prodDvCols',[...DV.vis]);dvColRender();dvRun(false)};
+$('dvTh').addEventListener('click',e=>{
+  const b=e.target.closest('.dfb');if(b){e.stopPropagation();dfOpen(b);return}
+  const h=e.target.closest('.dvh');if(h){const ci=+h.dataset.ci,s=DV.sort;DV.sort=!s||s.ci!==ci?{ci,dir:1}:s.dir>0?{ci,dir:-1}:null;dfClose();dvRun(true)}});
+$('dvTb').addEventListener('click',e=>{const r=e.target.closest('tr[data-ri]');if(r)openProject(+r.dataset.ri)});
+$('dvTb').addEventListener('keydown',e=>{if(e.key==='Enter'){const r=e.target.closest('tr[data-ri]');if(r)openProject(+r.dataset.ri)}});
+let dvRaf=0;$('dvWrap').addEventListener('scroll',()=>{if(DFO&&!DV.prog)dfClose();DV.prog=0;if(!dvRaf)dvRaf=requestAnimationFrame(()=>{dvRaf=0;dvBody()})});
+$('dfp').addEventListener('click',e=>{const s=e.target.closest('[data-s]');if(s&&DFO){DV.sort={ci:DFO.ci,dir:s.dataset.s==='asc'?1:-1};dfClose();dvRun(true)}});
+$('dfq').addEventListener('input',e=>{if(DFO){DFO.q=e.target.value;dfList()}});
+$('dfl').addEventListener('change',e=>{const v=e.target.dataset.v;if(v==null||!DFO)return;e.target.checked?DFO.sel.add(v):DFO.sel.delete(v);dfApply()});
+$('dfAll').onclick=()=>{if(!DFO)return;(DFO.shown||[]).forEach(([v])=>DFO.sel.add(v));dfList();dfApply()};
+$('dfNone').onclick=()=>{if(!DFO)return;(DFO.shown||[]).forEach(([v])=>DFO.sel.delete(v));dfList();dfApply()};
+document.addEventListener('click',e=>{if(!e.target.closest('#dfp')&&!e.target.closest('.dfb'))dfClose();if(!e.target.closest('#dvColBox'))$('dvColBox').open=false});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&DFO)dfClose()});
+
+
+/* ---------- Coda: pengaturan (Master) + deteksi data baru otomatis ---------- */
+let DATAVER=null,cdPoll=0,liveBusy=false;
+const cdFmt=t=>t?new Date(t).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'}):'-';
+function cdShow(c){
+  $('cdLink').value=c.link||'';$('cdTable').value=c.table||'';$('cdOn').checked=!!c.enabled;$('cdInt').value=String(c.intervalMin||60);$('cdToken').value='';
+  $('cdToken').placeholder=c.hasToken?`Tersimpan (${c.tokenHint}) · kosongkan jika tidak diganti`:c.envToken?'Memakai CODA_API_TOKEN dari Netlify (opsional diisi di sini)':'Tempel token API Coda';
+}
+function cdStatus(st,c){
+  const el=$('cdSt');let t,cls='meta';
+  if(st.state==='running')t='⏳ Sedang sinkron dari Coda…';
+  else if(st.state==='error'){t='⚠ Gagal: '+st.lastError+(st.lastOkAt?' · Terakhir berhasil '+cdFmt(st.lastOkAt):'');cls='meta cd-err'}
+  else if(st.lastOkAt)t=`✓ Terakhir sinkron ${cdFmt(st.lastOkAt)} · ${nf.format(st.rows||0)} baris${st.table?' · '+st.table:''}${c&&c.enabled?'':' · update otomatis nonaktif'}`;
+  else t=c&&c.docId?'Belum pernah sinkron.':'Belum dikonfigurasi.';
+  el.className=cls;el.id='cdSt';el.textContent=t;
+}
+async function cdLoad(){try{const c=await apiSend('GET','/coda');cdShow(c);cdStatus(c.status||{},c);return c}catch(e){$('cdSt').className='meta cd-err';$('cdSt').textContent='⚠ '+e.message}}
+async function cdSave(){
+  await apiSend('PUT','/coda',JSON.stringify({link:$('cdLink').value,table:$('cdTable').value,token:$('cdToken').value,enabled:$('cdOn').checked,intervalMin:+$('cdInt').value}),'application/json');
+  return cdLoad();
+}
+function cdWatch(){
+  clearInterval(cdPoll);let n=0;
+  cdPoll=setInterval(async()=>{n++;const c=await cdLoad();
+    if(!c||n>120||(c.status&&c.status.state!=='running')){clearInterval(cdPoll);if(c&&c.status&&c.status.state==='ok')liveReload()}},3000);
+}
+$('cdSave').onclick=async()=>{try{await cdSave();flash('Pengaturan Coda disimpan.')}catch(e){flash(e.message,true)}};
+$('cdTest').onclick=async()=>{
+  try{await cdSave();const r=await apiSend('POST','/coda/test');$('cdSt').className='meta';$('cdSt').textContent=`✓ Terhubung ke tabel “${r.table}” (${r.cols} kolom${r.rows!=null?', ±'+nf.format(r.rows)+' baris':''}).`}
+  catch(e){$('cdSt').className='meta cd-err';$('cdSt').textContent='⚠ '+e.message}};
+$('cdSync').onclick=async()=>{try{await cdSave();await apiSend('POST','/coda/sync');cdStatus({state:'running'},null);cdWatch()}catch(e){flash(e.message,true)}};
+async function liveReload(){
+  if(liveBusy)return;liveBusy=true;
+  try{const dt=await apiGet('/data',true);if(!dt||!dt.cols)return;
+    const picN=S.pic!=null&&D&&D.pics[S.pic]?D.pics[S.pic].n:null,divN=S.div;
+    useData(dt.cols,dt.aoa,dt.src,dt.cut,false);applyMeta(dt);idbSet('data',dt);
+    if(picN){const i=D.pics.findIndex(p=>p.n===picN);if(i>=0)S.pic=i}
+    if(divN&&D.pics.some(p=>p.a===divN))S.div=divN;
+    renderAll();flash('Data diperbarui otomatis dari sumber terbaru.')}
+  catch(e){}finally{liveBusy=false}
+}
+async function liveCheck(){
+  if(document.hidden||!D||!DATAVER)return;
+  try{const r=await fetch(API+'/status',{cache:'no-store'});if(!r.ok)return;const j=await r.json();if(j.version&&j.version!==DATAVER)await liveReload()}catch(e){}
+}
+setInterval(liveCheck,5*60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)liveCheck()});
+
+
+/* ---------- Dokumen nyangkut: filter per kolom, cari, chip umur ---------- */
+const AF={q:'',txt:{},lst:{},rng:{},sort:{k:'age',dir:-1}};
+const AGE_COLS=[{k:'no',t:'Doc. No.',m:'text'},{k:'nm',t:'Dokumen',m:'text'},{k:'st',t:'Status Dev',m:'list'},{k:'pic',t:'Task PIC 2',m:'list'},{k:'dt',t:'Doc. Date',m:'range',ty:'date'},{k:'age',t:'Umur (hari)',m:'range',ty:'number'}];
+let AGE_ALL=[],AGE_TOT=0,AFO=null;
+const agePn=v=>{const k=String(v||'').trim().toLowerCase();if(!k)return '-';const m=MASTER.find(x=>x.k===k);return m?m.n:title(k)};
+function agePass(it,skip){
+  if(AF.q&&!(it.no+' '+it.nm+' '+it.pic).toLowerCase().includes(AF.q))return false;
+  for(const k of ['no','nm'])if(k!==skip&&AF.txt[k]&&!it[k].toLowerCase().includes(AF.txt[k]))return false;
+  for(const k in AF.lst)if(k!==skip&&!AF.lst[k].has(it[k]||'(kosong)'))return false;
+  for(const k in AF.rng){if(k===skip)continue;const [lo,hi]=AF.rng[k];
+    if(k==='dt'){if((lo||hi)&&!it.dt)return false;if(lo&&it.dt<lo)return false;if(hi&&it.dt>hi)return false}
+    else{if(lo!==''&&it.age<lo)return false;if(hi!==''&&it.age>hi)return false}}
+  return true;
+}
+const ageActive=k=>!!(AF.txt[k]||AF.lst[k]||AF.rng[k]);
+const ageAny=()=>!!(AF.q||AGE_COLS.some(c=>ageActive(c.k))||AF.sort.k!=='age'||AF.sort.dir!==-1);
+function ageSorted(L){const {k,dir}=AF.sort;
+  return L.slice().sort((a,b)=>{const r=k==='age'?a.age-b.age:a[k].localeCompare(b[k],undefined,{numeric:true});return dir*r||b.age-a.age})}
+const AGE_CH=[['gt','> 365 hari','var(--crit)',366,''],['mid','181–365','var(--warn)',181,365],['low','≤ 180 hari','var(--good)','',180]];
+function ageDraw(){ageRender();if(AFO)afPlace()}
+function ageRender(){
+  const all=AGE_ALL,list=ageSorted(all.filter(it=>agePass(it,'')));
+  $('ageNote').textContent=`${nf.format(list.length)} dari ${nf.format(all.length)} dokumen nyangkut · ${nf.format(AGE_TOT)} dalam proses (DEV/APPS/BR TASK)`;
+  $('ageNote').title=`Dokumen nyangkut = status DEV/APPS/BR TASK yang umurnya lebih dari ${AGE} hari. Umur dihitung sejak Doc. Date sampai hari ini.`;
+  const cur=AF.rng.age||['',''];
+  $('ageChips').innerHTML=AGE_CH.map(([id,t,col,lo,hi])=>{const n=all.filter(x=>(lo===''||x.age>=lo)&&(hi===''||x.age<=hi)).length,on=cur[0]===lo&&cur[1]===hi;
+    return `<button class="agc" type="button" data-c="${id}" aria-pressed="${on}"><i style="background:${col}"></i>${t} <small>${nf.format(n)}</small></button>`}).join('');
+  $('ageReset').hidden=!ageAny();$('ageQ').value!==AF.q&&!$('ageQ').matches(':focus')&&($('ageQ').value=AF.q);
+  const th='<thead><tr>'+AGE_COLS.map(c=>{const so=AF.sort.k===c.k;
+    return `<th><div class="dvth"><span class="dvh" data-k="${c.k}" title="Klik untuk mengurutkan">${esc(c.t)}${so?(AF.sort.dir>0?' ▲':' ▼'):''}</span><button class="dfb${ageActive(c.k)?' on':''}" type="button" data-af="${c.k}" aria-label="Filter ${esc(c.t)}">▾</button></div></th>`}).join('')+'</tr></thead>';
+  if(!all.length){$('ageTbl').innerHTML='<tbody><tr><td class="l em">Tidak ada dokumen yang melewati batas umur.</td></tr></tbody>';return}
+  if(!list.length){$('ageTbl').innerHTML=th+'<tbody><tr><td class="em" colspan="6">Tidak ada dokumen yang cocok dengan filter.</td></tr></tbody>';return}
+  const max=all.reduce((m,x)=>Math.max(m,x.age),1);
+  $('ageTbl').innerHTML=th+'<tbody>'+list.map(it=>{const c=it.age>365?'crit':it.age>180?'warn':'good';
+    return `<tr class="pr" data-ri="${it.ri}" tabindex="0"><td class="l dn nw" style="font-family:var(--f-num)">${esc(it.no)}</td><td class="l">${esc(it.nm)}</td><td class="l"><span class="gp sm" style="--g:var(--g-${sgOf(it.st).toLowerCase()})">${esc(it.st)}</span></td><td class="l">${esc(it.pic)}</td><td class="l nw" style="font-family:var(--f-num)">${esc(it.dt)}</td><td class="ag"><div class="agb"><div class="bar"><i class="bg-${c==='good'?'warn':c}" style="width:${it.age/max*100}%"></i></div><b>${nf.format(it.age)} hari</b></div></td></tr>`}).join('')+'</tbody>';
+}
+function afClose(){AFO=null;$('afp').hidden=true}
+function afOpen(btn){
+  const k=btn.dataset.af;if(AFO&&AFO.k===k){afClose();return}
+  const col=AGE_COLS.find(c=>c.k===k);AFO={k,m:col.m};let h='';
+  if(col.m==='text')h=`<input class="srch" id="afT" placeholder="Cari…" value="${esc(AF.txt[k]||'')}" aria-label="Cari ${esc(col.t)}" autocomplete="off">`;
+  else if(col.m==='range'){const [lo,hi]=AF.rng[k]||['',''];
+    h=`<div class="rg"><label>Dari<input id="afMin" type="${col.ty}" value="${lo}"${col.ty==='number'?' min="0" inputmode="numeric"':''}></label><label>Sampai<input id="afMax" type="${col.ty}" value="${hi}"${col.ty==='number'?' min="0" inputmode="numeric"':''}></label></div>`}
+  else{
+    const uni=new Set(),cnt=new Map();for(const it of AGE_ALL){const v=it[k]||'(kosong)';uni.add(v);if(agePass(it,k))cnt.set(v,(cnt.get(v)||0)+1)}
+    AFO.uni=uni;AFO.vals=[...cnt.entries()].sort((a,b)=>a[0].localeCompare(b[0]));AFO.sel=new Set(AF.lst[k]||uni);AFO.q='';
+    h='<input class="srch" id="afQ" placeholder="Cari nilai…" aria-label="Cari nilai" autocomplete="off"><div class="acts"><button class="mini" type="button" id="afAll">Pilih semua</button><button class="mini" type="button" id="afNone">Kosongkan</button></div><div class="lst" id="afL"></div>';
+  }
+  $('afb').innerHTML=h;const p=$('afp');p.hidden=false;afList();afSort();
+  afPlace();const f=p.querySelector('input');if(f)f.focus();
+}
+function afPlace(){
+  if(!AFO)return;const b=document.querySelector('#ageTbl .dfb[data-af="'+AFO.k+'"]');if(!b){afClose();return}
+  const r=b.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight){afClose();return}
+  const p=$('afp');p.style.top=Math.max(8,Math.min(r.bottom+6,innerHeight-p.offsetHeight-8))+'px';p.style.left=Math.max(8,Math.min(r.left,innerWidth-p.offsetWidth-8))+'px';
+}
+function afList(){
+  if(!AFO||AFO.m!=='list')return;const q=AFO.q.toLowerCase(),L=AFO.vals.filter(([v])=>!q||v.toLowerCase().includes(q));AFO.shown=L;
+  $('afL').innerHTML=L.map(([v,c])=>`<label><input type="checkbox" data-v="${esc(v)}" ${AFO.sel.has(v)?'checked':''}><span>${esc(v)}</span><span class="cnt">${nf.format(c)}</span></label>`).join('')||'<div class="meta" style="padding:6px 2px">Tidak ada nilai.</div>';
+}
+const afSort=()=>{if(AFO)document.querySelectorAll('#afp [data-s]').forEach(b=>b.setAttribute('aria-pressed',String(AF.sort.k===AFO.k&&(AF.sort.dir>0?'asc':'desc')===b.dataset.s)))};
+function afApplyList(){const k=AFO.k;if(AFO.sel.size>=AFO.uni.size&&[...AFO.uni].every(v=>AFO.sel.has(v)))delete AF.lst[k];else AF.lst[k]=new Set(AFO.sel);ageDraw()}
+function afRange(){const k=AFO.k,a=$('afMin').value,b=$('afMax').value;
+  if(k==='age'){const lo=a===''?'':Math.max(0,+a),hi=b===''?'':Math.max(0,+b);if(lo===''&&hi==='')delete AF.rng[k];else AF.rng[k]=[lo,hi]}
+  else{if(!a&&!b)delete AF.rng[k];else AF.rng[k]=[a,b]}
+  ageDraw()}
+$('ageTbl').addEventListener('click',e=>{
+  const b=e.target.closest('.dfb');if(b){e.stopPropagation();afOpen(b);return}
+  const h=e.target.closest('.dvh');if(h){const k=h.dataset.k,s=AF.sort;AF.sort=s.k===k?{k,dir:-s.dir}:{k,dir:1};afClose();ageDraw()}});
+$('afb').addEventListener('input',e=>{if(!AFO)return;const t=e.target.id;
+  if(t==='afT'){AF.txt[AFO.k]=e.target.value.trim().toLowerCase();if(!AF.txt[AFO.k])delete AF.txt[AFO.k];ageDraw()}
+  else if(t==='afQ'){AFO.q=e.target.value;afList()}
+  else if(t==='afMin'||t==='afMax')afRange()});
+$('afb').addEventListener('change',e=>{if(!AFO)return;const v=e.target.dataset.v;if(v==null)return;e.target.checked?AFO.sel.add(v):AFO.sel.delete(v);afApplyList()});
+$('afb').addEventListener('click',e=>{if(!AFO||AFO.m!=='list')return;
+  if(e.target.id==='afAll'){(AFO.shown||[]).forEach(([v])=>AFO.sel.add(v));afList();afApplyList()}
+  if(e.target.id==='afNone'){(AFO.shown||[]).forEach(([v])=>AFO.sel.delete(v));afList();afApplyList()}});
+$('afp').addEventListener('click',e=>{if(!AFO)return;const s=e.target.closest('[data-s]');
+  if(s){AF.sort={k:AFO.k,dir:s.dataset.s==='asc'?1:-1};afClose();ageDraw()}
+  if(e.target.id==='afClr'){const k=AFO.k;delete AF.txt[k];delete AF.lst[k];delete AF.rng[k];afClose();ageDraw()}});
+$('ageQ').addEventListener('input',e=>{AF.q=e.target.value.trim().toLowerCase();ageDraw()});
+$('ageChips').addEventListener('click',e=>{const b=e.target.closest('.agc');if(!b)return;const c=AGE_CH.find(x=>x[0]===b.dataset.c),cur=AF.rng.age;
+  if(cur&&cur[0]===c[3]&&cur[1]===c[4])delete AF.rng.age;else AF.rng.age=[c[3],c[4]];ageDraw()});
+$('ageReset').onclick=()=>{AF.q='';AF.txt={};AF.lst={};AF.rng={};AF.sort={k:'age',dir:-1};$('ageQ').value='';afClose();ageDraw()};
+document.addEventListener('click',e=>{if(!e.target.closest('#afp')&&!e.target.closest('#ageTbl .dfb'))afClose()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&AFO)afClose()});
+document.addEventListener('scroll',e=>{if(AFO&&!(e.target instanceof Element&&e.target.closest('#afp')))requestAnimationFrame(afPlace)},true);
+addEventListener('resize',()=>{if(AFO)afPlace()});
+
 /* ---------- boot ---------- */
 async function inflate(b64){
   const bin=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
@@ -1344,10 +1760,10 @@ async function inflate(b64){
     try{[st,dt]=await Promise.all([apiGet('/settings').catch(()=>null),apiGet('/data',true)])}catch(e){offline=true}
     if(st&&Array.isArray(st.master)&&st.master.length)MASTER=st.master.map(x=>Array.isArray(x)?{k:x[0],n:x[1],a:x[2]}:x);
     if(st&&Array.isArray(st.exc))EXC=st.exc;
-    if(dt&&dt.cols){useData(dt.cols,dt.aoa,dt.src,dt.cut,false);D.serverAt=dt.at;idbSet('data',dt);$('msg').hidden=true}
+    if(dt&&dt.cols){useData(dt.cols,dt.aoa,dt.src,dt.cut,false);applyMeta(dt);idbSet('data',dt);$('msg').hidden=true}
     else if(offline){
       const saved=await idbGet('data');
-      if(saved&&saved.cols){useData(saved.cols,saved.aoa,saved.src,saved.cut,false);D.fromCache=saved.at||true;flash('Tidak bisa terhubung ke server. Menampilkan data terakhir yang tersimpan di browser ini.',true)}
+      if(saved&&saved.cols){useData(saved.cols,saved.aoa,saved.src,saved.cut,false);if(saved.via==='coda')applyMeta(saved);D.fromCache=saved.at||true;flash('Tidak bisa terhubung ke server. Menampilkan data terakhir yang tersimpan di browser ini.',true)}
       else flash('Tidak bisa terhubung ke server dan belum ada cache di browser ini.',true)
     }else $('msg').hidden=true;
   }catch(err){flash('Gagal memuat data: '+(err.message||err),true)}
