@@ -2148,7 +2148,7 @@ const bdInProc=it=>it.sg==='DEV'||it.sg==='APPS'||it.sg==='BR';
 const bdStuck=it=>it.age!=null&&it.age>AGE&&bdInProc(it);
 function bdBase(){
   const out=[],now=Date.now(),MK=new Set(MASTER.map(m=>m.k)),pjc=DV.meta.find(m=>/^project$/i.test(m.name));let ph=0;BD.pjCol=pjc?pjc.i:-1;
-  for(const ri of DV.idx){const r=D.rows[ri];if(PH(r)){ph++;continue}
+  for(const ri of DV.idx){const r=D.rows[ri];/* placeholder (-XXX/-DDD) ikut tampil di Kanban & Gantt */
     let age=null;if(r[19]){const a=Math.floor((now-Date.parse(r[19]))/864e5);if(a>=0)age=a}
     out.push({ri,r,sg:sgOf(r[3]),age,names:D.names[ri][0].filter(k=>MK.has(k)),pj:pjc?(DV.cells[ri][pjc.i]||''):''})}
   BD.ph=ph;return out;
