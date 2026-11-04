@@ -691,6 +691,49 @@ body.vkan .wrap,body.vgantt .wrap{max-width:none}
 #nbTbl th{top:0;z-index:3}
 #nbTbl tr.nbg td{top:var(--nbh,40px);z-index:2;background:color-mix(in srgb,var(--accent) 12%,var(--surface))}
 body:has(#nb:not([hidden])){overflow:hidden}
+
+/* Detail dokumen v31 */
+#pj{overflow-y:auto;overscroll-behavior:contain;padding-top:0}
+#pj>*{flex-shrink:0}
+body:has(#pj:not([hidden])){overflow:hidden}
+.pjh{position:sticky;top:0;z-index:5;margin-top:12px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 14%,var(--surface)),var(--surface))}
+.pdc{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pdc span{font-size:12px;padding:3px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--ink-2)}
+#pj .pjb{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;overflow:visible;flex:none;align-content:start}
+.pdk{grid-column:span 12;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--sh)}
+.pdk h3{margin:0 0 8px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}.pdk h3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:8px}
+@media (min-width:900px){.pdk.s5{grid-column:span 5}.pdk.s7{grid-column:span 7}}
+.pdr{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:0 22px}
+.pdf{padding:8px 0;border-bottom:1px solid var(--line)}.pdf.w{grid-column:1/-1}
+.pdl{font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}
+.pdv{font-size:14px;color:var(--ink);overflow-wrap:anywhere;cursor:copy}.pdv.e,.pdv .e,.pdn.e,.pdn .e{color:var(--ink-3)}
+.pdg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px 20px}
+.pdp{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:600;font-style:normal;flex:none}.av.n{background:var(--surface-2);color:var(--ink-3)}
+.pdb{display:flex;flex-wrap:wrap;gap:10px}.pds{flex:1 1 140px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface-2)}.pdn{font-size:24px;font-family:var(--f-num);margin-top:2px}
+.tl2{position:relative;padding-left:22px}.tl2::before{content:"";position:absolute;left:5px;top:10px;bottom:10px;width:2px;background:var(--line)}
+.tli{position:relative;padding:6px 0}.tli::before{content:"";position:absolute;left:-22px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--surface)}.tli.e::before{background:var(--surface);border:2px solid var(--line);box-sizing:border-box}
+.pjf{padding-bottom:18px}
+
+/* v32: kartu selebar penuh, timeline horizontal */
+.tl2{display:flex;flex-wrap:wrap;padding-left:0}.tl2::before{display:none}
+.tli{flex:1 1 170px;min-width:150px;padding:20px 14px 4px 0}
+.tli::before{left:0;top:0;width:12px;height:12px;z-index:1}
+.tli::after{content:"";position:absolute;top:5px;left:16px;right:4px;height:2px;background:var(--line)}
+.tli:last-child::after{display:none}
+
+/* v35: bar filter Kanban/Gantt ringkas, 2 baris */
+.bdbar{gap:8px 10px;padding:8px 12px}
+.bdbar .sel,.bdbar .btn,.bfb{height:36px}
+.bdbar .fg{min-width:0;flex:1 1 140px}
+.bfb{min-width:0;max-width:none;width:100%}
+.bdbar .fg.rs{flex:0 0 auto}
+.bdbar>.bdbr~*{order:2;flex:0 0 auto}
+.bdbar>.bdbr{order:1}
+.bdbar>#bdInfo{order:3;flex:1 1 220px;margin:0;align-self:center;padding:0}
+.bdbar>.bdx{order:4;margin-left:auto}
+@media (max-width:760px){.bdbar>.bdbr~*{flex:1 1 calc(50% - 8px)}.bdbar>#bdInfo{flex:1 1 100%}}
+
+.gnm{flex:1 1 auto}
 </style>
 
 <div class="wrap">
@@ -747,6 +790,7 @@ body:has(#nb:not([hidden])){overflow:hidden}
         <div class="fg"><span class="lbl">Project</span><button class="bfb" type="button" id="bfb-pj" data-k="pj" aria-haspopup="dialog"><span class="bfv">Semua project</span></button></div>
         <div class="fg"><span class="lbl">Doc. Name</span><button class="bfb" type="button" id="bfb-nm" data-k="nm" aria-haspopup="dialog"><span class="bfv">Semua dokumen</span></button></div>
         <div class="fg"><span class="lbl">Status (kolom)</span><button class="bfb" type="button" id="bfb-sg" data-k="sg" aria-haspopup="dialog"><span class="bfv">Semua status</span></button></div>
+        <div class="fg"><span class="lbl">Status Dev</span><button class="bfb" type="button" id="bfb-sd" data-k="sd" aria-haspopup="dialog"><span class="bfv">Semua status dev</span></button></div>
         <div class="fg rs"><span class="lbl">&nbsp;</span><button class="btn" id="bdReset" type="button">Reset</button></div>
         <div class="bdbr"></div>
         <div class="fg"><label class="lbl" for="bdSo">Urutkan</label><select class="sel" id="bdSo"><option value="old">Terlama dulu</option><option value="new">Terbaru dulu</option><option value="no">Doc. No.</option></select></div>
@@ -835,7 +879,7 @@ body:has(#nb:not([hidden])){overflow:hidden}
   <div class="dt"><table id="drTbl"></table></div>
 </aside>
 <div id="pj" hidden role="dialog" aria-modal="true" aria-labelledby="pjT">
-  <div class="pjh"><div><div class="meta">Detail dokumen</div><h2 id="pjT"></h2><div class="pjn" id="pjN"></div></div><div class="pjr"><span id="pjB"></span><button class="mini" id="pjX">← Kembali ke daftar</button></div></div>
+  <div class="pjh"><div><div class="meta">Detail dokumen</div><h2 id="pjT"></h2><div class="pjn" id="pjN"></div><div class="pdc" id="pjC"></div></div><div class="pjr"><span id="pjB"></span><button class="mini" id="pjX">← Kembali ke daftar</button></div></div>
   <div class="pjb" id="pjBody"></div><div class="meta pjf" id="pjF"></div>
 </div>
 
@@ -1218,25 +1262,31 @@ function drawDetail(){
    L.slice(0,lim).map(({i,r})=>`<tr class="pr" data-ri="${i}" tabindex="0"><td class="nw dn">${esc(r[12])}</td><td>${esc(r[13])}</td><td>${esc(r[14])}</td><td class="nw"><span class="gp sm" style="--g:var(--g-${sgOf(r[3]).toLowerCase()})">${esc(r[3])}</span></td><td>${esc(r[15])}</td><td>${esc(r[17])}</td><td>${esc(r[18])}</td><td>${esc(r[16])}</td><td class="nw" style="text-align:right${r[5]>0?'':';color:var(--ink-3)'}">${r[5]>0?nf.format(r[5]):'-'}</td></tr>`).join('')+'</tbody>';
 }
 const closeDetail=()=>{$('dr').hidden=true;$('ov').hidden=true;$('pj').hidden=true};
-const SC=['--a1','--g-br','--a2','--g-apps','--g-done','--g-oth'];
-const SECT=[['Identitas dokumen',['Doc. No.','Doc. Name','Description','Doc. Type','Doc. Date','Req. Type','Year Request','Quartal','Application','APPX','ID 1','ID 2','Modul Apps','Testing Apps','Project','User','User Request']],
- ['Status',['Status Dev','Status Project','Year Done','Work Complete','Start Date','Finish Date','Concern']],
- ['PIC',['BR PIC','Task PIC_2','Dev PIC','Testing PIC 1','Testing PIC 2','Testing PIC 3','Test PIC','Testing PIC','Modified by']],
- ['Bobot',['Bobot Dokumen','Bobot Testing PIC 1','Bobot Testing PIC 2','Bobot Testing PIC 3']],
- ['Testing, pilot, dan release',['Test Cycle','Test Cycle Date','Deliver Testing','Testing','Testing Pilot','Plan Pilot','Pilot','Release','Deliver Release','Doc. Cycle','Doc Cycle Date']]];
-const WIDE=['Doc. Name','Description','Concern'];
-function openProject(ri){
-  const d=D.raw[ri],v={};D.cols.forEach((c,i)=>{const s=cellStr(c,d[i]);if(s!=='')v[c]=s});
-  const used=new Set(SECT.flatMap(x=>x[1]));const rest=D.cols.filter(c=>c&&!used.has(c)&&v[c]!==undefined);
-  const sec=[...SECT,...(rest.length?[['Lainnya',rest]]:[])];let hidden=0;
+const PD_PIC=['BR PIC','Task PIC_2','Dev PIC','Testing PIC 1','Testing PIC 2','Testing PIC 3','Test PIC','Testing PIC','Modified by'],PD_ST=['Status Dev','Status Project','Year Done','Work Complete','Concern'],PD_BB=['Bobot Dokumen','Bobot Testing PIC 1','Bobot Testing PIC 2','Bobot Testing PIC 3'],PD_TD=['Doc. Date','Start Date','Finish Date','Doc Cycle Date','Test Cycle Date','Deliver Testing','Plan Pilot','Deliver Release'],WIDE=['Doc. Name','Description','Concern'],PD={ri:null,all:false};
+function pdRender(){
+  const d=D.raw[PD.ri],v={},cols=D.cols.filter(Boolean);cols.forEach((c,i)=>{v[c]=cellStr(c,d[D.cols.indexOf(c)])});
+  const ISO=/^\d{4}-\d{2}-\d{2}/,show=c=>v[c]!==''||PD.all,has=c=>v[c]!==undefined,isT=c=>ISO.test(v[c])||PD_TD.includes(c);
+  const empty=cols.filter(c=>v[c]==='').length,val=c=>v[c]===''?'<span class="e">–</span>':esc(v[c]);
+  const used=new Set([...PD_PIC,...PD_ST,...PD_BB]);
+  const badge=c=>{const g=SG.find(x=>x[2].includes(String(v[c]||'(BLANK)').toUpperCase()));return `<span class="gp" style="--g:var(--g-${(g?g[0]:'OTH').toLowerCase()})">${esc(v[c]||'(BLANK)')}</span>`};
+  const av=n=>{let h=0;for(const ch of n)h=(h*31+ch.charCodeAt(0))%360;const w=n.replace(/@.*/,'').split(/[\s.,_]+/).filter(Boolean);return `<i class="av" style="background:hsl(${h} 50% 42%)">${esc(((w[0]||'?')[0]+((w[1]||'')[0]||(w[0]||'')[1]||'')).toUpperCase())}</i>`};
+  const row=c=>`<div class="pdf${WIDE.includes(c)||v[c].length>60?' w':''}"><div class="pdl">${esc(c)}</div><div class="pdv${v[c]===''?' e':''}">${val(c)}</div></div>`;
+  const card=(cl,t,cv,b)=>b?`<div class="pdk ${cl}" style="--c:var(${cv})"><h3>${t}</h3>${b}</div>`:'';
+  const st=PD_ST.filter(c=>has(c)&&show(c)).map(c=>c==='Status Dev'?`<div class="pdf"><div class="pdl">${c}</div><div class="pdv">${badge(c)}</div></div>`:row(c)).join('');
+  const pic=PD_PIC.filter(c=>has(c)&&show(c)).map(c=>`<div class="pdp">${v[c]?av(v[c]):'<i class="av n">–</i>'}<div><div class="pdl">${esc(c)}</div><div class="pdv${v[c]?'':' e'}">${val(c)}</div></div></div>`).join('');
+  const bb=PD_BB.filter(c=>has(c)&&show(c)).map(c=>`<div class="pds"><div class="pdl">${esc(c)}</div><div class="pdn${v[c]===''?' e':''}">${val(c)}</div></div>`).join('');
+  const tl=cols.filter(c=>isT(c)&&!used.has(c)&&show(c)).sort((x,y)=>(v[x]===''?1:0)-(v[y]===''?1:0)||v[x].localeCompare(v[y]));
+  const tlh=tl.length?`<div class="tl2">${tl.map(c=>`<div class="tli${v[c]===''?' e':''}"><div class="pdl">${esc(c)}</div><div class="pdv${v[c]===''?' e':''}">${val(c)}</div></div>`).join('')}</div>`:'';
+  const idn=cols.filter(c=>!used.has(c)&&!isT(c)&&show(c)).map(row).join('');
   $('pjT').textContent=v['Doc. No.']||'Dokumen';$('pjN').textContent=v['Doc. Name']||'';
-  const g=SG.find(x=>x[2].includes(String(v['Status Dev']||'(BLANK)').toUpperCase()));
-  $('pjB').innerHTML=`<span class="gp" style="--g:var(--g-${(g?g[0]:'OTH').toLowerCase()})">${esc(v['Status Dev']||'(BLANK)')}</span>`;
-  $('pjBody').innerHTML=sec.map(([t,cs],si)=>{const f=cs.filter(c=>v[c]!==undefined);hidden+=cs.length-f.length;if(!f.length)return '';
-    return `<section class="${si===0?'full':''}" style="--c:var(${SC[si]})"><h3>${t}</h3><div class="tiles">${f.map(c=>`<div class="tile${WIDE.includes(c)||v[c].length>60?' wide':''}"><div class="tl">${esc(c)}</div><div class="tv">${esc(v[c])}</div></div>`).join('')}</div></section>`}).join('');
-  $('pjF').textContent=hidden?hidden+' kolom kosong tidak ditampilkan':'';
-  $('pj').hidden=false;$('pjBody').scrollTop=0;$('pjX').focus();
+  $('pjB').innerHTML=has('Status Dev')?badge('Status Dev'):'';
+  $('pjC').innerHTML=['Application','Doc. Type','Year Request','Doc. Date'].filter(c=>v[c]).map(c=>`<span title="${esc(c)}">${esc(v[c])}</span>`).join('');
+  $('pjBody').innerHTML=card('','Status','--g-apps',`<div class="pdr">${st}</div>`)+card('','PIC','--g-br',`<div class="pdg">${pic}</div>`)+card('','Timeline','--a1',tlh)+card('','Bobot','--g-done',`<div class="pdb">${bb}</div>`.replace(/^<div class="pdb"><\/div>$/,''))+card('','Identitas &amp; Aplikasi','--a2',`<div class="pdr">${idn}</div>`);
+  $('pjF').innerHTML=empty?`<button class="mini" id="pdT" type="button">${PD.all?'Sembunyikan':'Tampilkan'} ${empty} kolom kosong</button>`:'';
 }
+function openProject(ri){PD.ri=ri;PD.all=false;pdRender();$('pj').hidden=false;$('pj').scrollTop=0;$('pjX').focus()}
+$('pjF').addEventListener('click',e=>{if(e.target.closest('#pdT')){PD.all=!PD.all;pdRender()}});
+$('pjBody').addEventListener('click',e=>{const t=e.target.closest('.pdv');if(!t||t.querySelector('.e,.gp')||t.classList.contains('e'))return;const x=t.textContent;navigator.clipboard&&navigator.clipboard.writeText(x).then(()=>{if(typeof flash==='function')flash('Disalin: '+x.slice(0,40))},()=>{})});
 
 /* ---------- aging ---------- */
 function renderAge(P){
@@ -1544,9 +1594,9 @@ const nbTag=()=>{const {groups}=nbGroups();return (NB.pic!==''&&groups[0]?'_'+gr
 function nbXlsx(){
   if(typeof XLSX==='undefined'){nbSay('Library Excel belum termuat. Periksa koneksi internet lalu coba lagi.',true);return}
   const {groups}=nbGroups();
-  const sum=[['PIC','Divisi','Jumlah dokumen belum ada '+nbLbl()]],det=[['PIC','Divisi','Doc. No.','Dokumen','Doc. Type','Status Dev','Year Request','Year Done','Aplikasi','BR PIC','Dev PIC']];
+  const sum=[['PIC','Divisi','Jumlah dokumen belum ada '+nbLbl()]],tm=NB.mode==='t',det=[['PIC','Divisi','Doc. No.','Dokumen',...(tm?['PIC BR']:[]),'Doc. Type','Status Dev','Year Request','Year Done','Aplikasi',...(tm?[]:['BR PIC']),'Dev PIC']];
   groups.forEach(g=>{sum.push([g.name,g.div,g.list.length]);
-    g.list.forEach(i=>{const r=D.rows[i];det.push([g.name,g.div,r[12],r[13],r[20],r[3],r[0],r[2],r[15],r[18],r[16]])})});
+    g.list.forEach(i=>{const r=D.rows[i];det.push([g.name,g.div,r[12],r[13],...(tm?[r[18]]:[]),r[20],r[3],r[0],r[2],r[15],...(tm?[]:[r[18]]),r[16]])})});
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(sum),'Ringkasan');
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(det),'Daftar');
@@ -1557,15 +1607,15 @@ function nbText(){
   const {groups,uniq}=nbGroups();
   const L=[`*Dokumen belum ada ${nbLbl()}* · Year Request ${NB.all?'semua':([...S.yr].sort().join(', ')||'-')}`+(D.cut?` · Cut-off ${D.cut}`:''),`Total ${uniq.size} dokumen`,''];
   groups.forEach(g=>{L.push(`*${g.name}* (${g.div}) · ${g.list.length} dokumen`);
-    g.list.forEach((i,n)=>{const r=D.rows[i];L.push(`${n+1}. ${r[12]} · ${r[20]} · ${trunc(r[13],55)} – ${r[3]}`)});L.push('')});
+    g.list.forEach((i,n)=>{const r=D.rows[i];L.push(`${n+1}. ${r[12]} · ${r[20]} · ${trunc(r[13],55)} – ${r[3]}${NB.mode==='t'?` · PIC BR: ${r[18]||'-'}`:''}`)});L.push('')});
   return L.join('\n').trim();
 }
 function nbCard(g){
   const printed=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
-  const rows=g.list.map((i,n)=>{const r=D.rows[i];return `<tr><td class="mono r" style="color:#7a8595">${n+1}</td><td class="mono" style="color:#1d5fd1;font-weight:600">${esc(r[12])}</td><td class="tx" style="min-width:300px">${esc(r[13])}</td><td>${esc(r[20])}</td><td>${esc(r[3])}</td><td>${esc(r[2])||'-'}</td><td>${esc(r[18])||'-'}</td><td class="tx">${esc(r[16])||'-'}</td></tr>`}).join('');
+  const rows=g.list.map((i,n)=>{const r=D.rows[i];return `<tr><td class="mono r" style="color:#7a8595">${n+1}</td><td class="mono" style="color:#1d5fd1;font-weight:600">${esc(r[12])}</td><td class="tx" style="min-width:300px">${esc(r[13])}</td>${NB.mode==='t'?`<td class="tx"><b>${esc(r[18])||'-'}</b></td>`:''}<td>${esc(r[20])}</td><td>${esc(r[3])}</td><td>${esc(r[2])||'-'}</td>${NB.mode==='t'?'':`<td>${esc(r[18])||'-'}</td>`}<td class="tx">${esc(r[16])||'-'}</td></tr>`}).join('');
   return `<div class="rpage nbcard"><div class="rp-hd"><div><div class="t">Dokumen belum ada ${nbLbl()}</div><div class="nm">${esc(g.name)}</div><span class="rp-div">${esc(g.div==='-'?'Tanpa PIC':'Divisi '+g.div)}</span> <span class="nbn">${nf.format(g.list.length)} dokumen</span></div>
   <div class="rp-meta"><div>Year Request: <b>${esc(NB.all?'semua':([...S.yr].sort().join(', ')||'-'))}</b></div><div>Cut-off: <b>${esc(D.cut||'-')}</b></div><div>Tanggal: <b>${esc(printed)}</b></div></div></div>
-  <table><thead><tr><th class="r">#</th><th>Doc. No.</th><th>Dokumen</th><th>Tipe</th><th>Status Dev</th><th>Year Done</th><th>BR PIC</th><th>Dev PIC</th></tr></thead><tbody>${rows}</tbody></table>
+  <table><thead><tr><th class="r">#</th><th>Doc. No.</th><th>Dokumen</th>${NB.mode==='t'?'<th>PIC BR</th>':''}<th>Tipe</th><th>Status Dev</th><th>Year Done</th>${NB.mode==='t'?'':'<th>BR PIC</th>'}<th>Dev PIC</th></tr></thead><tbody>${rows}</tbody></table>
   <div class="rp-foot" style="margin-top:0">${NB.mode==='t'?'Kriteria: semua Doc. Type kecuali DR, Doc. No. tanpa -XXX / -DDD, Status Dev Ready to Pilot / Pilot / Release, Bobot Testing 1, 2 dan 3 semuanya kosong, nilai 0 dianggap sudah ada bobot (PIC = Testing PIC).':'Kriteria: Doc. Type SD/PI/ED, Doc. No. tanpa -XXX / -DDD, Bobot Dokumen kosong atau 0.'} Monitoring Productivity Apps.</div></div>`;
 }
 async function nbCanvas(g){
@@ -2179,7 +2229,7 @@ function bdBase(){
     out.push({ri,r,sg:sgOf(r[3]),wk:sgOf(r[3])==='DONE'?bdWk(r[2]):null,age,names:D.names[ri][0].filter(k=>MK.has(k)),pj:pjc?(DV.cells[ri][pjc.i]||''):''})}
   BD.ph=ph;return out;
 }
-const bdItems=()=>{const f=BD_F;return BD.base.filter(it=>(!f.pic||(it.names.length?it.names.some(n=>f.pic.has(n)):f.pic.has('__none')))&&(!f.app||f.app.has(it.r[15]||'(kosong)'))&&(!f.pj||f.pj.has(it.pj||'(kosong)'))&&(!f.nm||f.nm.has(it.r[13]||'(kosong)'))&&(!f.sg||f.sg.has(it.sg)))};
+const bdItems=()=>{const f=BD_F;return BD.base.filter(it=>(!f.pic||(it.names.length?it.names.some(n=>f.pic.has(n)):f.pic.has('__none')))&&(!f.app||f.app.has(it.r[15]||'(kosong)'))&&(!f.pj||f.pj.has(it.pj||'(kosong)'))&&(!f.nm||f.nm.has(it.r[13]||'(kosong)'))&&(!f.sg||f.sg.has(it.sg))&&(!f.sd||f.sd.has(it.r[3]||'(BLANK)')))};
 function bdSorter(){
   if(BD.so==='no')return (a,b)=>String(a.r[12]).localeCompare(String(b.r[12]),undefined,{numeric:true});
   const d=BD.so==='old'?1:-1;
@@ -2245,13 +2295,13 @@ function bdGantt(items){
     const r=it.r,x=Math.round((s-minD)*ppd),w=Math.max(8,Math.round((f-s+1)*ppd)),pc=bdPct(it);
     const tip=[r[12],r[13],r[3],it.wk?`${bdD(bdIso(s))} → selesai minggu ke-${it.wk.w} (Year Done ${r[2]})`:`${est?'(perkiraan) ':''}${bdD(bdIso(s))} → ${bdD(bdIso(f))}`,pc>=0&&!est?'Progress '+Math.round(pc*100)+'%':''].filter(Boolean).join(' · ');
     const lab=est?(w>=64?nf.format(f-s+1)+' hr':''):(pc>=0&&w>=34?Math.round(pc*100)+'%':'');
-    return `<div class="gt-row" data-ri="${it.ri}" tabindex="0" style="--c:${bdCol(it.sg)}"><div class="gt-lab" style="width:${LW}px" title="${esc(tip)}"><span class="gst" style="width:${GW}px">${esc(r[3]||'-')}</span><span class="gnm">${esc(r[13])}</span>${bdStuck(it)?'<span class="kbad">!</span>':''}</div>`+
+    return `<div class="gt-row" data-ri="${it.ri}" tabindex="0" style="--c:${bdCol(it.sg)}"><div class="gt-lab" style="width:${LW}px" title="${esc(tip)}"><span class="gnm">${esc(r[13])}</span><span class="gst" style="width:${GW}px">${esc(r[3]||'-')}</span>${bdStuck(it)?'<span class="kbad">!</span>':''}</div>`+
       `<div class="gt-tr" style="width:${W}px"><div class="gt-bar${est?' est':''}" style="left:${x}px;width:${w}px" title="${esc(tip)}">${!est&&pc>0?`<i style="width:${Math.round(pc*100)}%"></i>`:''}<span>${lab}</span></div></div></div>`}).join('');
   const more=bars.length>BD.gl?`<div class="gt-more"><button class="mini" id="gtMore" type="button">Tampilkan ${Math.min(250,bars.length-BD.gl)} lagi (sisa ${nf.format(bars.length-BD.gl)})</button></div>`:'';
   BD.info=`${nf.format(bars.length)} bar${bars.length>BD.gl?` (menampilkan ${nf.format(BD.gl)})`:''} · ${nf.format(undated)} dokumen tanpa tanggal tidak ditampilkan`+ph;
   BD.gx={LW,ppd,minD,today};
   const lg='<div class="gt-lg">'+KB_ORD.map(k=>`<span style="--c:${bdCol(k)}"><i></i>${KB_NM[k]}</span>`).join('')+'<span><i class="d"></i>Putus-putus = perkiraan (belum ada Start/Finish Date)</span><span>Dokumen Done: bar berakhir di Jumat minggu Year Done</span></div>';
-  return `<div class="gt-wrap"><div class="gt-hdw" id="gtHd"><div class="gt-hd" style="height:${HH}px;width:${LW+W}px"><div class="gt-cn" style="width:${LW}px">Status Dev · Doc. Name</div><div class="gt-ms" style="width:${W}px;height:${HH}px">${ms}${wk}<span class="gt-tl" style="left:${tx}px">Hari ini</span></div></div></div>`+
+  return `<div class="gt-wrap"><div class="gt-hdw" id="gtHd"><div class="gt-hd" style="height:${HH}px;width:${LW+W}px"><div class="gt-cn" style="width:${LW}px">Doc. Name · Status Dev</div><div class="gt-ms" style="width:${W}px;height:${HH}px">${ms}${wk}<span class="gt-tl" style="left:${tx}px">Hari ini</span></div></div></div>`+
     `<div class="gt" id="gtBox"><div class="gt-in" style="width:${LW+W}px"><div class="gt-bd"><div class="gt-gr" style="left:${LW}px;width:${W}px">${gl}<b class="gt-td" style="left:${tx}px"></b></div>${rows}</div></div></div></div>${more}${lg}`;
 }
 function bdRender(){
@@ -2296,10 +2346,10 @@ $('bdMain').addEventListener('click',e=>{
 $('bdMain').addEventListener('keydown',e=>{if(e.key==='Enter'){const c=e.target.closest('.gt-row[data-ri]');if(c)openProject(+c.dataset.ri)}});
 
 /* ---------- filter multi-select + tombol Terapkan ---------- */
-const BF_KEYS=['pic','app','pj','nm','sg'],BF={key:null,q:''};
-const BD_F={pic:null,app:null,pj:null,nm:null,sg:null};   // yang sedang diterapkan (null = semua)
-const BD_P={pic:null,app:null,pj:null,nm:null,sg:null};   // pilihan sementara di popup
-const BF_LB={pic:['Semua PIC','PIC'],app:['Semua aplikasi','aplikasi'],pj:['Semua project','project'],nm:['Semua dokumen','dokumen'],sg:['Semua status (5)','status']};
+const BF_KEYS=['pic','app','pj','nm','sg','sd'],BF={key:null,q:''};
+const BD_F={pic:null,app:null,pj:null,nm:null,sg:null,sd:null};   // yang sedang diterapkan (null = semua)
+const BD_P={pic:null,app:null,pj:null,nm:null,sg:null,sd:null};   // pilihan sementara di popup
+const BF_LB={pic:['Semua PIC','PIC'],app:['Semua aplikasi','aplikasi'],pj:['Semua project','project'],nm:['Semua dokumen','dokumen'],sg:['Semua status (5)','status'],sd:['Semua status dev','status dev']};
 BD.opts={};
 function bfOpts(key){
   if(BD.opts[key])return BD.opts[key];
@@ -2308,6 +2358,7 @@ function bfOpts(key){
   else if(key==='app')BD.base.forEach(it=>{const a=it.r[15]||'(kosong)';add(a,a)});
   else if(key==='pj')BD.base.forEach(it=>{const a=it.pj||'(kosong)';add(a,a)});
   else if(key==='nm')BD.base.forEach(it=>{const a=it.r[13]||'(kosong)';add(a,a)});
+  else if(key==='sd')BD.base.forEach(it=>{const a=it.r[3]||'(BLANK)';add(a,a)});
   else BD.base.forEach(it=>add(it.sg,KB_NM[it.sg]));
   let out=[...cnt.entries()].map(([v,c])=>({v,l:lab.get(v),c}));
   out=key==='sg'?KB_ORD.map(k=>out.find(o=>o.v===k)||{v:k,l:KB_NM[k],c:0}):out.sort((a,b)=>a.l.localeCompare(b.l,undefined,{numeric:true}));
@@ -2369,9 +2420,10 @@ $('bfl').addEventListener('change',e=>{
 });
 $('bfAll').onclick=()=>{if(!BF.key)return;const cur=new Set(BD_P[BF.key]||bfOpts(BF.key).map(o=>o.v));bfVis().forEach(o=>cur.add(o.v));bfSet(cur)};
 $('bfNone').onclick=()=>{if(!BF.key)return;const cur=new Set(BD_P[BF.key]||bfOpts(BF.key).map(o=>o.v));bfVis().forEach(o=>cur.delete(o.v));bfSet(cur)};
-/* Terapkan saat ada kata pencarian: filter hanya hasil pencarian yang dicentang (seperti filter Excel) */
+/* Terapkan saat ada kata pencarian: bila belum ada filter, hanya hasil pencarian yang dicentang; bila sudah ada filter, pilihan lama dipertahankan dan pilihan baru ditambahkan */
 function bfCommit(){
   if(!BF.key||!BF.q.trim())return true;
+  if(BD_F[BF.key]&&BD_P[BF.key]&&BD_P[BF.key].size)return true; /* sudah ada filter aktif: pilihan baru ditambahkan ke pilihan lama */
   const cur=BD_P[BF.key],pick=bfVis().filter(o=>!cur||cur.has(o.v));
   if(!pick.length){bfRevert();return false}
   BD_P[BF.key]=new Set(pick.map(o=>o.v));return true;
@@ -2472,7 +2524,7 @@ function exGantt(items){
     const [c,x]=exCanvas();exHead(x,'Gantt Dokumen');
     const rows=bars.slice(p*cap,(p+1)*cap),y0=top+HD,yE=y0+rows.length*RH;
     x.fillStyle=EXK.soft;x.fillRect(EXP.M,top,EXP.W-2*EXP.M,HD);
-    exT(x,'Status Dev · Doc. Name',EXP.M+10,top+HD-14,LW-16,exF(700,14),EXK.ink2);
+    exT(x,'Doc. Name · Status Dev',EXP.M+10,top+HD-14,LW-16,exF(700,14),EXK.ink2);
     const d0=new Date(minD*864e5);let Y=d0.getUTCFullYear(),M=d0.getUTCMonth();
     for(;;){const a=Date.UTC(Y,M,1)/864e5,b=Date.UTC(Y,M+1,1)/864e5-1;if(a>maxD)break;
       const l=Math.max(a,minD),rg=Math.min(b,maxD),xl=X(l),w=(rg-l+1)*ppd;
@@ -2489,8 +2541,8 @@ function exGantt(items){
         if(ppd*7>=24)exT(x,new Date(d*864e5).getUTCDate(),xl+3,top+HD-14,ppd*7-4,exF(400,11),EXK.ink3)}}
     rows.forEach(({it,s,f,est},i)=>{const y=y0+i*RH,col=EXG[it.sg],r=it.r;
       if(i%2){x.fillStyle='rgba(244,246,250,.7)';x.fillRect(EXP.M,y,EXP.W-2*EXP.M,RH)}
-      exT(x,r[3]||'-',EXP.M+8,y+17,132,exF(700,11.5),exMix(col,.35));
-      exT(x,r[13],EXP.M+148,y+17,LW-186,exF(400,13),EXK.ink);
+      exT(x,r[13],EXP.M+8,y+17,LW-166,exF(400,13),EXK.ink);
+      exT(x,r[3]||'-',EXP.M+LW-150,y+17,132,exF(700,11.5),exMix(col,.35));
       if(bdStuck(it))exT(x,'!',EXP.M+LW-14,y+17,0,exF(700,14),EXK.crit,'center');
       const bx=X(s),bw=Math.max(6,(f-s+1)*ppd),pc=bdPct(it);
       exRR(x,bx,y+5,bw,16,5);
