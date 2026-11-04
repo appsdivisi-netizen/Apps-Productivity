@@ -681,6 +681,16 @@ body.vkan .wrap,body.vgantt .wrap{max-width:none}
 .gt-td{border-left-color:color-mix(in srgb,var(--crit) 55%,transparent)}
 .gt-tl{background:var(--crit-bg);color:var(--crit);border:1px solid color-mix(in srgb,var(--crit) 30%,var(--surface))}
 .gt-lg i{background:color-mix(in srgb,var(--c) 55%,var(--surface))}
+
+/* Dokumen belum ada bobot: satu scroll untuk seluruh layar */
+#nb{overflow-y:auto;overscroll-behavior:contain}
+#nb>*{flex-shrink:0}
+#nb .dt{overflow:visible;flex:none;min-height:0;margin-bottom:18px}
+#nb{padding-top:0}
+#nb>:first-child{margin-top:18px}
+#nbTbl th{top:0;z-index:3}
+#nbTbl tr.nbg td{top:var(--nbh,40px);z-index:2;background:color-mix(in srgb,var(--accent) 12%,var(--surface))}
+body:has(#nb:not([hidden])){overflow:hidden}
 </style>
 
 <div class="wrap">
@@ -695,7 +705,7 @@ body.vkan .wrap,body.vgantt .wrap{max-width:none}
         <div class="pop"><div class="acts"><button class="mini" id="ydAll">Semua</button><button class="mini" id="ydNone">Kosongkan</button></div><div id="ydYears"></div>
           <div class="lbl" style="margin:10px 0 6px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)">Kuartal</div><div class="chips" id="ydQs"></div><div class="meta" id="ydHint" style="margin-top:8px"></div></div></details></div>
     <div class="fg"><span class="lbl">Data</span><div class="btns"><button class="btn adm" id="btnUp" type="button">Upload data</button><button class="btn adm" id="btnMp" type="button">Master PIC</button><button class="btn adm" id="btnEx" type="button">Pengecualian</button><button class="btn adm" id="btnClr" type="button" title="Hapus data di server (semua pengguna)">Hapus data</button><input type="file" id="fileIn" accept=".xlsx,.xlsm,.xls" hidden><button class="btn" id="btnLogin" type="button">Login admin</button><button class="btn" id="btnLogout" type="button" hidden>Logout admin</button></div></div>
-    <div class="fg dep"><span class="lbl">Laporan</span><div class="btns"><button class="btn pri" id="btnRp" type="button">Laporan PIC</button><button class="btn" id="btnNb" type="button">Dokumen tanpa bobot</button></div></div>
+    <div class="fg dep"><span class="lbl">Laporan</span><div class="btns"><button class="btn pri" id="btnRp" type="button">Laporan PIC</button><button class="btn" id="btnNb" type="button">Dokumen belum ada bobot</button></div></div>
     <nav class="tabs dep" role="tablist" aria-label="Tampilan"><button class="tab" role="tab" id="tabD" aria-selected="true" type="button">Dashboard</button><button class="tab" role="tab" id="tabV" aria-selected="false" type="button">Data</button></nav>
   </div>
   </header>
@@ -847,9 +857,9 @@ body.vkan .wrap,body.vgantt .wrap{max-width:none}
   <div class="rpview" id="rpView"></div>
 </div>
 <div id="nb" hidden role="dialog" aria-modal="true" aria-labelledby="nbT">
-  <div class="mph"><div><h2 id="nbT">Dokumen belum ada bobot per PIC</h2><div class="meta">Doc. Type SD, PI, ED · Doc. No. yang mengandung -XXX atau -DDD tidak dihitung · Bobot Dokumen kosong / 0 · PIC = Task PIC 2 yang ada di Master PIC · klik ▾ di judul kolom untuk filter</div></div>
+  <div class="mph"><div><h2 id="nbT">Dokumen belum ada bobot per PIC</h2><div class="meta" id="nbMeta"></div></div>
     <div class="pjr"><button class="btn pri" id="nbXls" type="button">Unduh Excel</button><button class="btn" id="nbPng" type="button">Unduh PNG</button><button class="btn" id="nbTxt" type="button">Salin teks WhatsApp</button><button class="btn" id="nbX" type="button">Tutup</button></div></div>
-  <div class="rpbar"><div class="fg"><label class="lbl" for="nbPic">PIC (tampilan &amp; unduhan)</label><select class="sel" id="nbPic"></select></div>
+  <div class="rpbar"><nav class="tabs" role="tablist" aria-label="Jenis bobot"><button class="tab" role="tab" id="nbMd" aria-selected="true" type="button">Bobot Dokumen</button><button class="tab" role="tab" id="nbMt" aria-selected="false" type="button">Bobot Testing</button></nav><div class="fg"><label class="lbl" for="nbPic">PIC (tampilan &amp; unduhan)</label><select class="sel" id="nbPic"></select></div>
     <label class="agel"><input type="checkbox" id="nbAll"> Abaikan filter Year Request (semua tahun)</label>
     <button class="mini" id="nbReset" type="button">Reset filter kolom</button></div>
   <div class="stt" id="nbS" role="status"></div>
@@ -975,7 +985,7 @@ function ingest(cols,aoa,src,cut){
     if(docNo){(docIdx.get(docNo)||docIdx.set(docNo,[]).get(docNo)).push(i)}
     new Set([...tpN,...p1,...p2,...p3]).forEach(n=>nameCount.set(n,(nameCount.get(n)||0)+1));
     rows.push([yrOk?yr:'Lainnya',yd,ydl,st,[],numv(g(r,'Bobot Dokumen')),[],numv(g(r,'Bobot Testing PIC 1')),[],numv(g(r,'Bobot Testing PIC 2')),[],numv(g(r,'Bobot Testing PIC 3')),
-      docNo,str(g(r,'Doc. Name')).replace(/\s+/g,' ').slice(0,140),str(g(r,'Description')).replace(/\s+/g,' ').slice(0,200),str(g(r,'Application')).slice(0,40),str(g(r,'Dev PIC')).slice(0,60),str(g(r,'Task PIC_2')).slice(0,60),str(g(r,'BR PIC')).slice(0,40),isoDate('Doc. Date',g(r,'Doc. Date')),str(g(r,'Doc. Type')).toUpperCase().replace(/[^A-Z]/g,'').slice(0,10),isoDate('Start Date',g(r,'Start Date')),isoDate('Finish Date',g(r,'Finish Date')),(()=>{const v=g(r,'Work Complete');if(!isNum(v))return -1;const n=+v;return n>1?Math.min(n/100,1):Math.max(n,0)})()]);
+      docNo,str(g(r,'Doc. Name')).replace(/\s+/g,' ').slice(0,140),str(g(r,'Description')).replace(/\s+/g,' ').slice(0,200),str(g(r,'Application')).slice(0,40),str(g(r,'Dev PIC')).slice(0,60),str(g(r,'Task PIC_2')).slice(0,60),str(g(r,'BR PIC')).slice(0,40),isoDate('Doc. Date',g(r,'Doc. Date')),str(g(r,'Doc. Type')).toUpperCase().replace(/[^A-Z]/g,'').slice(0,10),isoDate('Start Date',g(r,'Start Date')),isoDate('Finish Date',g(r,'Finish Date')),(()=>{const v=g(r,'Work Complete');if(!isNum(v))return -1;const n=+v;return n>1?Math.min(n/100,1):Math.max(n,0)})(),['Bobot Testing PIC 1','Bobot Testing PIC 2','Bobot Testing PIC 3'].some(c=>str(g(r,c))!=='')?1:0]);
     names.push([tpN,p1,p2,p3]);raw.push(r);
   }
   docIdx.forEach(a=>{if(a.length>1)q.dup.push(...a)});
@@ -1465,18 +1475,27 @@ document.querySelectorAll('#hfp [data-hs]').forEach(b=>b.onclick=()=>{
 hfMake('dr',[{id:'no',label:'Doc. No.',get:r=>r[12]},{id:'nm',label:'Dokumen',get:r=>r[13]},{id:'ds',label:'Description',get:r=>r[14]},{id:'st',label:'Status Dev',get:r=>r[3]},{id:'ap',label:'Aplikasi',get:r=>r[15]},{id:'tp',label:'Task PIC 2',get:r=>r[17]},{id:'br',label:'BR PIC',get:r=>r[18]},{id:'dv',label:'Dev PIC',get:r=>r[16]},{id:'bb',label:'Bobot Dok.',right:true,get:r=>r[5]>0?r[5]:'-'}],()=>DR?DR.idx:[],()=>drawDetail());
 /* ---------- dokumen tanpa bobot ---------- */
 const NB_TYPES=['SD','PI','ED'];
-let NB={all:false,pic:'',skip:0};
+let NB={all:false,pic:'',skip:0,mode:'d'};
+const nbLbl=()=>NB.mode==='t'?'bobot testing':'bobot dokumen';
+const NB_META={d:'Doc. Type SD, PI, ED · Doc. No. yang mengandung -XXX atau -DDD tidak dihitung · Bobot Dokumen kosong / 0 · PIC = Task PIC 2 yang ada di Master PIC · klik ▾ di judul kolom untuk filter',
+  t:'Semua Doc. Type kecuali DR · Doc. No. yang mengandung -XXX atau -DDD tidak dihitung · Status Dev READY TO PILOT, PILOT, RELEASE · Bobot Testing 1, 2 dan 3 semuanya kosong (nilai 0 dianggap sudah ada bobot) · PIC = Testing PIC 1, 2, 3 yang ada di Master PIC · klik ▾ di judul kolom untuk filter'};
+const NB_GOOD=['READY TO PILOT','PILOT','RELEASE'];
 hfMake('nb',[{id:'no',label:'Doc. No.',get:r=>r[12]},{id:'nm',label:'Dokumen',get:r=>r[13]},{id:'tp',label:'Tipe',get:r=>r[20]},{id:'st',label:'Status Dev',get:r=>r[3]},{id:'yr',label:'Year Req.',get:r=>r[0]},{id:'yd',label:'Year Done',get:r=>r[2]||'-'},{id:'ap',label:'Aplikasi',get:r=>r[15]},{id:'br',label:'BR PIC',get:r=>r[18]},{id:'dv',label:'Dev PIC',get:r=>r[16]}],
   ()=>[...new Set(nbBase().filter(it=>NB.pic===''||it.k===NB.pic).map(it=>it.i))],()=>nbRender());
 function nbBase(){
   const items=[];let skip=0;
+  const T=NB.mode==='t';
   D.rows.forEach((r,i)=>{
-    if(!NB_TYPES.includes(r[20]))return;
     if(/-XXX|-DDD/i.test(r[12]))return;
-    if(r[5]>0)return;
+    if(T){
+      if(r[20]==='DR'||!NB_GOOD.includes(r[3])||(r[24]===undefined?(r[7]||0)+(r[9]||0)+(r[11]||0)>0:r[24]===1))return;
+    }else{
+      if(!NB_TYPES.includes(r[20])||r[5]>0)return;
+    }
     if(!NB.all&&!S.yr.has(r[0]))return;
-    if(!r[4].length){skip++;return}
-    r[4].forEach(p=>items.push({i,k:String(p),name:D.pics[p].n,div:D.pics[p].a}));
+    const ps=T?[...new Set([...r[6],...r[8],...r[10]])]:r[4];
+    if(!ps.length){skip++;return}
+    ps.forEach(p=>items.push({i,k:String(p),name:D.pics[p].n,div:D.pics[p].a}));
   });
   NB.skip=skip;return items;
 }
@@ -1498,42 +1517,45 @@ function nbRender(){
   $('nbPic').innerHTML=`<option value="">Semua PIC (${nf.format(uq.size)} dok.)</option>`+pk.map(([k,v])=>`<option value="${esc(k)}">${esc(v.name)} · ${esc(v.div)} (${nf.format(v.s.size)})</option>`).join('');
   $('nbPic').value=NB.pic;
   $('nbTbl').innerHTML=`<thead><tr>${hfHead('nb')}</tr></thead><tbody id="nbBody"></tbody>`;
-  nbBody();
+  nbBody();requestAnimationFrame(nbSticky);
 }
+function nbSticky(){const t=$('nbTbl').tHead;if(t&&t.offsetHeight)$('nbTbl').style.setProperty('--nbh',t.offsetHeight+'px')}
 function nbBody(){
   const {groups,uniq}=nbGroups();
   const act=Object.keys(HF.nb.sel).length;
-  nbSay(`${nf.format(uniq.size)} dokumen unik · ${groups.length} PIC · Year Request: ${NB.all?'semua':([...S.yr].sort().join(', ')||'-')}${act?` · ${act} filter kolom aktif`:''}. Hanya PIC yang ada di Master PIC${NB.skip?` (${nf.format(NB.skip)} dokumen dilewati karena Task PIC belum terdaftar)`:''}. Dokumen dengan lebih dari satu Task PIC muncul di tiap PIC. Unduhan mengikuti tampilan ini.`);
+  nbSay(`${nf.format(uniq.size)} dokumen unik · ${groups.length} PIC · Year Request: ${NB.all?'semua':([...S.yr].sort().join(', ')||'-')}${act?` · ${act} filter kolom aktif`:''}. Hanya PIC yang ada di Master PIC${NB.skip?` (${nf.format(NB.skip)} dokumen dilewati karena ${NB.mode==='t'?'Testing PIC':'Task PIC'} kosong / belum terdaftar)`:''}. Dokumen dengan lebih dari satu ${NB.mode==='t'?'Testing PIC':'Task PIC'} muncul di tiap PIC. Unduhan mengikuti tampilan ini.`);
   let h='';
   groups.forEach(g=>{
     h+=`<tr class="nbg"><td colspan="9"><b>${esc(g.name)}</b> · ${esc(g.div)} · ${nf.format(g.list.length)} dokumen</td></tr>`;
     g.list.forEach(i=>{const r=D.rows[i];
       h+=`<tr class="pr" data-ri="${i}" tabindex="0"><td class="nw dn">${esc(r[12])}</td><td>${esc(r[13])}</td><td class="nw">${esc(r[20])}</td><td class="nw"><span class="gp sm" style="--g:var(--g-${sgOf(r[3]).toLowerCase()})">${esc(r[3])}</span></td><td class="nw">${esc(r[0])}</td><td class="nw">${esc(r[2])||'-'}</td><td>${esc(r[15])}</td><td>${esc(r[18])}</td><td>${esc(r[16])}</td></tr>`});
   });
-  if(!groups.length)h='<tr><td colspan="9" style="color:var(--good)">Tidak ada dokumen tanpa bobot pada kriteria ini.</td></tr>';
+  if(!groups.length)h=`<tr><td colspan="9" style="color:var(--good)">Tidak ada dokumen yang belum ada ${nbLbl()} pada kriteria ini.</td></tr>`;
   $('nbBody').innerHTML=h;
 }
 function nbOpen(){
   if(!D)return;
   if(!D.cols.includes('Doc. Type')){flash('Kolom "Doc. Type" tidak ditemukan di Excel, daftar tidak bisa dibuat.',true);return}
-  NB.pic='';hfReset('nb');$('nbAll').checked=NB.all;nbSay('');nbRender();$('nb').hidden=false;
+  NB.pic='';hfReset('nb');$('nbAll').checked=NB.all;nbSay('');nbMeta();nbRender();$('nb').hidden=false;
 }
+function nbMeta(){$('nbMeta').textContent=NB_META[NB.mode];$('nbMd').setAttribute('aria-selected',String(NB.mode==='d'));$('nbMt').setAttribute('aria-selected',String(NB.mode==='t'))}
+function nbMode(m){if(NB.mode===m)return;NB.mode=m;NB.pic='';hfReset('nb');nbMeta();nbRender()}
 const nbTag=()=>{const {groups}=nbGroups();return (NB.pic!==''&&groups[0]?'_'+groups[0].name.replace(/[^\w]+/g,'_'):'')+(D.cut?'_'+D.cut.replace(/[^\w.-]+/g,'_'):'')};
 function nbXlsx(){
   if(typeof XLSX==='undefined'){nbSay('Library Excel belum termuat. Periksa koneksi internet lalu coba lagi.',true);return}
   const {groups}=nbGroups();
-  const sum=[['PIC','Divisi','Jumlah dokumen tanpa bobot']],det=[['PIC','Divisi','Doc. No.','Dokumen','Doc. Type','Status Dev','Year Request','Year Done','Aplikasi','BR PIC','Dev PIC']];
+  const sum=[['PIC','Divisi','Jumlah dokumen belum ada '+nbLbl()]],det=[['PIC','Divisi','Doc. No.','Dokumen','Doc. Type','Status Dev','Year Request','Year Done','Aplikasi','BR PIC','Dev PIC']];
   groups.forEach(g=>{sum.push([g.name,g.div,g.list.length]);
     g.list.forEach(i=>{const r=D.rows[i];det.push([g.name,g.div,r[12],r[13],r[20],r[3],r[0],r[2],r[15],r[18],r[16]])})});
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(sum),'Ringkasan');
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(det),'Daftar');
-  XLSX.writeFile(wb,'Dokumen_Tanpa_Bobot'+nbTag()+'.xlsx');
+  XLSX.writeFile(wb,'Dokumen_Belum_Ada_'+(NB.mode==='t'?'Bobot_Testing':'Bobot_Dokumen')+nbTag()+'.xlsx');
   nbSay('File Excel diunduh sesuai tampilan (PIC dan filter kolom yang aktif).');
 }
 function nbText(){
   const {groups,uniq}=nbGroups();
-  const L=[`*Dokumen belum ada bobot* · Year Request ${NB.all?'semua':([...S.yr].sort().join(', ')||'-')}`+(D.cut?` · Cut-off ${D.cut}`:''),`Total ${uniq.size} dokumen`,''];
+  const L=[`*Dokumen belum ada ${nbLbl()}* · Year Request ${NB.all?'semua':([...S.yr].sort().join(', ')||'-')}`+(D.cut?` · Cut-off ${D.cut}`:''),`Total ${uniq.size} dokumen`,''];
   groups.forEach(g=>{L.push(`*${g.name}* (${g.div}) · ${g.list.length} dokumen`);
     g.list.forEach((i,n)=>{const r=D.rows[i];L.push(`${n+1}. ${r[12]} · ${r[20]} · ${trunc(r[13],55)} – ${r[3]}`)});L.push('')});
   return L.join('\n').trim();
@@ -1541,10 +1563,10 @@ function nbText(){
 function nbCard(g){
   const printed=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
   const rows=g.list.map((i,n)=>{const r=D.rows[i];return `<tr><td class="mono r" style="color:#7a8595">${n+1}</td><td class="mono" style="color:#1d5fd1;font-weight:600">${esc(r[12])}</td><td class="tx" style="min-width:300px">${esc(r[13])}</td><td>${esc(r[20])}</td><td>${esc(r[3])}</td><td>${esc(r[2])||'-'}</td><td>${esc(r[18])||'-'}</td><td class="tx">${esc(r[16])||'-'}</td></tr>`}).join('');
-  return `<div class="rpage nbcard"><div class="rp-hd"><div><div class="t">Dokumen belum ada bobot</div><div class="nm">${esc(g.name)}</div><span class="rp-div">${esc(g.div==='-'?'Tanpa PIC':'Divisi '+g.div)}</span> <span class="nbn">${nf.format(g.list.length)} dokumen</span></div>
+  return `<div class="rpage nbcard"><div class="rp-hd"><div><div class="t">Dokumen belum ada ${nbLbl()}</div><div class="nm">${esc(g.name)}</div><span class="rp-div">${esc(g.div==='-'?'Tanpa PIC':'Divisi '+g.div)}</span> <span class="nbn">${nf.format(g.list.length)} dokumen</span></div>
   <div class="rp-meta"><div>Year Request: <b>${esc(NB.all?'semua':([...S.yr].sort().join(', ')||'-'))}</b></div><div>Cut-off: <b>${esc(D.cut||'-')}</b></div><div>Tanggal: <b>${esc(printed)}</b></div></div></div>
   <table><thead><tr><th class="r">#</th><th>Doc. No.</th><th>Dokumen</th><th>Tipe</th><th>Status Dev</th><th>Year Done</th><th>BR PIC</th><th>Dev PIC</th></tr></thead><tbody>${rows}</tbody></table>
-  <div class="rp-foot" style="margin-top:0">Kriteria: Doc. Type SD/PI/ED, Doc. No. tanpa -XXX / -DDD, Bobot Dokumen kosong atau 0. Monitoring Productivity Apps.</div></div>`;
+  <div class="rp-foot" style="margin-top:0">${NB.mode==='t'?'Kriteria: semua Doc. Type kecuali DR, Doc. No. tanpa -XXX / -DDD, Status Dev Ready to Pilot / Pilot / Release, Bobot Testing 1, 2 dan 3 semuanya kosong, nilai 0 dianggap sudah ada bobot (PIC = Testing PIC).':'Kriteria: Doc. Type SD/PI/ED, Doc. No. tanpa -XXX / -DDD, Bobot Dokumen kosong atau 0.'} Monitoring Productivity Apps.</div></div>`;
 }
 async function nbCanvas(g){
   await loadH2C();
@@ -1558,13 +1580,13 @@ async function nbBusy(fn,msg){
   const bs=[...document.querySelectorAll('#nb .btn')];bs.forEach(b=>b.disabled=true);if(msg)nbSay(msg);
   try{await fn()}catch(e){nbSay(e.message||String(e),true)}finally{bs.forEach(b=>b.disabled=false)}
 }
-$('btnNb').onclick=nbOpen;$('nbX').onclick=()=>{$('nb').hidden=true};$('nbXls').onclick=nbXlsx;
+$('nbMd').onclick=()=>nbMode('d');$('nbMt').onclick=()=>nbMode('t');$('btnNb').onclick=nbOpen;$('nbX').onclick=()=>{$('nb').hidden=true};$('nbXls').onclick=nbXlsx;
 $('nbTxt').onclick=()=>nbBusy(async()=>{const t=nbText();await copyText(t);nbSay('Teks WhatsApp disalin ('+nf.format(t.length)+' karakter).')});
 $('nbPng').onclick=()=>nbBusy(async()=>{
   const {groups}=nbGroups();if(!groups.length)throw new Error('Tidak ada dokumen untuk dijadikan gambar.');
   let n=0;
   for(const g of groups){nbSay(`Membuat gambar ${++n} dari ${groups.length}: ${g.name}…`);
-    dl(await toBlob(await nbCanvas(g)),'Dokumen_Tanpa_Bobot_'+g.name.replace(/[^\w]+/g,'_')+(D.cut?'_'+D.cut.replace(/[^\w.-]+/g,'_'):'')+'.png');
+    dl(await toBlob(await nbCanvas(g)),'Dokumen_Belum_Ada_'+(NB.mode==='t'?'Bobot_Testing_':'Bobot_Dokumen_')+g.name.replace(/[^\w]+/g,'_')+(D.cut?'_'+D.cut.replace(/[^\w.-]+/g,'_'):'')+'.png');
     await new Promise(r=>setTimeout(r,450))}
   nbSay(`${groups.length} file PNG diunduh (satu gambar per PIC). Kalau browser menanyakan izin unduhan banyak file, klik Izinkan.`);
 });
@@ -2142,6 +2164,10 @@ const BD_MON=['JAN','FEB','MAR','APR','MEI','JUN','JUL','AGU','SEP','OKT','NOV',
 const bdD=s=>s?s.slice(8,10)+'-'+s.slice(5,7)+'-'+s.slice(0,4):'';
 const bdDn=s=>Math.floor(Date.parse(s)/864e5);
 const bdIso=n=>new Date(n*864e5).toISOString().slice(0,10);
+/* Dokumen selesai: tanggal selesai = minggu di Year Done (YYYY.Qn.bulan.minggu), bukan Finish Date (itu selesai development) */
+const bdWk=l=>{const m=/^(\d{4})\.Q[1-4]\.\d+\.(\d+)$/.exec(l||'');if(!m)return null;const y=+m[1],w=+m[2];if(w<1||w>53)return null;
+  const j4=Math.floor(Date.UTC(y,0,4)/864e5),dow=(new Date(j4*864e5).getUTCDay()+6)%7,mon=j4-dow+(w-1)*7;return {y,w,mon,fri:mon+4}};
+const bdWkTxt=k=>`W${k.w}-${k.y}`;
 const bdCol=sg=>`var(--g-${sg.toLowerCase()})`;
 const bdPct=it=>{const w=it.r[23];return w>=0?w:(it.sg==='DONE'?1:-1)};
 const bdInProc=it=>it.sg==='DEV'||it.sg==='APPS'||it.sg==='BR';
@@ -2150,7 +2176,7 @@ function bdBase(){
   const out=[],now=Date.now(),MK=new Set(MASTER.map(m=>m.k)),pjc=DV.meta.find(m=>/^project$/i.test(m.name));let ph=0;BD.pjCol=pjc?pjc.i:-1;
   for(const ri of DV.idx){const r=D.rows[ri];/* placeholder (-XXX/-DDD) ikut tampil di Kanban & Gantt */
     let age=null;if(r[19]){const a=Math.floor((now-Date.parse(r[19]))/864e5);if(a>=0)age=a}
-    out.push({ri,r,sg:sgOf(r[3]),age,names:D.names[ri][0].filter(k=>MK.has(k)),pj:pjc?(DV.cells[ri][pjc.i]||''):''})}
+    out.push({ri,r,sg:sgOf(r[3]),wk:sgOf(r[3])==='DONE'?bdWk(r[2]):null,age,names:D.names[ri][0].filter(k=>MK.has(k)),pj:pjc?(DV.cells[ri][pjc.i]||''):''})}
   BD.ph=ph;return out;
 }
 const bdItems=()=>{const f=BD_F;return BD.base.filter(it=>(!f.pic||(it.names.length?it.names.some(n=>f.pic.has(n)):f.pic.has('__none')))&&(!f.app||f.app.has(it.r[15]||'(kosong)'))&&(!f.pj||f.pj.has(it.pj||'(kosong)'))&&(!f.nm||f.nm.has(it.r[13]||'(kosong)'))&&(!f.sg||f.sg.has(it.sg)))};
@@ -2161,7 +2187,7 @@ function bdSorter(){
 }
 function bdCard(it){
   const r=it.r,pc=bdPct(it);
-  const dates=r[21]||r[22]?`${bdD(r[21])||'?'} → ${bdD(r[22])||'?'}`:(r[19]?`Doc. Date ${bdD(r[19])}${it.age!=null?' · umur '+nf.format(it.age)+' hari':''}`:'Tanpa tanggal');
+  const dates=it.wk?`${r[21]?bdD(r[21]):'?'} → Selesai ${bdWkTxt(it.wk)}`:r[21]||r[22]?`${bdD(r[21])||'?'} → ${bdD(r[22])||'?'}`:(r[19]?`Doc. Date ${bdD(r[19])}${it.age!=null?' · umur '+nf.format(it.age)+' hari':''}`:'Tanpa tanggal');
   return `<button class="kcard" type="button" data-ri="${it.ri}" style="--c:${bdCol(it.sg)}"><div class="k1"><span class="kno">${esc(r[12]||'-')}</span>${r[20]?`<span class="kty">${esc(r[20])}</span>`:''}${bdStuck(it)?`<span class="kbad">Aging ${nf.format(it.age)} hr</span>`:''}</div>`+
     `<div class="knm">${esc(r[13]||'(tanpa nama)')}</div><div class="k2"><span class="kst">${esc(r[3])}</span>${r[15]?`<span class="kap">${esc(r[15])}</span>`:''}</div>`+
     (pc>=0?`<div class="kpg" title="Work Complete (kolom di Excel/Coda). Dokumen Done tanpa nilai dianggap 100%."><i style="width:${Math.round(pc*100)}%"></i><b>${Math.round(pc*100)}%</b></div>`:'')+
@@ -2180,6 +2206,7 @@ function bdKanban(items){
 function bdBars(items){
   const today=Math.floor(Date.now()/864e5),bars=[];let undated=0;
   for(const it of items){const r=it.r,inp=bdInProc(it);
+    if(it.wk){const w=it.wk;let s=r[21]?bdDn(r[21]):w.mon;if(s>w.fri)s=w.mon;bars.push({it,s,f:w.fri,est:false});continue}
     let s=r[21]?bdDn(r[21]):null,f=r[22]?bdDn(r[22]):null,est=false;
     if(s==null&&f==null){if(inp&&BD.run==='1'&&r[19]){s=bdDn(r[19]);f=Math.max(today,s);est=true}else{undated++;continue}}
     else if(f==null){if(inp){f=Math.max(today,s);est=true}else{undated++;continue}}
@@ -2216,14 +2243,14 @@ function bdGantt(items){
     for(let d=minD+((7-dow)%7);d<=maxD;d+=7){const x=Math.round((d-minD)*ppd);wk+=`<div class="gt-w" style="left:${x}px">${new Date(d*864e5).getUTCDate()}</div>`;gl+=`<i class="wk" style="left:${x}px"></i>`}}
   const rows=bars.slice(0,BD.gl).map(({it,s,f,est})=>{
     const r=it.r,x=Math.round((s-minD)*ppd),w=Math.max(8,Math.round((f-s+1)*ppd)),pc=bdPct(it);
-    const tip=[r[12],r[13],r[3],`${est?'(perkiraan) ':''}${bdD(bdIso(s))} → ${bdD(bdIso(f))}`,pc>=0&&!est?'Progress '+Math.round(pc*100)+'%':''].filter(Boolean).join(' · ');
+    const tip=[r[12],r[13],r[3],it.wk?`${bdD(bdIso(s))} → selesai minggu ke-${it.wk.w} (Year Done ${r[2]})`:`${est?'(perkiraan) ':''}${bdD(bdIso(s))} → ${bdD(bdIso(f))}`,pc>=0&&!est?'Progress '+Math.round(pc*100)+'%':''].filter(Boolean).join(' · ');
     const lab=est?(w>=64?nf.format(f-s+1)+' hr':''):(pc>=0&&w>=34?Math.round(pc*100)+'%':'');
     return `<div class="gt-row" data-ri="${it.ri}" tabindex="0" style="--c:${bdCol(it.sg)}"><div class="gt-lab" style="width:${LW}px" title="${esc(tip)}"><span class="gst" style="width:${GW}px">${esc(r[3]||'-')}</span><span class="gnm">${esc(r[13])}</span>${bdStuck(it)?'<span class="kbad">!</span>':''}</div>`+
       `<div class="gt-tr" style="width:${W}px"><div class="gt-bar${est?' est':''}" style="left:${x}px;width:${w}px" title="${esc(tip)}">${!est&&pc>0?`<i style="width:${Math.round(pc*100)}%"></i>`:''}<span>${lab}</span></div></div></div>`}).join('');
   const more=bars.length>BD.gl?`<div class="gt-more"><button class="mini" id="gtMore" type="button">Tampilkan ${Math.min(250,bars.length-BD.gl)} lagi (sisa ${nf.format(bars.length-BD.gl)})</button></div>`:'';
   BD.info=`${nf.format(bars.length)} bar${bars.length>BD.gl?` (menampilkan ${nf.format(BD.gl)})`:''} · ${nf.format(undated)} dokumen tanpa tanggal tidak ditampilkan`+ph;
   BD.gx={LW,ppd,minD,today};
-  const lg='<div class="gt-lg">'+KB_ORD.map(k=>`<span style="--c:${bdCol(k)}"><i></i>${KB_NM[k]}</span>`).join('')+'<span><i class="d"></i>Putus-putus = perkiraan (belum ada Start/Finish Date)</span></div>';
+  const lg='<div class="gt-lg">'+KB_ORD.map(k=>`<span style="--c:${bdCol(k)}"><i></i>${KB_NM[k]}</span>`).join('')+'<span><i class="d"></i>Putus-putus = perkiraan (belum ada Start/Finish Date)</span><span>Dokumen Done: bar berakhir di Jumat minggu Year Done</span></div>';
   return `<div class="gt-wrap"><div class="gt-hdw" id="gtHd"><div class="gt-hd" style="height:${HH}px;width:${LW+W}px"><div class="gt-cn" style="width:${LW}px">Status Dev · Doc. Name</div><div class="gt-ms" style="width:${W}px;height:${HH}px">${ms}${wk}<span class="gt-tl" style="left:${tx}px">Hari ini</span></div></div></div>`+
     `<div class="gt" id="gtBox"><div class="gt-in" style="width:${LW+W}px"><div class="gt-bd"><div class="gt-gr" style="left:${LW}px;width:${W}px">${gl}<b class="gt-td" style="left:${tx}px"></b></div>${rows}</div></div></div></div>${more}${lg}`;
 }
@@ -2410,7 +2437,7 @@ function exCard(x,it,X,Y,W,H){
   exT(x,st,px,Y+88,sw,exF(700,13),exMix(col,.35));
   const ap=r[15]||'';if(ap)exT(x,ap,px+sw+10,Y+88,pw*.28,exF(400,13),EXK.ink3);
   exT(x,r[17]||'Task PIC: -',X+W-12,Y+88,pw*.42,exF(400,13),EXK.ink2,'right');
-  const pc=bdPct(it),dt=r[21]||r[22]?`${bdD(r[21])||'?'} → ${bdD(r[22])||'?'}`:(r[19]?`Doc. Date ${bdD(r[19])}${it.age!=null?' · umur '+nf.format(it.age)+' hari':''}`:'Tanpa tanggal');
+  const pc=bdPct(it),dt=it.wk?`${bdD(r[21])||'?'} → Selesai ${bdWkTxt(it.wk)}`:r[21]||r[22]?`${bdD(r[21])||'?'} → ${bdD(r[22])||'?'}`:(r[19]?`Doc. Date ${bdD(r[19])}${it.age!=null?' · umur '+nf.format(it.age)+' hari':''}`:'Tanpa tanggal');
   exT(x,dt+(pc>=0?` · ${Math.round(pc*100)}%`:''),px,Y+H-9,pw,exM(400,11.5),EXK.ink3);
 }
 function exKanban(items){
@@ -2477,7 +2504,7 @@ function exGantt(items){
     x.strokeStyle=EXK.line;x.lineWidth=1;x.strokeRect(EXP.M+.5,top+.5,EXP.W-2*EXP.M-1,yE-top-1);
     let lx=EXP.M;const ly=EXP.H-48;
     KB_ORD.forEach(k=>{x.fillStyle=exA(EXG[k],.6);exRR(x,lx,ly-10,12,12,3);x.fill();x.font=exF(400,14);const nm=KB_NM[k];exT(x,nm,lx+18,ly+1,0,exF(400,14),EXK.ink2);lx+=18+x.measureText(nm).width+22});
-    x.setLineDash([3,2]);x.strokeStyle=EXK.ink3;exRR(x,lx,ly-10,22,12,3);x.stroke();x.setLineDash([]);exT(x,'Putus-putus = perkiraan (belum ada Start/Finish Date)'+(undated?` · ${nf.format(undated)} dokumen tanpa tanggal tidak ditampilkan`:''),lx+30,ly+1,EXP.W-lx-EXP.M-30,exF(400,14),EXK.ink2);
+    x.setLineDash([3,2]);x.strokeStyle=EXK.ink3;exRR(x,lx,ly-10,22,12,3);x.stroke();x.setLineDash([]);exT(x,'Putus-putus = perkiraan · Done: bar berakhir di Jumat minggu Year Done'+(undated?` · ${nf.format(undated)} dokumen tanpa tanggal tidak ditampilkan`:''),lx+30,ly+1,EXP.W-lx-EXP.M-30,exF(400,14),EXK.ink2);
     exFoot(x,p+1,np,hidden&&p===np-1?`+${nf.format(hidden)} bar tidak ditampilkan (batas ${EXP.MAXP} halaman), persempit dengan filter`:'');
     pages.push(c)}
   return pages;
@@ -2520,7 +2547,7 @@ function bdWaText(){
   const L=[`*${K?'Kanban':'Gantt'} Dokumen* · ${exToday()}`+(D.cut?` · Cut-off ${D.cut}`:''),exSub().replace(/ {3}· {3}/g,' · '),''];
   let len=L.join('\n').length,left=0;
   const add=l=>{if(len+l.length+1>WA_MAX){left++;return false}L.push(l);len+=l.length+1;return true};
-  const meta=it=>{const r=it.r,pc=bdPct(it);return [r[12]||'-',trunc(r[13]||'(tanpa nama)',60),r[3],r[17]||'tanpa PIC'].join(' · ')+(bdStuck(it)?` · ⚠ aging ${it.age} hr`:'')};
+  const meta=it=>{const r=it.r,pc=bdPct(it);return [r[12]||'-',trunc(r[13]||'(tanpa nama)',60),r[3],r[17]||'tanpa PIC'].join(' · ')+(it.wk?` · selesai minggu ke-${it.wk.w}`:'')+(bdStuck(it)?` · ⚠ aging ${it.age} hr`:'')};
   if(K){
     const g={};KB_ORD.forEach(k=>g[k]=[]);items.forEach(it=>g[it.sg].push(it));const so=bdSorter();
     (BD_F.sg?KB_ORD.filter(k=>BD_F.sg.has(k)):KB_ORD).forEach(k=>{const a=g[k].sort(so);if(!a.length)return;
@@ -2528,7 +2555,7 @@ function bdWaText(){
   }else{
     const {bars,undated}=bdBars(items);
     add(`*${nf.format(bars.length)} dokumen bertanggal*`);
-    bars.forEach(({it,s,f,est},i)=>{const r=it.r;add(`${i+1}. ${r[12]||'-'} · ${trunc(r[13]||'(tanpa nama)',55)} · ${r[3]} · ${est?`dibuat ${bdDs(s)} · berjalan ${f-s+1} hr`:`${bdDs(s)} → ${bdDs(f)} (${f-s+1} hr)`}${bdStuck(it)?' ⚠':''}`)});
+    bars.forEach(({it,s,f,est},i)=>{const r=it.r;add(`${i+1}. ${r[12]||'-'} · ${trunc(r[13]||'(tanpa nama)',55)} · ${r[3]} · ${it.wk?`${bdDs(s)} → selesai minggu ke-${it.wk.w} (${bdDs(it.wk.mon)}–${bdDs(it.wk.fri)})`:est?`dibuat ${bdDs(s)} · berjalan ${f-s+1} hr`:`${bdDs(s)} → ${bdDs(f)} (${f-s+1} hr)`}${bdStuck(it)?' ⚠':''}`)});
     if(undated)add(`\n${nf.format(undated)} dokumen tanpa tanggal tidak dimuat.`);
   }
   if(left)L.push(`… +${nf.format(left)} baris lagi tidak dimuat (batas panjang pesan). Persempit dengan filter.`);
