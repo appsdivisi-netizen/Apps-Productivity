@@ -1668,10 +1668,11 @@ document.querySelectorAll('#hfp [data-hs]').forEach(b=>b.onclick=()=>{
 
 hfMake('dr',[{id:'no',label:'Doc. No.',get:r=>r[12]},{id:'nm',label:'Dokumen',get:r=>r[13]},{id:'ds',label:'Description',get:r=>r[14]},{id:'st',label:'Status Dev',get:r=>r[3]},{id:'ap',label:'Aplikasi',get:r=>r[15]},{id:'tp',label:'Task PIC 2',get:r=>r[17]},{id:'br',label:'BR PIC',get:r=>r[18]},{id:'dv',label:'Dev PIC',get:r=>r[16]},{id:'bb',label:'Bobot Dok.',right:true,get:r=>r[5]>0?r[5]:'-'}],()=>DR?DR.idx:[],()=>drawDetail());
 /* ---------- dokumen tanpa bobot ---------- */
-const NB_TYPES=['SD','PI','ED','PIST'];
+const NB_TYPES=['SD','PI','ED'];
+const NB_F=r=>/^\s*F/i.test(String(r[12]||''));
 let NB={all:false,pic:'',skip:0,mode:'d'};
 const nbLbl=()=>NB.mode==='t'?'bobot testing':'bobot dokumen';
-const NB_META={d:'Doc. Type SD, PI, ED, PIST · Doc. No. yang mengandung -XXX atau -DDD tidak dihitung · Bobot Dokumen kosong (nilai 0 dst dianggap sudah ada bobot) · PIC = Task PIC 2 yang ada di Master PIC · klik ▾ di judul kolom untuk filter',
+const NB_META={d:'Doc. Type SD, PI, ED atau Doc. No. diawali huruf F · Doc. No. yang mengandung -XXX atau -DDD tidak dihitung · Bobot Dokumen kosong (nilai 0 dst dianggap sudah ada bobot) · PIC = Task PIC 2 yang ada di Master PIC · klik ▾ di judul kolom untuk filter',
   t:'Semua Doc. Type kecuali DR · Doc. No. yang mengandung -XXX atau -DDD tidak dihitung · Status Dev READY TO PILOT, PILOT, RELEASE · Bobot Testing 1, 2 dan 3 semuanya kosong (nilai 0 dianggap sudah ada bobot) · PIC = Testing PIC 1, 2, 3 yang ada di Master PIC · klik ▾ di judul kolom untuk filter'};
 const NB_GOOD=['READY TO PILOT','PILOT','RELEASE'];
 hfMake('nb',[{id:'no',label:'Doc. No.',get:r=>r[12]},{id:'nm',label:'Dokumen',get:r=>r[13]},{id:'tp',label:'Tipe',get:r=>r[20]},{id:'st',label:'Status Dev',get:r=>r[3]},{id:'yr',label:'Year Req.',get:r=>r[0]},{id:'yd',label:'Year Done',get:r=>r[2]||'-'},{id:'ap',label:'Aplikasi',get:r=>r[15]},{id:'br',label:'BR PIC',get:r=>r[18]},{id:'dv',label:'Dev PIC',get:r=>r[16]}],
@@ -1684,7 +1685,7 @@ function nbBase(){
     if(T){
       if(r[20]==='DR'||!NB_GOOD.includes(r[3])||(r[24]===undefined?(r[7]||0)+(r[9]||0)+(r[11]||0)>0:r[24]===1))return;
     }else{
-      if(!NB_TYPES.includes(r[20])||(r[25]===undefined?r[5]>0:r[25]===1))return;
+      if(!(NB_TYPES.includes(r[20])||NB_F(r))||(r[25]===undefined?r[5]>0:r[25]===1))return;
     }
     if(!NB.all&&!S.yr.has(r[0]))return;
     const ps=T?[...new Set([...r[6],...r[8],...r[10]])]:r[4];
@@ -1760,7 +1761,7 @@ function nbCard(g){
   return `<div class="rpage nbcard"><div class="rp-hd"><div><div class="t">Dokumen belum ada ${nbLbl()}</div><div class="nm">${esc(g.name)}</div><span class="rp-div">${esc(g.div==='-'?'Tanpa PIC':'Divisi '+g.div)}</span> <span class="nbn">${nf.format(g.list.length)} dokumen</span></div>
   <div class="rp-meta"><div>Year Request: <b>${esc(NB.all?'semua':([...S.yr].sort().join(', ')||'-'))}</b></div><div>Cut-off: <b>${esc(D.cut||'-')}</b></div><div>Tanggal: <b>${esc(printed)}</b></div></div></div>
   <table><thead><tr><th class="r">#</th><th>Doc. No.</th><th>Dokumen</th>${NB.mode==='t'?'<th>PIC BR</th>':''}<th>Tipe</th><th>Status Dev</th><th>Year Done</th>${NB.mode==='t'?'':'<th>BR PIC</th>'}<th>Dev PIC</th></tr></thead><tbody>${rows}</tbody></table>
-  <div class="rp-foot" style="margin-top:0">${NB.mode==='t'?'Kriteria: semua Doc. Type kecuali DR, Doc. No. tanpa -XXX / -DDD, Status Dev Ready to Pilot / Pilot / Release, Bobot Testing 1, 2 dan 3 semuanya kosong, nilai 0 dianggap sudah ada bobot (PIC = Testing PIC).':'Kriteria: Doc. Type SD/PI/ED/PIST, Doc. No. tanpa -XXX / -DDD, Bobot Dokumen kosong (nilai 0 dst dianggap sudah ada bobot).'} Monitoring Productivity Apps.</div></div>`;
+  <div class="rp-foot" style="margin-top:0">${NB.mode==='t'?'Kriteria: semua Doc. Type kecuali DR, Doc. No. tanpa -XXX / -DDD, Status Dev Ready to Pilot / Pilot / Release, Bobot Testing 1, 2 dan 3 semuanya kosong, nilai 0 dianggap sudah ada bobot (PIC = Testing PIC).':'Kriteria: Doc. Type SD/PI/ED atau Doc. No. diawali huruf F, Doc. No. tanpa -XXX / -DDD, Bobot Dokumen kosong (nilai 0 dst dianggap sudah ada bobot).'} Monitoring Productivity Apps.</div></div>`;
 }
 async function nbCanvas(g){
   await loadH2C();
