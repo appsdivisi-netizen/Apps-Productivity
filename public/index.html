@@ -2239,7 +2239,7 @@ function cdWatch(){
 }
 $('cdSave').onclick=async()=>{try{await cdSave();flash('Pengaturan Coda disimpan.')}catch(e){flash(e.message,true)}};
 $('cdTest').onclick=async()=>{
-  try{await cdSave();const r=await apiSend('POST','/coda/test');$('cdSt').className='meta';$('cdSt').textContent=`✓ Terhubung ke tabel “${r.table}” (${r.cols} kolom${r.rows!=null?', ±'+nf.format(r.rows)+' baris':''}).`}
+  try{await cdSave();const r=await apiSend('POST','/coda/test');$('cdSt').className='meta';$('cdSt').textContent=`✓ Terhubung ke tabel “${r.table}” (${r.cols} kolom${r.rows!=null?', ±'+nf.format(r.rows)+' baris':''}).${r.type==='view'?' ⚠ Ini VIEW'+(r.filtered?' dengan FILTER':'')+(r.parent?' dari tabel “'+r.parent+'”':'')+', bukan tabel utama: baris yang ditarik bisa lebih sedikit. Gunakan ID tabel utamanya.':''}`}
   catch(e){$('cdSt').className='meta cd-err';$('cdSt').textContent='⚠ '+e.message}};
 $('cdSync').onclick=async()=>{try{await cdSave();await apiSend('POST','/coda/sync');cdStatus({state:'running'},null);cdWatch()}catch(e){flash(e.message,true)}};
 async function liveReload(){
