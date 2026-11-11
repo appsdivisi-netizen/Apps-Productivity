@@ -768,6 +768,7 @@ body:has(#pj:not([hidden])){overflow:hidden}
 #btnDq[hidden]{display:none}
 .envb{display:inline-block;margin-left:12px;padding:2px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-size:12px;font-weight:600;vertical-align:middle;letter-spacing:.02em}.envb[hidden]{display:none}
 .pns{display:grid;gap:8px;padding:12px 0;border-top:1px solid var(--line)}.pns h3{margin:0;font-size:14px}
+.pdchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.pdchip{padding:2px 10px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);font-size:13px}
 </style>
 
 <div class="wrap">
@@ -825,6 +826,9 @@ body:has(#pj:not([hidden])){overflow:hidden}
         <div class="fg"><span class="lbl">Doc. Name</span><button class="bfb" type="button" id="bfb-nm" data-k="nm" aria-haspopup="dialog"><span class="bfv">Semua dokumen</span></button></div>
         <div class="fg"><span class="lbl">Status (kolom)</span><button class="bfb" type="button" id="bfb-sg" data-k="sg" aria-haspopup="dialog"><span class="bfv">Semua status</span></button></div>
         <div class="fg"><span class="lbl">Status Dev</span><button class="bfb" type="button" id="bfb-sd" data-k="sd" aria-haspopup="dialog"><span class="bfv">Semua status dev</span></button></div>
+        <div class="fg"><span class="lbl">ADOP Project Backlog</span><button class="bfb" type="button" id="bfb-ab" data-k="ab" aria-haspopup="dialog"><span class="bfv">Semua project backlog</span></button></div>
+        <div class="fg"><span class="lbl">ADOP Sprint</span><button class="bfb" type="button" id="bfb-as" data-k="as" aria-haspopup="dialog"><span class="bfv">Semua sprint</span></button></div>
+        <div class="fg"><span class="lbl">ADOP Status Project</span><button class="bfb" type="button" id="bfb-ap" data-k="ap" aria-haspopup="dialog"><span class="bfv">Semua status project</span></button></div>
         <div class="fg rs"><span class="lbl">&nbsp;</span><button class="btn" id="bdReset" type="button">Reset</button></div>
         <div class="bdbr"></div>
         <div class="fg"><label class="lbl" for="bdSo">Urutkan</label><select class="sel" id="bdSo"><option value="old">Terlama dulu</option><option value="new">Terbaru dulu</option><option value="no">Doc. No.</option></select></div>
@@ -1322,12 +1326,13 @@ function drawDetail(){
    L.slice(0,lim).map(({i,r})=>`<tr class="pr" data-ri="${i}" tabindex="0"><td class="nw dn">${esc(r[12])}</td><td>${esc(r[13])}</td><td>${esc(r[14])}</td><td class="nw"><span class="gp sm" style="--g:var(--g-${sgOf(r[3]).toLowerCase()})">${esc(r[3])}</span></td><td>${esc(r[15])}</td><td>${esc(r[17])}</td><td>${esc(r[18])}</td><td>${esc(r[16])}</td><td class="nw" style="text-align:right${r[5]>0?'':';color:var(--ink-3)'}">${r[5]>0?nf.format(r[5]):'-'}</td></tr>`).join('')+'</tbody>';
 }
 const closeDetail=()=>{$('dr').hidden=true;$('ov').hidden=true;$('pj').hidden=true};
+const PD_AD=['ADOP Project Backlog','ADOP Sprint','ADOP Status SS','ADOP Status Project','ADOP PIC Dev','ADOP Dev Sprint','Test Sprint'];
 const PD_PIC=['BR PIC','Task PIC_2','Dev PIC','Testing PIC 1','Testing PIC 2','Testing PIC 3','Test PIC','Testing PIC','Modified by'],PD_ST=['Status Dev','Status Project','Year Done','Work Complete','Concern'],PD_BB=['Bobot Dokumen','Bobot Testing PIC 1','Bobot Testing PIC 2','Bobot Testing PIC 3'],PD_TD=['Doc. Date','Start Date','Finish Date','Doc Cycle Date','Test Cycle Date','Deliver Testing','Plan Pilot','Deliver Release'],WIDE=['Doc. Name','Description','Concern'],PD={ri:null,all:false};
 function pdRender(){
   const d=D.raw[PD.ri],v={},cols=D.cols.filter(Boolean);cols.forEach((c,i)=>{v[c]=cellStr(c,d[D.cols.indexOf(c)])});
   const ISO=/^\d{4}-\d{2}-\d{2}/,show=c=>v[c]!==''||PD.all,has=c=>v[c]!==undefined,isT=c=>ISO.test(v[c])||PD_TD.includes(c);
   const empty=cols.filter(c=>v[c]==='').length,val=c=>v[c]===''?'<span class="e">–</span>':esc(v[c]);
-  const used=new Set([...PD_PIC,...PD_ST,...PD_BB]);
+  const used=new Set([...PD_PIC,...PD_ST,...PD_BB,...PD_AD]);
   const badge=c=>{const g=SG.find(x=>x[2].includes(String(v[c]||'(BLANK)').toUpperCase()));return `<span class="gp" style="--g:var(--g-${(g?g[0]:'OTH').toLowerCase()})">${esc(v[c]||'(BLANK)')}</span>`};
   const av=n=>{let h=0;for(const ch of n)h=(h*31+ch.charCodeAt(0))%360;const w=n.replace(/@.*/,'').split(/[\s.,_]+/).filter(Boolean);return `<i class="av" style="background:hsl(${h} 50% 42%)">${esc(((w[0]||'?')[0]+((w[1]||'')[0]||(w[0]||'')[1]||'')).toUpperCase())}</i>`};
   const row=c=>`<div class="pdf${WIDE.includes(c)||v[c].length>60?' w':''}"><div class="pdl">${esc(c)}</div><div class="pdv${v[c]===''?' e':''}">${val(c)}</div></div>`;
@@ -1337,11 +1342,12 @@ function pdRender(){
   const bb=PD_BB.filter(c=>has(c)&&show(c)).map(c=>`<div class="pds"><div class="pdl">${esc(c)}</div><div class="pdn${v[c]===''?' e':''}">${val(c)}</div></div>`).join('');
   const tl=cols.filter(c=>isT(c)&&!used.has(c)&&show(c)).sort((x,y)=>(v[x]===''?1:0)-(v[y]===''?1:0)||v[x].localeCompare(v[y]));
   const tlh=tl.length?`<div class="tl2">${tl.map(c=>`<div class="tli${v[c]===''?' e':''}"><div class="pdl">${esc(c)}</div><div class="pdv${v[c]===''?' e':''}">${val(c)}</div></div>`).join('')}</div>`:'';
+  const ad=PD_AD.filter(c=>has(c)&&show(c)).map(c=>{const L=MV_COLS.includes(c)?mvSplit(v[c]):(v[c]?[v[c]]:[]);return `<div class="pdf w"><div class="pdl">${esc(c)}</div><div class="pdchips">${L.length?L.map(x=>`<span class="pdchip">${esc(x)}</span>`).join(''):'<span class="e">–</span>'}</div></div>`}).join('');
   const idn=cols.filter(c=>!used.has(c)&&!isT(c)&&show(c)).map(row).join('');
   $('pjT').textContent=v['Doc. No.']||'Dokumen';$('pjN').textContent=v['Doc. Name']||'';
   $('pjB').innerHTML=has('Status Dev')?badge('Status Dev'):'';
   $('pjC').innerHTML=['Application','Doc. Type','Year Request','Doc. Date'].filter(c=>v[c]).map(c=>`<span title="${esc(c)}">${esc(v[c])}</span>`).join('');
-  $('pjBody').innerHTML=card('','Status','--g-apps',`<div class="pdr">${st}</div>`)+card('','PIC','--g-br',`<div class="pdg">${pic}</div>`)+card('','Timeline','--a1',tlh)+card('','Bobot','--g-done',`<div class="pdb">${bb}</div>`.replace(/^<div class="pdb"><\/div>$/,''))+card('','Identitas &amp; Aplikasi','--a2',`<div class="pdr">${idn}</div>`);
+  $('pjBody').innerHTML=card('','Status','--g-apps',`<div class="pdr">${st}</div>`)+card('','PIC','--g-br',`<div class="pdg">${pic}</div>`)+card('','Timeline','--a1',tlh)+card('','Bobot','--g-done',`<div class="pdb">${bb}</div>`.replace(/^<div class="pdb"><\/div>$/,''))+card('','ADOP','--g-apps',ad?`<div class="pdr">${ad}</div>`:'')+card('','Identitas &amp; Aplikasi','--a2',`<div class="pdr">${idn}</div>`);
   $('pjF').innerHTML=empty?`<button class="mini" id="pdT" type="button">${PD.all?'Sembunyikan':'Tampilkan'} ${empty} kolom kosong</button>`:'';
 }
 function openProject(ri){PD.ri=ri;PD.all=false;pdRender();$('pj').hidden=false;$('pj').scrollTop=0;$('pjX').focus()}
@@ -1965,7 +1971,10 @@ document.addEventListener('keydown',e=>{
 
 /* ---------- Tab Data: tabel sumber (filter, cari, kolom) ---------- */
 const DV={d:null,meta:[],byI:{},cells:[],low:[],vis:new Set(),sel:{},txt:{},uni:{},sort:null,q:'',tok:[],follow:false,idx:[]};
-const DV_RH=34,DV_DEF=['Doc. No.','Doc. Name','Doc. Type','Status Dev','Year Request','Year Done','Task PIC_2','Testing PIC 1','Testing PIC 2','Testing PIC 3','Bobot Dokumen','Bobot Testing PIC 1','Bobot Testing PIC 2','Bobot Testing PIC 3','Doc. Date','Application'];
+const MV_COLS=['ADOP Project Backlog','ADOP Sprint','ADOP Status SS','ADOP Status Project','ADOP PIC Dev','ADOP Dev Sprint'],DV_NEW=['ADOP Project Backlog','ADOP Sprint','ADOP Status Project'];
+/* nilai ganda dalam satu sel (dipisah koma; koma di dalam kurung diabaikan; Excel "," dan Coda ", " sama-sama dikenali) */
+function mvSplit(v){const o=[];let d=0,c='';for(const ch of String(v==null?'':v)){if(ch==='(')d++;else if(ch===')')d=Math.max(0,d-1);if(ch===','&&d===0){o.push(c);c=''}else c+=ch}o.push(c);return [...new Set(o.map(x=>x.trim()).filter(Boolean))]}
+const DV_RH=34,DV_DEF=['Doc. No.','Doc. Name','Doc. Type','Status Dev','Year Request','Year Done','Task PIC_2','Testing PIC 1','Testing PIC 2','Testing PIC 3','Bobot Dokumen','Bobot Testing PIC 1','Bobot Testing PIC 2','Bobot Testing PIC 3','Doc. Date','Application','ADOP Project Backlog','ADOP Sprint','ADOP Status Project'];
 const DV_MOB=['Doc. No.','Doc. Name','Status Dev','Task PIC_2','Year Done','Bobot Dokumen'];
 const dvW=n=>n==='Doc. Name'?320:n==='Description'?340:n==='Status Dev'?150:/^Bobot/.test(n)?120:n==='Doc. No.'?130:140;
 function dvDefault(){const L=innerWidth<760?DV_MOB:DV_DEF;const a=L.filter(n=>DV.meta.some(m=>m.name===n));return new Set(a.length?a:DV.meta.slice(0,6).map(m=>m.name))}
@@ -1973,8 +1982,9 @@ function dvInit(){
   if(DV.d===D)return;DV.d=D;const cols=D.cols;
   DV.meta=[];DV.byI={};cols.forEach((c,i)=>{if(c){const m={i,name:c,num:/^Bobot/.test(c),w:dvW(c)};DV.meta.push(m);DV.byI[i]=m}});
   DV.cells=D.raw.map(r=>cols.map((c,i)=>cellStr(c,r[i])));DV.low=DV.cells.map(a=>a.join('\u0001').toLowerCase());
-  DV.sel={};DV.txt={};DV.uni={};DV.sort=null;DV.q='';$('dvQ').value='';
+  DV.sel={};DV.txt={};DV.mv={};DV.uni={};DV.sort=null;DV.q='';$('dvQ').value='';
   const sv=lsGet('prodDvCols',null);const ok=Array.isArray(sv)?sv.filter(n=>DV.meta.some(m=>m.name===n)):[];
+  if(ok.length&&lsGet('prodDvColsV',0)<2&&DV_NEW.some(n=>DV.meta.some(m=>m.name===n))){for(const n of DV_NEW)if(DV.meta.some(m=>m.name===n)&&!ok.includes(n))ok.push(n);lsSet('prodDvCols',ok);lsSet('prodDvColsV',2)}
   DV.vis=ok.length?new Set(ok):dvDefault();dvColRender();
 }
 const dvCols=()=>{let c=DV.meta.filter(m=>DV.vis.has(m.name));if(!c.length)c=DV.meta.slice(0,5);const pr=['Doc. No.','Doc. Name'];return [...pr.map(n=>c.find(m=>m.name===n)).filter(Boolean),...c.filter(m=>!pr.includes(m.name))]};
@@ -1985,6 +1995,7 @@ function dvPass(ri,skip){
   if(DV.tok.length){const l=DV.low[ri];for(const t of DV.tok)if(!l.includes(t))return false}
   for(const k in DV.sel){if(+k===skip)continue;const v=DV.cells[ri][k];if(!DV.sel[k].has(v===''?'(kosong)':v))return false}
   for(const k in DV.txt){if(+k===skip)continue;if(!DV.cells[ri][k].toLowerCase().includes(DV.txt[k]))return false}
+  for(const k in (DV.mv||{})){if(+k===skip)continue;if(!mvSplit(DV.cells[ri][k]).includes(DV.mv[k]))return false}
   return true;
 }
 function dvRun(reset){
@@ -2047,9 +2058,9 @@ const nf2=new Intl.NumberFormat('id-ID',{maximumFractionDigits:2});
 const PV_MAXR=3000,PV_MAXC=120,PV_AG={count:'Count',dc:'Distinct Count',sum:'Sum',avg:'Average',min:'Min',max:'Max'},PV_SA={n:'Normal',gt:'% Grand Total',row:'% Baris',col:'% Kolom'};
 const pvNat=(x,y)=>x==='(kosong)'?(y==='(kosong)'?0:1):y==='(kosong)'?-1:x.localeCompare(y,undefined,{numeric:true});
 function pvOpts(){const o=[];for(const m of DV.meta){if(m.name==='Description')continue;
-  if(DATECOLS.includes(m.name))o.push([m.name+'|y',m.name+' (Tahun)'],[m.name+'|m',m.name+' (Bulan)'],[m.name+'|',m.name]);else o.push([m.name+'|',m.name])}return o}
+  if(DATECOLS.includes(m.name))o.push([m.name+'|y',m.name+' (Tahun)'],[m.name+'|m',m.name+' (Bulan)'],[m.name+'|',m.name]);else{o.push([m.name+'|',m.name]);if(MV_COLS.includes(m.name))o.push([m.name+'|s',m.name+' (dipisah)'])}}return o}
 function pvSpec(v){if(!v)return null;const i=v.lastIndexOf('|'),name=v.slice(0,i),mode=v.slice(i+1),m=DV.meta.find(x=>x.name===name);
-  if(!m)return null;return {ci:m.i,name,mode,num:m.num,label:name+(mode==='y'?' (Tahun)':mode==='m'?' (Bulan)':'')}}
+  if(!m)return null;return {ci:m.i,name,mode,num:m.num,label:name+(mode==='y'?' (Tahun)':mode==='m'?' (Bulan)':mode==='s'?' (dipisah)':'')}}
 const pvLab=v=>{const s=pvSpec(v);return s?s.label:v};
 function pvDef(){const has=n=>DV.meta.some(m=>m.name===n),f0=DV.meta[0]?DV.meta[0].name+'|':'';
   return {flt:[],cols:has('Status Dev')?['Status Dev|']:[],rows:[has('Application')?'Application|':f0],vals:[{f:has('Doc. No.')?'Doc. No.|':f0,ag:'count',sa:'n'}],tot:true,so:'lbl'}}
@@ -2073,20 +2084,27 @@ function pvRes(q,ag){if(!q||!q.k)return null;return ag==='dc'?(q.u?q.u.size:null
 function pvKey(i,sp){const v=DV.cells[i][sp.ci];if(v==='')return '(kosong)';
   if(sp.mode==='y')return /^\d{4}/.test(v)?v.slice(0,4):'(kosong)';
   if(sp.mode==='m')return /^\d{4}-\d{2}/.test(v)?v.slice(0,7):'(kosong)';return v}
+function pvKeys(i,sp){if(sp.mode==='s'){const L=mvSplit(DV.cells[i][sp.ci]);return L.length?L:['(kosong)']}return [pvKey(i,sp)]}
+const pvProd=L=>L.reduce((acc,a)=>acc.flatMap(p=>a.map(x=>[...p,x])),[[]]);
 function pvRender(){
   if(!D||!PV.cfg)return;const c=PV.cfg,n=D.raw.length;
   const rs=c.rows.map(pvSpec).filter(Boolean),cs=c.cols.map(pvSpec).filter(Boolean),vs=c.vals.map(v=>({sp:pvSpec(v.f),ag:v.ag,sa:v.sa})).filter(v=>v.sp);
   const fs=c.flt.map(x=>({sp:pvSpec(x.f),sel:x.sel?new Set(x.sel):null})).filter(x=>x.sp&&x.sel);
-  const mk=()=>vs.map(()=>pvAcc()),nn=()=>({ch:new Map(),cell:new Map(),tot:mk()});
+  let nid=0;const mk=()=>vs.map(()=>pvAcc()),nn=()=>({id:++nid,ch:new Map(),cell:new Map(),tot:mk()});
   const root=nn(),gt=mk(),gtc=new Map(),cparts=new Map();let used=0;
-  const put=(nd,ck,xs)=>{xs.forEach((x,j)=>pvAdd(nd.tot[j],x));let a=nd.cell.get(ck);if(!a){a=mk();nd.cell.set(ck,a)}xs.forEach((x,j)=>pvAdd(a[j],x))};
+  const put=(nd,ck,xs,seen)=>{if(!seen.has(nd.id)){seen.add(nd.id);xs.forEach((x,j)=>pvAdd(nd.tot[j],x))}const key=nd.id+'|'+ck;if(!seen.has(key)){seen.add(key);let a=nd.cell.get(ck);if(!a){a=mk();nd.cell.set(ck,a)}xs.forEach((x,j)=>pvAdd(a[j],x))}};
   for(let i=0;i<n;i++){
     if(!inMasterRow(i))continue;
-    let ok=true;for(const f of fs)if(!f.sel.has(pvKey(i,f.sp))){ok=false;break}if(!ok)continue;used++;
-    const cp=cs.map(sp=>pvKey(i,sp)),ck=cp.join(' › ');if(!cparts.has(ck))cparts.set(ck,cp);
+    let ok=true;for(const f of fs)if(!pvKeys(i,f.sp).some(k=>f.sel.has(k))){ok=false;break}if(!ok)continue;used++;
     const xs=vs.map(v=>{const t=DV.cells[i][v.sp.ci];if(t==='')return null;if(v.ag==='count')return 1;if(v.ag==='dc')return t;return isNaN(+t)?null:+t});
-    put(root,ck,xs);let nd=root;for(const sp of rs){const k=pvKey(i,sp);let ch=nd.ch.get(k);if(!ch){ch=nn();nd.ch.set(k,ch)}nd=ch;put(nd,ck,xs)}
-    xs.forEach((x,j)=>pvAdd(gt[j],x));let a=gtc.get(ck);if(!a){a=mk();gtc.set(ck,a)}xs.forEach((x,j)=>pvAdd(a[j],x));
+    /* kolom bernilai ganda ("dipisah"): satu dokumen dihitung di tiap nilainya, tetapi hanya sekali per sel/subtotal/total */
+    const seen=new Set(),rp=pvProd(rs.map(sp=>pvKeys(i,sp))),cpl=pvProd(cs.map(sp=>pvKeys(i,sp)));let gdone=false;
+    for(const cp of cpl){const ck=cp.join(' › ');if(!cparts.has(ck))cparts.set(ck,cp);
+      put(root,ck,xs,seen);
+      for(const path of rp){let nd=root;for(const k of path){let ch=nd.ch.get(k);if(!ch){ch=nn();nd.ch.set(k,ch)}nd=ch;put(nd,ck,xs,seen)}}
+      if(!gdone){gdone=true;xs.forEach((x,j)=>pvAdd(gt[j],x))}
+      if(!seen.has('g|'+ck)){seen.add('g|'+ck);let a=gtc.get(ck);if(!a){a=mk();gtc.set(ck,a)}xs.forEach((x,j)=>pvAdd(a[j],x))}
+    }
   }
   PV.hits=[];PV.aoa=[];PV.ids=[];
   if(!vs.length){$('pvTh').innerHTML='';$('pvTb').innerHTML='<tr><td class="em">Seret minimal satu field ke area Nilai.</td></tr>';$('pvSum').textContent='';return}
@@ -2128,8 +2146,8 @@ function pvShow(){pvInit();pvRender()}
 function pvMode(on){PV.on=on;document.body.classList.toggle('vpivot',on);
   $('dvmT').setAttribute('aria-selected',String(!on));$('dvmP').setAttribute('aria-selected',String(on));dfClose();pvFpClose();
   if(on)pvShow();else dvRun(false)}
-function pvDrill(cons){DV.sel={};DV.txt={};DV.sort=null;DV.q='';$('dvQ').value='';DV.follow=false;$('dvFollow').checked=false;const parts=[];
-  for(const [s,v] of cons){if(!s)continue;if(s.mode&&v!=='(kosong)')DV.txt[s.ci]=v.toLowerCase();else DV.sel[s.ci]=new Set([v]);DV.vis.add(s.name);parts.push(`${s.label} = ${v}`)}
+function pvDrill(cons){DV.sel={};DV.txt={};DV.mv={};DV.sort=null;DV.q='';$('dvQ').value='';DV.follow=false;$('dvFollow').checked=false;const parts=[];
+  for(const [s,v] of cons){if(!s)continue;if(s.mode==='s'&&v!=='(kosong)')DV.mv[s.ci]=v;else if(s.mode&&v!=='(kosong)')DV.txt[s.ci]=v.toLowerCase();else DV.sel[s.ci]=new Set([v]);DV.vis.add(s.name);parts.push(`${s.label} = ${v}`)}
   dvColRender();pvMode(false);dvRun(true);flash(parts.length?`Menampilkan baris sumber: ${parts.join(', ')}. Klik "Reset filter" untuk kembali.`:'Menampilkan semua baris sumber.')}
 function pvXls(){
   if(typeof XLSX==='undefined'){flash('Library Excel belum termuat. Periksa koneksi internet lalu coba lagi.',true);return}
@@ -2143,7 +2161,7 @@ function pvMove(d,to){const c=PV.cfg;if(d.z===to)return;if(d.z)c[d.z].splice(d.i
   if(to==='flt'){pvFpClose();const i=c.flt.length-1,a=document.querySelector(`#pvZflt a[data-op="${i}"]`);if(a)pvFpOpen(i,a)}}
 function pvFpClose(){PV.fp=null;$('pvFp').hidden=true}
 function pvFpOpen(i,a){const x=PV.cfg.flt[i],sp=x&&pvSpec(x.f);if(!sp)return;if(PV.fp&&PV.fp.i===i){pvFpClose();return}
-  const cnt=new Map();for(let r=0;r<D.raw.length;r++){if(!inMasterRow(r))continue;const k=pvKey(r,sp);cnt.set(k,(cnt.get(k)||0)+1)}
+  const cnt=new Map();for(let r=0;r<D.raw.length;r++){if(!inMasterRow(r))continue;for(const k of pvKeys(r,sp))cnt.set(k,(cnt.get(k)||0)+1)}
   const vals=[...cnt.keys()].sort(pvNat);PV.fp={i,vals,cnt,sel:new Set(x.sel||vals),rs:new Set(),q:'',add:false,res:vals};
   const p=$('pvFp');
   p.innerHTML='<input class="srch" id="pvFq" placeholder="Cari nilai…" autocomplete="off"><label class="pvsa"><input type="checkbox" id="pvFall"><span id="pvFalt">(Pilih Semua)</span></label><div class="pvfl2" id="pvFl2"></div><label class="pvsa" id="pvFaddw" hidden><input type="checkbox" id="pvFadd"><span>Tambahkan pilihan saat ini ke filter</span></label><div class="acts" style="margin:8px 0 0"><button class="mini pri" data-fa="ok" type="button">Terapkan</button><button class="mini" data-fa="cancel" type="button">Batal</button></div>';
@@ -2184,7 +2202,7 @@ document.addEventListener('mousedown',e=>{if(PV.fp&&!e.target.closest('#pvFp')&&
 $('tabD').onclick=()=>setTab('dash');$('tabV').onclick=()=>setTab('data');
 let dvT=0;$('dvQ').addEventListener('input',e=>{clearTimeout(dvT);dvT=setTimeout(()=>{DV.q=e.target.value;dvRun(true)},160)});
 $('dvFollow').addEventListener('change',e=>{DV.follow=e.target.checked;dvRun(true)});
-$('dvReset').onclick=()=>{DV.sel={};DV.txt={};DV.sort=null;DV.q='';$('dvQ').value='';dfClose();dvRun(true)};
+$('dvReset').onclick=()=>{DV.sel={};DV.txt={};DV.mv={};DV.sort=null;DV.q='';$('dvQ').value='';dfClose();dvRun(true)};
 $('dvXls').onclick=()=>{
   if(PV.on){pvXls();return}
   if(typeof XLSX==='undefined'){flash('Library Excel belum termuat. Periksa koneksi internet lalu coba lagi.',true);return}
@@ -2368,13 +2386,13 @@ const bdPct=it=>{const w=it.r[23];return w>=0?w:(it.sg==='DONE'?1:-1)};
 const bdInProc=it=>it.sg==='DEV'||it.sg==='APPS'||it.sg==='BR';
 const bdStuck=it=>it.age!=null&&it.age>AGE&&bdInProc(it);
 function bdBase(){
-  const out=[],now=Date.now(),MK=new Set(MASTER.map(m=>m.k)),pjc=DV.meta.find(m=>/^project$/i.test(m.name));let ph=0;BD.pjCol=pjc?pjc.i:-1;
+  const out=[],now=Date.now(),MK=new Set(MASTER.map(m=>m.k)),pjc=DV.meta.find(m=>/^project$/i.test(m.name));let ph=0;BD.pjCol=pjc?pjc.i:-1;const adc=['ADOP Project Backlog','ADOP Sprint','ADOP Status Project'].map(n=>DV.meta.find(m=>m.name===n));BD.adOk=adc.map(c=>!!c);
   for(const ri of DV.idx){const r=D.rows[ri];/* placeholder (-XXX/-DDD) ikut tampil di Kanban & Gantt */
     let age=null;if(r[19]){const a=Math.floor((now-Date.parse(r[19]))/864e5);if(a>=0)age=a}
-    out.push({ri,r,sg:sgOf(r[3]),wk:sgOf(r[3])==='DONE'?bdWk(r[2]):null,age,names:D.names[ri][0].filter(k=>MK.has(k)),pj:pjc?(DV.cells[ri][pjc.i]||''):''})}
+    out.push({ri,r,sg:sgOf(r[3]),wk:sgOf(r[3])==='DONE'?bdWk(r[2]):null,age,names:D.names[ri][0].filter(k=>MK.has(k)),pj:pjc?(DV.cells[ri][pjc.i]||''):'',ab:adc[0]?mvSplit(DV.cells[ri][adc[0].i]):[],as:adc[1]?mvSplit(DV.cells[ri][adc[1].i]):[],ap:adc[2]?mvSplit(DV.cells[ri][adc[2].i]):[]})}
   BD.ph=ph;return out;
 }
-const bdItems=()=>{const f=BD_F;return BD.base.filter(it=>(!f.pic||(it.names.length?it.names.some(n=>f.pic.has(n)):f.pic.has('__none')))&&(!f.app||f.app.has(it.r[15]||'(kosong)'))&&(!f.pj||f.pj.has(it.pj||'(kosong)'))&&(!f.nm||f.nm.has(it.r[13]||'(kosong)'))&&(!f.sg||f.sg.has(it.sg))&&(!f.sd||f.sd.has(it.r[3]||'(BLANK)')))};
+const bdItems=()=>{const f=BD_F;return BD.base.filter(it=>(!f.pic||(it.names.length?it.names.some(n=>f.pic.has(n)):f.pic.has('__none')))&&(!f.app||f.app.has(it.r[15]||'(kosong)'))&&(!f.pj||f.pj.has(it.pj||'(kosong)'))&&(!f.nm||f.nm.has(it.r[13]||'(kosong)'))&&(!f.sg||f.sg.has(it.sg))&&(!f.sd||f.sd.has(it.r[3]||'(BLANK)'))&&['ab','as','ap'].every(k=>!f[k]||(it[k].length?it[k].some(v=>f[k].has(v)):f[k].has('(kosong)'))))};
 function bdSorter(){
   if(BD.so==='no')return (a,b)=>String(a.r[12]).localeCompare(String(b.r[12]),undefined,{numeric:true});
   const d=BD.so==='old'?1:-1;
@@ -2466,7 +2484,7 @@ function bdRender(){
     const hd=$('gtHd');if(hd)hd.scrollLeft=g2.scrollLeft;
   }
 }
-function bdRefresh(){BD.base=bdBase();BD.opts={};const bp=$('bfb-pj');bp.disabled=BD.pjCol<0;bp.title=BD.pjCol<0?'Kolom "Project" tidak ditemukan di data':'';bfSync();bdRender()}
+function bdRefresh(){BD.base=bdBase();BD.opts={};const bp=$('bfb-pj');bp.disabled=BD.pjCol<0;bp.title=BD.pjCol<0?'Kolom "Project" tidak ditemukan di data':'';['ab','as','ap'].forEach((k,i)=>{const b=$('bfb-'+k);b.disabled=!BD.adOk[i];b.title=BD.adOk[i]?'':'Kolom belum ada di data. Sinkron ulang atau upload data terbaru.'});bfSync();bdRender()}
 function bdSet(m){
   if(BF.key)bfRevert();exClose();
   BD.mode=m;document.body.classList.toggle('vkan',m==='K');document.body.classList.toggle('vgantt',m==='G');
@@ -2491,10 +2509,10 @@ $('bdMain').addEventListener('click',e=>{
 $('bdMain').addEventListener('keydown',e=>{if(e.key==='Enter'){const c=e.target.closest('.gt-row[data-ri]');if(c)openProject(+c.dataset.ri)}});
 
 /* ---------- filter multi-select + tombol Terapkan ---------- */
-const BF_KEYS=['pic','app','pj','nm','sg','sd'],BF={key:null,q:''};
-const BD_F={pic:null,app:null,pj:null,nm:null,sg:null,sd:null};   // yang sedang diterapkan (null = semua)
-const BD_P={pic:null,app:null,pj:null,nm:null,sg:null,sd:null};   // pilihan sementara di popup
-const BF_LB={pic:['Semua PIC','PIC'],app:['Semua aplikasi','aplikasi'],pj:['Semua project','project'],nm:['Semua dokumen','dokumen'],sg:['Semua status (5)','status'],sd:['Semua status dev','status dev']};
+const BF_KEYS=['pic','app','pj','nm','sg','sd','ab','as','ap'],BF={key:null,q:''};
+const BD_F={pic:null,app:null,pj:null,nm:null,sg:null,sd:null,ab:null,as:null,ap:null};   // yang sedang diterapkan (null = semua)
+const BD_P={pic:null,app:null,pj:null,nm:null,sg:null,sd:null,ab:null,as:null,ap:null};   // pilihan sementara di popup
+const BF_LB={pic:['Semua PIC','PIC'],app:['Semua aplikasi','aplikasi'],pj:['Semua project','project'],nm:['Semua dokumen','dokumen'],sg:['Semua status (5)','status'],sd:['Semua status dev','status dev'],ab:['Semua project backlog','project backlog'],as:['Semua sprint','sprint'],ap:['Semua status project','status project']};
 BD.opts={};
 function bfOpts(key){
   if(BD.opts[key])return BD.opts[key];
@@ -2504,6 +2522,7 @@ function bfOpts(key){
   else if(key==='pj')BD.base.forEach(it=>{const a=it.pj||'(kosong)';add(a,a)});
   else if(key==='nm')BD.base.forEach(it=>{const a=it.r[13]||'(kosong)';add(a,a)});
   else if(key==='sd')BD.base.forEach(it=>{const a=it.r[3]||'(BLANK)';add(a,a)});
+  else if(key==='ab'||key==='as'||key==='ap')BD.base.forEach(it=>{(it[key].length?it[key]:['(kosong)']).forEach(v=>add(v,v))});
   else BD.base.forEach(it=>add(it.sg,KB_NM[it.sg]));
   let out=[...cnt.entries()].map(([v,c])=>({v,l:lab.get(v),c}));
   out=key==='sg'?KB_ORD.map(k=>out.find(o=>o.v===k)||{v:k,l:KB_NM[k],c:0}):out.sort((a,b)=>a.l.localeCompare(b.l,undefined,{numeric:true}));
