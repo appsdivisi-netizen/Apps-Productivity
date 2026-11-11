@@ -769,6 +769,7 @@ body:has(#pj:not([hidden])){overflow:hidden}
 .envb{display:inline-block;margin-left:12px;padding:2px 10px;border-radius:999px;background:var(--warn-bg);color:var(--warn);font-size:12px;font-weight:600;vertical-align:middle;letter-spacing:.02em}.envb[hidden]{display:none}
 .pns{display:grid;gap:8px;padding:12px 0;border-top:1px solid var(--line)}.pns h3{margin:0;font-size:14px}
 .pdchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.pdchip{padding:2px 10px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);font-size:13px}
+.bdbar .fg[hidden]{display:none}
 </style>
 
 <div class="wrap">
@@ -2392,7 +2393,7 @@ function bdBase(){
     out.push({ri,r,sg:sgOf(r[3]),wk:sgOf(r[3])==='DONE'?bdWk(r[2]):null,age,names:D.names[ri][0].filter(k=>MK.has(k)),pj:pjc?(DV.cells[ri][pjc.i]||''):'',ab:adc[0]?mvSplit(DV.cells[ri][adc[0].i]):[],as:adc[1]?mvSplit(DV.cells[ri][adc[1].i]):[],ap:adc[2]?mvSplit(DV.cells[ri][adc[2].i]):[]})}
   BD.ph=ph;return out;
 }
-const bdItems=()=>{const f=BD_F;return BD.base.filter(it=>(!f.pic||(it.names.length?it.names.some(n=>f.pic.has(n)):f.pic.has('__none')))&&(!f.app||f.app.has(it.r[15]||'(kosong)'))&&(!f.pj||f.pj.has(it.pj||'(kosong)'))&&(!f.nm||f.nm.has(it.r[13]||'(kosong)'))&&(!f.sg||f.sg.has(it.sg))&&(!f.sd||f.sd.has(it.r[3]||'(BLANK)'))&&['ab','as','ap'].every(k=>!f[k]||(it[k].length?it[k].some(v=>f[k].has(v)):f[k].has('(kosong)'))))};
+const bdItems=skip=>{const f=BD_F,on=k=>k!==skip&&f[k];return BD.base.filter(it=>(!on('pic')||(it.names.length?it.names.some(n=>f.pic.has(n)):f.pic.has('__none')))&&(!on('app')||f.app.has(it.r[15]||'(kosong)'))&&(!on('pj')||f.pj.has(it.pj||'(kosong)'))&&(!on('nm')||f.nm.has(it.r[13]||'(kosong)'))&&(!on('sg')||f.sg.has(it.sg))&&(!on('sd')||f.sd.has(it.r[3]||'(BLANK)'))&&['ab','as','ap'].every(k=>!on(k)||(it[k].length?it[k].some(v=>f[k].has(v)):f[k].has('(kosong)'))))};
 function bdSorter(){
   if(BD.so==='no')return (a,b)=>String(a.r[12]).localeCompare(String(b.r[12]),undefined,{numeric:true});
   const d=BD.so==='old'?1:-1;
@@ -2484,7 +2485,7 @@ function bdRender(){
     const hd=$('gtHd');if(hd)hd.scrollLeft=g2.scrollLeft;
   }
 }
-function bdRefresh(){BD.base=bdBase();BD.opts={};const bp=$('bfb-pj');bp.disabled=BD.pjCol<0;bp.title=BD.pjCol<0?'Kolom "Project" tidak ditemukan di data':'';['ab','as','ap'].forEach((k,i)=>{const b=$('bfb-'+k);b.disabled=!BD.adOk[i];b.title=BD.adOk[i]?'':'Kolom belum ada di data. Sinkron ulang atau upload data terbaru.'});bfSync();bdRender()}
+function bdRefresh(){BD.base=bdBase();BD.opts={};const bp=$('bfb-pj');bp.disabled=BD.pjCol<0;bp.title=BD.pjCol<0?'Kolom "Project" tidak ditemukan di data':'';['ab','as','ap'].forEach((k,i)=>{const b=$('bfb-'+k),fg=b.closest('.fg');b.disabled=!BD.adOk[i];if(fg)fg.hidden=!BD.adOk[i]});  /* kolom tidak ada di data: filternya disembunyikan, muncul sendiri saat kolomnya ada */bfSync();bdRender()}
 function bdSet(m){
   if(BF.key)bfRevert();exClose();
   BD.mode=m;document.body.classList.toggle('vkan',m==='K');document.body.classList.toggle('vgantt',m==='G');
@@ -2499,7 +2500,7 @@ function bdGo(m){
 }
 [['bdSo','so'],['bdZm','zm']].forEach(([id,k])=>$(id).addEventListener('change',e=>{BD[k]=e.target.value;BD.lim={};BD.gl=250;if(k==='zm')BD.fresh=true;bdRender()}));
 $('bdRun').addEventListener('change',e=>{BD.run=e.target.checked?'1':'0';BD.lim={};BD.gl=250;bdRender()});
-$('bdReset').onclick=()=>{BF_KEYS.forEach(k=>{BD_F[k]=null;BD_P[k]=null});BD.so='old';BD.zm='d';BD.run='1';$('bdSo').value='old';$('bdZm').value='d';$('bdRun').checked=true;BD.lim={};BD.gl=250;BD.fresh=true;bfSync();bdRender()};
+$('bdReset').onclick=()=>{BF_KEYS.forEach(k=>{BD_F[k]=null;BD_P[k]=null});BD.opts={};BD.so='old';BD.zm='d';BD.run='1';$('bdSo').value='old';$('bdZm').value='d';$('bdRun').checked=true;BD.lim={};BD.gl=250;BD.fresh=true;bfSync();bdRender()};
 $('bdMain').addEventListener('scroll',e=>{if(e.target&&e.target.id==='gtBox'){const h=$('gtHd');if(h)h.scrollLeft=e.target.scrollLeft}},true);
 $('bdMain').addEventListener('click',e=>{
   const mo=e.target.closest('.kmore');if(mo){BD.lim[mo.dataset.g]=(BD.lim[mo.dataset.g]||60)+60;bdRender();return}
@@ -2516,14 +2517,18 @@ const BF_LB={pic:['Semua PIC','PIC'],app:['Semua aplikasi','aplikasi'],pj:['Semu
 BD.opts={};
 function bfOpts(key){
   if(BD.opts[key])return BD.opts[key];
-  const cnt=new Map(),lab=new Map(),add=(v,l)=>{cnt.set(v,(cnt.get(v)||0)+1);lab.set(v,l)};
-  if(key==='pic'){const mm=new Map(MASTER.map(m=>[m.k,m.n]));BD.base.forEach(it=>{if(!it.names.length)add('__none','(tanpa Task PIC Master)');it.names.forEach(k=>add(k,mm.get(k)||title(k)))})}
-  else if(key==='app')BD.base.forEach(it=>{const a=it.r[15]||'(kosong)';add(a,a)});
-  else if(key==='pj')BD.base.forEach(it=>{const a=it.pj||'(kosong)';add(a,a)});
-  else if(key==='nm')BD.base.forEach(it=>{const a=it.r[13]||'(kosong)';add(a,a)});
-  else if(key==='sd')BD.base.forEach(it=>{const a=it.r[3]||'(BLANK)';add(a,a)});
-  else if(key==='ab'||key==='as'||key==='ap')BD.base.forEach(it=>{(it[key].length?it[key]:['(kosong)']).forEach(v=>add(v,v))});
-  else BD.base.forEach(it=>add(it.sg,KB_NM[it.sg]));
+  /* pilihan hanya berisi nilai yang masih ada di dokumen yang lolos filter lain (cascade); nilai yang sedang dipilih tetap tampil walau jumlahnya 0 */
+  const scan=items=>{const cnt=new Map(),lab=new Map(),add=(v,l)=>{cnt.set(v,(cnt.get(v)||0)+1);lab.set(v,l)};
+    if(key==='pic'){const mm=new Map(MASTER.map(m=>[m.k,m.n]));items.forEach(it=>{if(!it.names.length)add('__none','(tanpa Task PIC Master)');it.names.forEach(k=>add(k,mm.get(k)||title(k)))})}
+    else if(key==='app')items.forEach(it=>{const a=it.r[15]||'(kosong)';add(a,a)});
+    else if(key==='pj')items.forEach(it=>{const a=it.pj||'(kosong)';add(a,a)});
+    else if(key==='nm')items.forEach(it=>{const a=it.r[13]||'(kosong)';add(a,a)});
+    else if(key==='sd')items.forEach(it=>{const a=it.r[3]||'(BLANK)';add(a,a)});
+    else if(key==='ab'||key==='as'||key==='ap')items.forEach(it=>{(it[key].length?it[key]:['(kosong)']).forEach(v=>add(v,v))});
+    else items.forEach(it=>add(it.sg,KB_NM[it.sg]));
+    return {cnt,lab}};
+  const {cnt,lab}=scan(bdItems(key)),sel=BD_P[key];
+  if(sel&&key!=='sg'){const miss=[...sel].filter(v=>!cnt.has(v));if(miss.length){const fl=scan(BD.base).lab;miss.forEach(v=>{cnt.set(v,0);lab.set(v,fl.get(v)||v)})}}
   let out=[...cnt.entries()].map(([v,c])=>({v,l:lab.get(v),c}));
   out=key==='sg'?KB_ORD.map(k=>out.find(o=>o.v===k)||{v:k,l:KB_NM[k],c:0}):out.sort((a,b)=>a.l.localeCompare(b.l,undefined,{numeric:true}));
   return BD.opts[key]=out;
@@ -2544,7 +2549,8 @@ function bfSync(){
   if(BF.key)bfList();
 }
 function bfApply(){
-  BF_KEYS.forEach(k=>{BD_F[k]=bfNorm(BD_P[k],k);BD_P[k]=BD_F[k]?new Set(BD_F[k]):null});
+  const snap={};BF_KEYS.forEach(k=>{snap[k]=bfNorm(BD_P[k],k)});
+  BF_KEYS.forEach(k=>{BD_F[k]=snap[k];BD_P[k]=snap[k]?new Set(snap[k]):null});BD.opts={};
   BD.lim={};BD.gl=250;bfSync();bdRender();
 }
 function bfClose(){BF.key=null;$('bfp').hidden=true}
